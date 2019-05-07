@@ -1,0 +1,16 @@
+/*
+    A few corrected bootstrap styles for svg inside button
+*/
+.btn-outline-danger svg 
+{
+     margin-top: -5px;
+}
+.btn-outline-danger svg path:nth-child(2)
+{
+    fill: var(--danger);
+    margin: 0;
+}
+.btn:hover svg path:nth-child(2)
+{
+    fill: white;  
+}
