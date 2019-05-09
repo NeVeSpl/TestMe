@@ -69,9 +69,8 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => 
     {
         this.isFormItemTouched.add(event.target.name);
-        const newFormData = MagicForm.ApplyEventTo(event, this.state.formData);
-        this.validate(newFormData);
-        this.setState({ formData: newFormData });      
+        const newFormData = MagicForm.ApplyEventTo(event, this.state.formData);       
+        this.setFormData(newFormData);     
     }
     async handleConcurrencyConflict()
     {        
@@ -157,14 +156,19 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         event.preventDefault();
         const newData = { ...this.state.formData };
         newData.answers = [...this.state.formData.answers, new Answer()];
-        this.setState({ formData: newData });
+        this.setFormData(newData);
     }
     handleDeleteAnswer = (event: React.MouseEvent<HTMLElement>, answerIndex: number) =>
     {
         event.preventDefault();
         const newData = { ...this.state.formData };
         newData.answers = newData.answers.filter((x, i) => i != answerIndex);
-        this.setState({ formData: newData });
+        this.setFormData(newData);
+    }
+    setFormData(formData: UpdateQuestion)
+    {
+        this.validate(formData);
+        this.setState({ formData });
     }
 
 
