@@ -97,6 +97,9 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
     renderQuestion = () =>
     {
         return (
+            <>
+                <p>{this.state.question.content}</p>
+
             <ul>{this.state.question.answers.map(x =>
             {
                 const className = x.isCorrect ? style.correct : style.incorrect;
@@ -104,7 +107,9 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
                
             })
                 }
-            </ul>);
+                </ul>
+            </>
+                );
     }
     renderChildWindow = () =>
     {
