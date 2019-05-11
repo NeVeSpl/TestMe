@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <AssemblyName>TestMe.SharedKernel.Tests</AssemblyName>
+
+    <RootNamespace>TestMe.SharedKernel.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestMe.SharedKernel\TestMe.SharedKernel.csproj" />
+    <ProjectReference Include="..\TestMe.SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

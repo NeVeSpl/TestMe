@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>TestMe.TestCreation</AssemblyName>
+    <RootNamespace>TestMe.TestCreation</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestMe.SharedKernel\TestMe.SharedKernel.csproj" />
+    <ProjectReference Include="..\TestMe.SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

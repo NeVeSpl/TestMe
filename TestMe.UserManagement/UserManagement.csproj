@@ -2,7 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
-    <LangVersion>latest</LangVersion>
+    <RootNamespace>TestMe.UserManagement</RootNamespace>
+    <AssemblyName>TestMe.UserManagement</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,10 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TestMe.SharedKernel\SharedKernel.csproj" />
   </ItemGroup>
 
 </Project>

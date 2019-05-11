@@ -6,6 +6,8 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
     <LangVersion>7.2</LangVersion>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <RootNamespace>TestMe.Presentation.API</RootNamespace>
+    <AssemblyName>TestMe.Presentation.API</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -24,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestMe.TestCreation\TestMe.TestCreation.csproj" />
-    <ProjectReference Include="..\TestMe.UserManagement\TestMe.UserManagement.csproj" />
+    <ProjectReference Include="..\TestMe.TestCreation\TestCreation.csproj" />
+    <ProjectReference Include="..\TestMe.UserManagement\UserManagement.csproj" />
   </ItemGroup>
 
 </Project>

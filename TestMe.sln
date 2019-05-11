@@ -3,21 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.Presentation.API", "TestMe.Presentation.API\TestMe.Presentation.API.csproj", "{4539B530-BFF4-4990-BE29-87455C4564FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.API", "TestMe.Presentation.API\Presentation.API.csproj", "{4539B530-BFF4-4990-BE29-87455C4564FB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.Presentation.API.Tests", "TestMe.Presentation.API.Tests\TestMe.Presentation.API.Tests.csproj", "{2A0A9FB8-664C-4793-B63F-CDDF1FFE01DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.API.Tests", "TestMe.Presentation.API.Tests\Presentation.API.Tests.csproj", "{2A0A9FB8-664C-4793-B63F-CDDF1FFE01DA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.TestCreation.Tests", "TestMe.TestCreation.Tests\TestMe.TestCreation.Tests.csproj", "{0F8C757C-C3A6-425F-8760-0C2645486988}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCreation.Tests", "TestMe.TestCreation.Tests\TestCreation.Tests.csproj", "{0F8C757C-C3A6-425F-8760-0C2645486988}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.TestCreation", "TestMe.TestCreation\TestMe.TestCreation.csproj", "{04CD47A7-1E59-439D-8476-777563A64C5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestCreation", "TestMe.TestCreation\TestCreation.csproj", "{04CD47A7-1E59-439D-8476-777563A64C5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.UserManagement", "TestMe.UserManagement\TestMe.UserManagement.csproj", "{EE2BCDFD-ECE1-4C82-96B2-9D71B8FBE7BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserManagement", "TestMe.UserManagement\UserManagement.csproj", "{EE2BCDFD-ECE1-4C82-96B2-9D71B8FBE7BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.SharedKernel", "TestMe.SharedKernel\TestMe.SharedKernel.csproj", "{33E42B52-65B3-4358-BB26-C364CC030D6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel", "TestMe.SharedKernel\SharedKernel.csproj", "{33E42B52-65B3-4358-BB26-C364CC030D6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.Presentation.React", "TestMe.Presentation.React\TestMe.Presentation.React.csproj", "{18577D93-5E7C-481A-8C64-79E64CCBFF83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.React", "TestMe.Presentation.React\Presentation.React.csproj", "{18577D93-5E7C-481A-8C64-79E64CCBFF83}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestMe.SharedKernel.Tests", "TestMe.SharedKernel.Tests\TestMe.SharedKernel.Tests.csproj", "{D989B690-C877-4E9F-9444-C2799697F786}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharedKernel.Tests", "TestMe.SharedKernel.Tests\SharedKernel.Tests.csproj", "{D989B690-C877-4E9F-9444-C2799697F786}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

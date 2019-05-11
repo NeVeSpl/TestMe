@@ -6,6 +6,10 @@
     <IsPackable>false</IsPackable>
 
     <LangVersion>7.2</LangVersion>
+
+    <RootNamespace>TestMe.TestCreation.Tests</RootNamespace>
+
+    <AssemblyName>TestMe.TestCreation.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestMe.TestCreation\TestMe.TestCreation.csproj" />
-    <ProjectReference Include="..\TestMe.UserManagement\TestMe.UserManagement.csproj" />
+    <ProjectReference Include="..\TestMe.TestCreation\TestCreation.csproj" />
+    <ProjectReference Include="..\TestMe.UserManagement\UserManagement.csproj" />
   </ItemGroup>
 
 </Project>

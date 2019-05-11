@@ -12,6 +12,10 @@
     <StartupObject />
 
     <LangVersion>7.2</LangVersion>
+
+    <RootNamespace>TestMe.Presentation.API.Tests</RootNamespace>
+
+    <AssemblyName>TestMe.Presentation.API.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TestMe.Presentation.API\TestMe.Presentation.API.csproj" />
+    <ProjectReference Include="..\TestMe.Presentation.API\Presentation.API.csproj" />
   </ItemGroup>
 
 </Project>
