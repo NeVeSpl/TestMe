@@ -10,7 +10,7 @@ namespace TestMe.TestCreation.Tests.App
     [TestClass]
     public class TestsServiceTests : BaseFixture
     {
-        private TestCreationDbContext TestCreationDbContext;
+        private TestCreationDbContext testCreationDbContext;
         private TestsService serviceUnderTest;
 
         private protected override DatabaseType GetDatabaseType()
@@ -25,14 +25,14 @@ namespace TestMe.TestCreation.Tests.App
             {
                 TestUtils.Seed(context);
             }
-            TestCreationDbContext = CreateTestCreationDbContext();
-            var uow = TestUtils.CreateTestCreationUoW(TestCreationDbContext);
-            serviceUnderTest = new TestsService(new TestReader(TestCreationDbContext), uow);
+            testCreationDbContext = CreateTestCreationDbContext();
+            var uow = TestUtils.CreateTestCreationUoW(testCreationDbContext);
+            serviceUnderTest = new TestsService(new TestReader(testCreationDbContext), uow);
         }
         [TestCleanup]
         public void TestCleanup()
         {
-            TestCreationDbContext.Dispose();
+            testCreationDbContext.Dispose();
         }
 
 
@@ -52,7 +52,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void ReadTestWithQuestionItemsAndQuestionHeaders(long testId, ResultStatus expectedResult)
         {
             Result result = serviceUnderTest.ReadTestWithQuestionItemsAndQuestionHeaders(OwnerId, testId);
@@ -80,7 +80,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void UpdateTest(long testId, ResultStatus expectedResult)
         {
             var command = new UpdateTest()
@@ -96,7 +96,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void DeleteTest(long testId, ResultStatus expectedResult)
         {
             Result result = serviceUnderTest.DeleteTest(OwnerId, testId);
@@ -107,7 +107,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]      
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]      
         public void CreateQuestionItem_WhenGivenTestId(long testId, ResultStatus expectedResult)
         {
             var command = new AddQuestionItem()
@@ -122,7 +122,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidQuestionId, ResultStatus.Ok)]
         [DataRow(NotExisitngQuestionId, ResultStatus.Error)]
         [DataRow(DeletedQuestionId, ResultStatus.Error)]
-        [DataRow(OtherUserQuestionId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
         public void CreateQuestionItem_WhenGivenQuestionId(long questionId, ResultStatus expectedResult)
         {
             var command = new AddQuestionItem()
@@ -137,7 +137,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void UpdateQuestionItem_WhenGivenTestId(long testId, ResultStatus expectedResult)
         {
             var command = new UpdateQuestionItem()
@@ -151,7 +151,7 @@ namespace TestMe.TestCreation.Tests.App
         [TestMethod]
         [DataRow(ValidTestItemId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestItemId, ResultStatus.NotFound)]
-        [DataRow(OtherTestItemId, ResultStatus.NotFound)]      
+        [DataRow(OtherTestTestItemId, ResultStatus.NotFound)]      
         public void UpdateQuestionItem_WhenGivenQuestionItemId(long questionItemId, ResultStatus expectedResult)
         {
             var command = new UpdateQuestionItem()
@@ -166,7 +166,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestId, ResultStatus.NotFound)]
         [DataRow(DeletedTestId, ResultStatus.NotFound)]
-        [DataRow(OtherUserTestId, ResultStatus.Unauthorized)]
+        [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void DeleteQuestionItem_WhenGivenTestId(long testId, ResultStatus expectedResult)
         {            
             Result result = serviceUnderTest.DeleteQuestionItem(OwnerId, testId, ValidTestItemId);
@@ -176,7 +176,7 @@ namespace TestMe.TestCreation.Tests.App
         [TestMethod]
         [DataRow(ValidTestItemId, ResultStatus.Ok)]
         [DataRow(NotExisitngTestItemId, ResultStatus.NotFound)]
-        [DataRow(OtherTestItemId, ResultStatus.NotFound)]
+        [DataRow(OtherTestTestItemId, ResultStatus.NotFound)]
         public void DeleteQuestionItem_WhenGivenQuestionItemId(long questionItemId, ResultStatus expectedResult)
         {           
             Result result = serviceUnderTest.DeleteQuestionItem(OwnerId, ValidTestId, questionItemId);

@@ -16,7 +16,7 @@ namespace TestMe.Presentation.API.Tests
         public void TestInitialize()
         {
             factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory);
-            client = factory.CreateClient(Token);
+            client = factory.CreateClient(ValidToken);
         }
 
 

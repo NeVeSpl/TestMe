@@ -52,7 +52,7 @@ namespace TestMe.TestCreation.Tests.Domain
         [DataRow(DeletedQuestionsCatalogId, "Catalog not found")]
         [DataRow(ValidTestsCatalogId, "Catalog not found")]
         [DataRow(NotExisitngQuestionsCatalogId, "Catalog not found")]
-        [DataRow(OtherUserQuestionsCatalogId, "Question can not be moved to catalog that you do not own")]
+        [DataRow(OtherOwnerQuestionsCatalogId, "Question can not be moved to catalog that you do not own")]
         public void MoveQuestionToCatalog_ErrorPath(long catalogId, string expectedErrorMessage)
         {
             using (var context = CreateTestCreationDbContext())

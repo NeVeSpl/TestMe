@@ -9,14 +9,14 @@ namespace TestMe.Presentation.API.Tests.Utils
 {
     public abstract class BaseFixture
     {
-        private protected static readonly string Token;
+        private protected static readonly string ValidToken;
         private protected ApiFactory factory;
         
 
 
         static BaseFixture()
         {
-            Token = AuthenticationService.BuildToken(new User() { UserId = 1 }, "https://localhost:44357", "196A813D-9E9B-48BD-85C2-E90DE807BBDD");
+            ValidToken = AuthenticationService.BuildToken(new User() { UserId = 1 }, "https://localhost:44357", "196A813D-9E9B-48BD-85C2-E90DE807BBDD");
         }
 
 
