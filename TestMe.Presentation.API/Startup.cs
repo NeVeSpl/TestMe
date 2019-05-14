@@ -39,7 +39,13 @@ namespace TestMe.Presentation.API
 
             services.AddJWTAuthentication(Configuration);
            
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            var mvcBuilder = services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            mvcBuilder.AddApiExplorer();
+            mvcBuilder.AddAuthorization();
+            mvcBuilder.AddCors();
+            mvcBuilder.AddJsonFormatters();
+            mvcBuilder.AddDataAnnotations();
+
 
             services.AddCors(options =>
             {
