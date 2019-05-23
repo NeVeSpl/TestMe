@@ -9,10 +9,10 @@ namespace TestMe.TestCreation.App.Questions
 {
     internal sealed class QuestionReader
     { 
-        private readonly TestCreationDbContext context;
+        private readonly ReadOnlyTestCreationDbContext context;
 
 
-        public QuestionReader(TestCreationDbContext context)
+        public QuestionReader(ReadOnlyTestCreationDbContext context)
         {
             this.context = context;            
         }
@@ -20,7 +20,7 @@ namespace TestMe.TestCreation.App.Questions
 
         public Result<QuestionDTO> GetQuestion(long ownerId, long questionId, bool includeAnswers)
         {
-            QuestionDTO question = context.Questions.AsNoTracking().Where(x => x.QuestionId == questionId).Select(QuestionDTO.Mapping).FirstOrDefault();
+            QuestionDTO question = context.Questions.Where(x => x.QuestionId == questionId).Select(QuestionDTO.Mapping).FirstOrDefault();
 
             if (question == null)
             {
@@ -39,7 +39,7 @@ namespace TestMe.TestCreation.App.Questions
 
             if (includeAnswers)
             {
-                question.Answers = context.Answers.AsNoTracking().Where(x => x.QuestionId == questionId).OrderBy(x => x.AnswerId).Select(AnswerDTO.Mapping).ToList();
+                question.Answers = context.Answers.Where(x => x.QuestionId == questionId).OrderBy(x => x.AnswerId).Select(AnswerDTO.Mapping).ToList();
             }
 
             return Result.Ok(question);
@@ -47,7 +47,7 @@ namespace TestMe.TestCreation.App.Questions
 
         public Result<QuestionHeaderDTO> GetQuestionHeader(long ownerId, long questionId)
         {
-            var question = context.Questions.AsNoTracking().Where(x => x.QuestionId == questionId).Select(QuestionHeaderDTO.Mapping).FirstOrDefault();
+            var question = context.Questions.Where(x => x.QuestionId == questionId).Select(QuestionHeaderDTO.Mapping).FirstOrDefault();
 
             if (question == null)
             {
@@ -80,7 +80,7 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.Unauthorized();
             }
 
-            var questions = context.Questions.AsNoTracking().Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToList();
+            var questions = context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToList();
 
             return Result.Ok(questions);
         }

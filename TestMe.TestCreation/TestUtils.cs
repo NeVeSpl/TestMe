@@ -19,21 +19,21 @@ namespace TestMe.TestCreation
         public const long OtherOwnerTestsCatalogId = 9;
         public const long DeletedQuestionsCatalogId = 4;
         public const long NotExisitngQuestionsCatalogId = -1;
-        public const long OtherUserQuestionsCatalogId = 8;
+        public const long OtherOwnerQuestionsCatalogId = 8;
 
         public const long ValidQuestionId = 1;
         public const long DeletedQuestionId = 5;
         public const long NotExisitngQuestionId = -1;
-        public const long OtherUserQuestionId = 8;
+        public const long OtherOwnerQuestionId = 8;
 
         public const long ValidTestId = 1;
         public const long DeletedTestId = 4;
         public const long NotExisitngTestId = -1;
-        public const long OtherUserTestId = 3;
+        public const long OtherOwnerTestId = 3;
 
         public const long ValidTestItemId = 1;
         public const long NotExisitngTestItemId = -1;
-        public const long OtherTestItemId = 4;
+        public const long OtherTestTestItemId = 4;
 
         public static ITestCreationUoW CreateTestCreationUoW(TestCreationDbContext context)
         {

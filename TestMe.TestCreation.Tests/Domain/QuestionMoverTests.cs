@@ -15,15 +15,6 @@ namespace TestMe.TestCreation.Tests.Domain
         }
 
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            using (var context = CreateTestCreationDbContext())
-            {
-                TestUtils.Seed(context);
-            }
-        }
-
         [TestMethod]
         [DataRow(ValidQuestionId, 2)]
         public void MoveQuestionToCatalog_HappyPath(long questionId, long catalogId)

@@ -15,16 +15,6 @@ namespace TestMe.TestCreation.Tests.Domain
         }
 
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            using (var context = CreateTestCreationDbContext())
-            {
-                TestUtils.Seed(context);
-            }
-        }
-
-
         [TestMethod]      
         public void AddQuestion_ShouldThrowErrorWhenExceededTheLimitOfQuestionsInCatalog()
         {

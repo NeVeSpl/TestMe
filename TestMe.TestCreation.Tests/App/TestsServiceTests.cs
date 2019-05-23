@@ -20,14 +20,10 @@ namespace TestMe.TestCreation.Tests.App
 
         [TestInitialize]
         public void TestInitialize()
-        {
-            using (var context = CreateTestCreationDbContext())
-            {
-                TestUtils.Seed(context);
-            }
+        {            
             testCreationDbContext = CreateTestCreationDbContext();
             var uow = TestUtils.CreateTestCreationUoW(testCreationDbContext);
-            serviceUnderTest = new TestsService(new TestReader(testCreationDbContext), uow);
+            serviceUnderTest = new TestsService(new TestReader(CreateReadOnlyTestCreationDbContext()), uow);
         }
         [TestCleanup]
         public void TestCleanup()

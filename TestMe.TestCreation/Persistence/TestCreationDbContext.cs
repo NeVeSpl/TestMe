@@ -6,22 +6,22 @@ namespace TestMe.TestCreation.Persistence
 {
     internal class TestCreationDbContext : DbContext
     {
-        public DbSet<Owner> Owners { get; private set; }
+        public DbSet<Owner> Owners { get; protected set; }
 
-        public DbSet<QuestionsCatalog> QuestionsCatalogs { get; private set; }
-        public DbSet<TestsCatalog> TestsCatalogs { get; private set; }
+        public DbSet<QuestionsCatalog> QuestionsCatalogs { get; protected set; }
+        public DbSet<TestsCatalog> TestsCatalogs { get; protected set; }
 
-        public DbSet<Question> Questions { get; private set; }
-        public DbSet<Answer> Answers { get; private set; }        
+        public DbSet<Question> Questions { get; protected set; }
+        public DbSet<Answer> Answers { get; protected set; }        
 
-        public DbSet<Test> Tests { get; private set; }
-        public DbSet<QuestionsCatalogItem> QuestionsCatalogItems { get; private set; }
-        public DbSet<QuestionItem> QuestionItems { get; private set; }
+        public DbSet<Test> Tests { get; protected set; }
+        public DbSet<QuestionsCatalogItem> QuestionsCatalogItems { get; protected set; }
+        public DbSet<QuestionItem> QuestionItems { get; protected set; }
 
 
-        public TestCreationDbContext(DbContextOptions<TestCreationDbContext> options) : base(options)
+        public TestCreationDbContext(DbContextOptions options) : base(options)
         {
-            ChangeTracker.LazyLoadingEnabled = false;            
+                  
         }
 
 
@@ -31,6 +31,17 @@ namespace TestMe.TestCreation.Persistence
             modelBuilder.HasDefaultSchema("TestCreation");
             string configurationsPrefix = typeof(Configurations.CatalogConfiguration).Namespace;
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), x => x.FullName.StartsWith(configurationsPrefix));         
+        }
+    }
+
+    internal class ReadOnlyTestCreationDbContext : TestCreationDbContext
+    {
+
+        public ReadOnlyTestCreationDbContext(DbContextOptions options) : base(options)
+        {
+            ChangeTracker.LazyLoadingEnabled = false;
+            ChangeTracker.AutoDetectChangesEnabled = false;
+            ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
     }
 }

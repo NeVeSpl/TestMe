@@ -1,9 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestMe.Presentation.API.Services;
+using TestMe.TestCreation.Persistence;
 using TestMe.UserManagement.Domain;
+using TestMe.UserManagement.Persistence;
 
 namespace TestMe.Presentation.API.Tests.Utils
 {
@@ -17,6 +20,26 @@ namespace TestMe.Presentation.API.Tests.Utils
         static BaseFixture()
         {
             ValidToken = AuthenticationService.BuildToken(new User() { UserId = 1 }, "https://localhost:44357", "196A813D-9E9B-48BD-85C2-E90DE807BBDD");
+        }
+
+
+        private protected void SeedDatabase(ApiFactory factory)
+        {
+            using (IServiceScope serviceScope = factory.Server.Host.Services.CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<TestCreationDbContext>())
+                {
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+                    TestCreation.TestUtils.Seed(context);
+                }
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<UserManagementDbContext>())
+                {
+                    context.Database.EnsureDeleted();
+                    context.Database.EnsureCreated();
+                    UserManagement.Persistence.TestUtils.Seed(context);
+                }
+            }
         }
 
 

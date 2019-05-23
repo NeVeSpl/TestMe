@@ -19,7 +19,8 @@ namespace TestMe.Presentation.API.Tests.Utils
     {
         public enum DatabaseType{ PostgreSQL, EFInMemory, SQLiteInMemory}
 
-        private readonly List<IFakeContextDefinition<DbContext>> fakeContextsDefinitions;
+        private readonly FakeContextDefinition<TestCreationDbContext> testCreationFakeContextDefinition;
+        private readonly FakeContextDefinition<UserManagementDbContext> userManagementFakeContextDefinition;
         private IServiceScope serviceScope;
        
 
@@ -27,12 +28,8 @@ namespace TestMe.Presentation.API.Tests.Utils
         {
             PostgreSQLConfig config = databaseType == DatabaseType.PostgreSQL ? new PostgreSQLConfig(callerFilePath) : null;
 
-            fakeContextsDefinitions = new List<IFakeContextDefinition<DbContext>>()
-            {
-                new FakeContextDefinition<TestCreationDbContext>(databaseType, config, TestCreation.TestUtils.Seed),
-                new FakeContextDefinition<UserManagementDbContext>(databaseType, config, UserManagement.Persistence.TestUtils.Seed)
-            };
-            
+            testCreationFakeContextDefinition = new FakeContextDefinition<TestCreationDbContext>(databaseType, config);
+            userManagementFakeContextDefinition = new FakeContextDefinition<UserManagementDbContext>(databaseType, config);
         }
 
         public HttpClient CreateClient(string token)
@@ -41,61 +38,44 @@ namespace TestMe.Presentation.API.Tests.Utils
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             return httpClient;
         }
-
         public TContext GetContext<TContext>() where TContext : DbContext
         {
             serviceScope = serviceScope ?? Server.Host.Services.CreateScope();
-            TContext context = serviceScope.ServiceProvider.GetRequiredService<TContext>();
-            context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+            TContext context = serviceScope.ServiceProvider.GetRequiredService<TContext>();            
             return context;
         }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
-        {          
+        { 
             builder.ConfigureServices(services =>
-            {              
-                foreach (var fakeContextDefinition in fakeContextsDefinitions)
-                {
-                    fakeContextDefinition.SetupServices(services);                   
-                }
-
-                using (var serviceProvider = services.BuildServiceProvider())
-                {
-                    var serviceScope = serviceProvider.CreateScope();
-
-                    foreach (var fakeContextDefinition in fakeContextsDefinitions)
-                    {
-                        fakeContextDefinition.Seed(serviceScope.ServiceProvider);
-                    }
-                }        
+            {
+                services.AddDbContextPool<TestCreationDbContext>(options => testCreationFakeContextDefinition.SetOptions(options));
+                services.AddDbContextPool<ReadOnlyTestCreationDbContext>(options => testCreationFakeContextDefinition.SetOptions(options));
+                services.AddDbContextPool<UserManagementDbContext>(options => userManagementFakeContextDefinition.SetOptions(options));
             });          
         }
-
         protected override void Dispose(bool disposing)
         {
             serviceScope?.Dispose();
-            foreach (var fakeContextDefinition in fakeContextsDefinitions)
-            {
-                fakeContextDefinition.Dispose();
-            }
+            testCreationFakeContextDefinition.Dispose();
+            userManagementFakeContextDefinition.Dispose();
             base.Dispose(disposing);
         }
 
 
-        private class FakeContextDefinition<TContext> : IFakeContextDefinition<TContext> where TContext : DbContext
+        private class FakeContextDefinition<TContext>  where TContext  : DbContext
         {
             private readonly DatabaseType databaseType;
             //private readonly InMemoryDatabaseRoot efInMemoryDatabaseRoot;
             private readonly ServiceProvider efServiceProvider;
             private readonly SqliteConnection sqliteConnection;
-            private readonly string postgreSQLConnectionString;
-            private readonly Action<TContext> seed;
+            private readonly string postgreSQLConnectionString;         
 
 
-            public FakeContextDefinition(DatabaseType databaseType, PostgreSQLConfig config, Action<TContext> seed)
+            public FakeContextDefinition(DatabaseType databaseType, PostgreSQLConfig config)
             {
                 this.databaseType = databaseType;
-                this.seed = seed;
+               
 
                 switch (databaseType)
                 {
@@ -118,25 +98,14 @@ namespace TestMe.Presentation.API.Tests.Utils
                         throw new NotImplementedException();
                 }
             }            
-
-            public void SetupServices(IServiceCollection services)
-            {
-                services.AddDbContextPool<TContext>(options => SetOptions(options));
-            }
-            public void Seed(IServiceProvider serviceProvider)
-            {               
-                var context = serviceProvider.GetRequiredService<TContext>();               
-                context.Database.EnsureDeleted();               
-                context.Database.EnsureCreated();
-               
-                seed(context);              
-            }
+           
+           
             public void Dispose()
             {
                 sqliteConnection?.Close();
             }
 
-            private void SetOptions(DbContextOptionsBuilder options)
+            public void SetOptions(DbContextOptionsBuilder options)
             {
                 switch (databaseType)
                 {
@@ -157,12 +126,7 @@ namespace TestMe.Presentation.API.Tests.Utils
                 options.EnableSensitiveDataLogging();
             }            
         }
-        private interface IFakeContextDefinition<out TContext> where TContext : DbContext
-        {
-            void SetupServices(IServiceCollection services);
-            void Seed(IServiceProvider serviceProvider);
-            void Dispose();
-        }
+      
 
         private class PostgreSQLConfig
         {

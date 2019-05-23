@@ -9,10 +9,10 @@ namespace TestMe.TestCreation.App.Tests
 {
     internal sealed class TestReader 
     {
-        private readonly TestCreationDbContext context;
+        private readonly ReadOnlyTestCreationDbContext context;
 
 
-        public TestReader(TestCreationDbContext context)
+        public TestReader(ReadOnlyTestCreationDbContext context)
         {
             this.context = context;            
         }
@@ -31,14 +31,14 @@ namespace TestMe.TestCreation.App.Tests
                 return Result.Unauthorized();
             }
 
-            var tests = context.Tests.AsNoTracking().Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.Mapping).ToList();
+            var tests = context.Tests.Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.Mapping).ToList();
 
             return Result.Ok(tests);
         }
 
         public Result<TestDTO> GetTest(long ownerId, long testId, bool includeQuestionItemsWithQuestionHeaders)
         {
-            TestDTO test = context.Tests.AsNoTracking().Where(x => x.TestId == testId).Select(TestDTO.Mapping).FirstOrDefault();
+            TestDTO test = context.Tests.Where(x => x.TestId == testId).Select(TestDTO.Mapping).FirstOrDefault();
 
             if (test == null)
             {
@@ -57,8 +57,7 @@ namespace TestMe.TestCreation.App.Tests
 
             if (includeQuestionItemsWithQuestionHeaders)
             {
-                test.QuestionItems = context.QuestionItems.AsNoTracking()
-                                                          .Include(x => x.Question)
+                test.QuestionItems = context.QuestionItems.Include(x => x.Question)
                                                           .IgnoreQueryFilters()
                                                           .Where(x => x.TestId == testId)
                                                           .Select(QuestionItemDTO.Mapping)

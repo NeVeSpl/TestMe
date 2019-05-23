@@ -21,7 +21,12 @@ namespace TestMe.TestCreation.Tests
         [TestInitialize()]
         public void Startup()
         {
-            databaseType = GetDatabaseType();           
+            databaseType = GetDatabaseType();
+            using (var context = CreateTestCreationDbContext())
+            {
+                context.Database.EnsureCreated();
+                TestUtils.Seed(context);
+            }
         }
         [TestCleanup()]
         public void Cleanup()
@@ -31,19 +36,21 @@ namespace TestMe.TestCreation.Tests
 
 
         private protected TestCreationDbContext CreateTestCreationDbContext()
-        {
-            bool isFirstTime = fakeContextDefinition == null;
-            fakeContextDefinition = fakeContextDefinition ??  new FakeContextDefinition<TestCreationDbContext>(databaseType);           
-            var context = new TestCreationDbContext(fakeContextDefinition.options);
-            if (isFirstTime)
-            {
-                context.Database.EnsureCreated();
-            }
-            return context;
+        {           
+            CreateFakeContextDefinitionIfOneDoesNotExist();
+            return new TestCreationDbContext(fakeContextDefinition.options);
         }
-        
-
+        private protected ReadOnlyTestCreationDbContext CreateReadOnlyTestCreationDbContext()
+        {
+            CreateFakeContextDefinitionIfOneDoesNotExist();
+            return new ReadOnlyTestCreationDbContext(fakeContextDefinition.options);
+        }
         private protected abstract DatabaseType GetDatabaseType();
+
+        private void CreateFakeContextDefinitionIfOneDoesNotExist()
+        {
+            fakeContextDefinition = fakeContextDefinition ?? new FakeContextDefinition<TestCreationDbContext>(databaseType);
+        }
         
 
         private class FakeContextDefinition<TContext> where TContext : DbContext

@@ -23,6 +23,7 @@ namespace TestMe.Presentation.API.Tests
         {
             factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory);
             client = factory.CreateClient(ValidToken);
+            SeedDatabase(factory);           
         }
 
 

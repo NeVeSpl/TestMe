@@ -10,10 +10,10 @@ namespace TestMe.TestCreation.App.Catalogs
 {
     internal sealed class TestsCatalogReader
     {
-        private readonly TestCreationDbContext context;
+        private readonly ReadOnlyTestCreationDbContext context;
 
 
-        public TestsCatalogReader(TestCreationDbContext context)
+        public TestsCatalogReader(ReadOnlyTestCreationDbContext context)
         {
             this.context = context;           
         }
@@ -21,12 +21,12 @@ namespace TestMe.TestCreation.App.Catalogs
 
         public List<CatalogHeaderDTO> GetTestsCatalogs(long ownerId)
         {
-            return context.TestsCatalogs.AsNoTracking().Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.Mapping).ToList();
+            return context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.Mapping).ToList();
         }
 
         public CatalogDTO GetById(long catalogId)
         {
-            return context.TestsCatalogs.AsNoTracking().Where(x => x.CatalogId == catalogId).Select(CatalogDTO.Mapping).FirstOrDefault();
+            return context.TestsCatalogs.Where(x => x.CatalogId == catalogId).Select(CatalogDTO.Mapping).FirstOrDefault();
         }
     }
 }
