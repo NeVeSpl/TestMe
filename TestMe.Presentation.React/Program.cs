@@ -23,6 +23,9 @@ namespace TestMe.Presentation.React
                     {
                         x.AllowSynchronousIO = false;
                         x.AddServerHeader = false;
+                        x.Limits.MaxConcurrentConnections = 1000;
+                        x.Limits.MaxConcurrentUpgradedConnections = 1000;
+                        x.Limits.MaxRequestBodySize = 5_000_000;
                     })
                 .UseStartup<Startup>();
     }

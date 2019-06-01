@@ -46,7 +46,6 @@ namespace TestMe.Presentation.API
             mvcBuilder.AddJsonFormatters();
             mvcBuilder.AddDataAnnotations();
 
-
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
@@ -56,8 +55,7 @@ namespace TestMe.Presentation.API
                                       .AllowCredentials()
                 .Build());
             });
-
-            services.AddBrotliResponseCompression();
+            
             services.AddSwaggerDocument();
 
             Logger.LogDebug("ConfigureServices end");
@@ -76,19 +74,15 @@ namespace TestMe.Presentation.API
             }
             else
             {
-                app.UseExceptionHandler("/Error");
-                app.UseHsts();
+                app.UseExceptionHandler("/Error");                
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseNSwag();
-
-            app.UseHttpsRedirection();
-            app.UseCors("CorsPolicy");
-            app.UseResponseCompression();
+            app.UseNSwag();            
+            app.UseCors("CorsPolicy");           
             app.UseAuthentication();
             app.UseMvc();
 

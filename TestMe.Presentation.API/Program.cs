@@ -22,7 +22,7 @@ namespace TestMe.Presentation.API
 
                 /* Everything what is done here it is only applied to application that runs outside of automatic tests   
                  * it is why UseSerilog() is invoked here instead within CreateWebHostBuilder()
-                 * it is why Migrate...() is invoked here instrad within Startup.Configure()
+                 * it is why Migrate...() is invoked here instead within Startup.Configure()
                  * we do not want to invoke them when we are testing app
                   */
                 IWebHost webHost = CreateWebHostBuilder(args).UseSerilog().Build();

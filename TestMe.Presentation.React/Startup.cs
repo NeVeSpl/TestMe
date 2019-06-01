@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace TestMe.Presentation.React
 {
     public class Startup
-    {  
+    {
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -21,7 +21,7 @@ namespace TestMe.Presentation.React
             });
         }
 
-    
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -30,37 +30,48 @@ namespace TestMe.Presentation.React
             }
             else
             {
-                app.UseExceptionHandler("/Error");              
-                app.UseHsts();
+                app.UseExceptionHandler("/Error");
             }
 
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
             app.Use(async (context, nextMiddleware) =>
             {
                 context.Response.OnStarting(() =>
                 {
-                    if (env.IsDevelopment())
+                    if (context.Response.ContentType != null)
                     {
-                        // In devlopemnt React add-on to browser requires script-src set to unsafe-inline
-                        //               React-Hot-Loader requires script-src set to unsafe-eval
-                        //               Webpack requires style-src set to unsafe-inline
-                        context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; connect-src localhost:* wss://localhost:*; font-src data:; img-src * data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com;  style-src 'self' 'unsafe-inline';");
+                        if (context.Response.ContentType.StartsWith("text/html"))
+                        {
+                            if (env.IsDevelopment())
+                            {
+                                // In devlopemnt React add-on to browser requires script-src set to unsafe-inline
+                                //               React-Hot-Loader requires script-src set to unsafe-eval
+                                //               Webpack requires style-src set to unsafe-inline
+                                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; connect-src localhost:* wss://localhost:*; font-src data:; img-src * data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com;  style-src 'self' 'unsafe-inline';");
+                            }
+                            else
+                            {
+                                context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; connect-src localhost:* testme-api.mw-neves.pl:* wss://localhost:*; font-src data:; img-src * data:; script-src 'self' *.googletagmanager.com *.google-analytics.com;  style-src 'self';");
+                            }
+                            context.Response.Headers["X-Frame-Options"] = "deny";
+                            context.Response.Headers["X-Content-Type-Options"] = "nosniff";
+                            context.Response.Headers["Referrer-Policy"] = "same-origin";
+                            context.Response.Headers["X-Xss-Protection"] = "1; mode=block";
+                            context.Response.Headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains";
+                        }
+                        if (!env.IsDevelopment())
+                        {
+                            if (context.Response.ContentType.StartsWith("application/javascript") || context.Response.ContentType.StartsWith("text/css"))
+                            {
+                                context.Response.Headers["Cache-Control"] = "public, max-age=31536000";
+                            }
+                        }
                     }
-                    else
-                    {
-                        context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; connect-src localhost:* testme-api.mw-neves.pl:* wss://localhost:*; font-src data:; img-src * data:; script-src 'self' *.googletagmanager.com *.google-analytics.com;  style-src 'self';");
-                    }
-                    context.Response.Headers["X-Frame-Options"] = "deny";
-                    context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-                    context.Response.Headers["Referrer-Policy"] = "same-origin";
-                    context.Response.Headers["X-Xss-Protection"] = "1; mode=block";
 
                     return Task.CompletedTask;
                 });
