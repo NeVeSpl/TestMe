@@ -55,7 +55,8 @@ namespace TestMe.Presentation.API
                                       .AllowCredentials()
                 .Build());
             });
-            
+
+            services.AddResponseCaching();
             services.AddSwaggerDocument();
 
             Logger.LogDebug("ConfigureServices end");
@@ -81,6 +82,7 @@ namespace TestMe.Presentation.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+            app.UseResponseCaching();
             app.UseNSwag();            
             app.UseCors("CorsPolicy");           
             app.UseAuthentication();
