@@ -13,9 +13,9 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": 
-      {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "COMPlus_gcServer": "0"
       }
     },
     "TestMe.API": {
