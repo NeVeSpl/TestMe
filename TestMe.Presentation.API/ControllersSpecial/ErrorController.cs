@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TestMe.SharedKernel.Domain;
 
-namespace TestMe.Presentation.API.Controllers
+namespace TestMe.Presentation.API.ControllersSpecial
 {
     [ApiController]
     [Route("[controller]")]   
