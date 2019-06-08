@@ -7,7 +7,7 @@ namespace TestMe.UserManagement.Persistence
     {
         public static void AddUserManagementPersistence(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContextPool<UserManagementDbContext>(options => options.UseNpgsql(connectionString));           
+            services.AddDbContextPool<UserManagementDbContext>(options => options.UseNpgsql(connectionString), poolSize: 200);           
         }
     }
 }

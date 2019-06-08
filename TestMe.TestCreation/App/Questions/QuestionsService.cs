@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TestMe.SharedKernel.App;
 using TestMe.TestCreation.App.Questions.Input;
 using TestMe.TestCreation.App.Questions.Output;
@@ -23,6 +24,11 @@ namespace TestMe.TestCreation.App.Questions
         public Result<List<QuestionHeaderDTO>> ReadQuestionHeaders(long ownerId, long catalogId)
         { 
             return questionReader.GetQuestionsHeaders(ownerId, catalogId);
+        }
+
+        public async Task<Result<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long ownerId, long catalogId)
+        {
+            return await questionReader.GetQuestionsHeadersAsync(ownerId, catalogId);
         }
 
         public Result<QuestionHeaderDTO> ReadQuestionHeader(long ownerId, long questionId)

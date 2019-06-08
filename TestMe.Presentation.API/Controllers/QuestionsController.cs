@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.Presentation.API.Attributes;
@@ -28,6 +29,13 @@ namespace TestMe.Presentation.API.Controllers
         public ActionResult<List<QuestionHeaderDTO>> ReadQuestionHeaders(long catalogId)
         {
             var result = service.ReadQuestionHeaders(UserId, catalogId);
+
+            return ActionResult(result);
+        }
+        [HttpGet("headers/async")]
+        public async Task<ActionResult<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long catalogId)
+        {
+            var result = await service.ReadQuestionHeadersAsync(UserId, catalogId);
 
             return ActionResult(result);
         }

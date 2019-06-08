@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TestMe.SharedKernel.App;
 using TestMe.TestCreation.App.Questions.Output;
@@ -81,6 +82,24 @@ namespace TestMe.TestCreation.App.Questions
             }
 
             var questions = context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToList();
+
+            return Result.Ok(questions);
+        }
+
+        public async Task<Result<List<QuestionHeaderDTO>>> GetQuestionsHeadersAsync(long ownerId, long catalogId)
+        {
+            var catalog = await context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId).Select(x => new { x.OwnerId }).FirstOrDefaultAsync();
+
+            if (catalog == null)
+            {
+                return Result.NotFound();
+            }
+            if (catalog.OwnerId != ownerId)
+            {
+                return Result.Unauthorized();
+            }
+
+            var questions = await context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToListAsync();
 
             return Result.Ok(questions);
         }
