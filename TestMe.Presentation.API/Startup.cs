@@ -57,7 +57,8 @@ namespace TestMe.Presentation.API
             });
 
             services.AddResponseCaching();
-            services.AddSwaggerDocument();
+            //services.AddSwaggerDocument();
+            services.AddHealthChecks();
 
             Logger.LogDebug("ConfigureServices end");
         }  
@@ -82,8 +83,9 @@ namespace TestMe.Presentation.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+            app.UseHealthChecks("/health");
             app.UseResponseCaching();
-            app.UseNSwag();            
+            //app.UseNSwag();            
             app.UseCors("CorsPolicy");           
             app.UseAuthentication();
             app.UseMvc();
