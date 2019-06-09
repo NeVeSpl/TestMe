@@ -2,7 +2,9 @@
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Globalization;
+using System.Runtime;
 using System.Text;
+using System.Threading;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.Presentation.API.Attributes;
 
@@ -34,8 +36,8 @@ namespace TestMe.Presentation.API.ControllersSpecial
             previouslyMeasuredDateTime = now;
             previouslyMeasuredTotalProcessorTime = totalProcessorTime;
 
-            var result = new StringBuilder();            
-                   
+            var result = new StringBuilder();
+           
             result.Append("CPU ");
             result.AppendLine(cpuUsage.ToString("0.00", NumberFormat));  
             result.Append("WorkingSet ");
@@ -67,7 +69,19 @@ namespace TestMe.Presentation.API.ControllersSpecial
             result.Append("ExceptionCount ");
             result.AppendLine(EventListener.ExceptionCount.ToString());
             result.Append("GCPause ");
-            result.AppendLine(EventListener.GCPause.ElapsedMilliseconds.ToString("0.00", NumberFormat));
+            result.AppendLine(EventListener.GCTotalPause.ToString("0.00", NumberFormat));
+            result.Append("GCBackground ");
+            result.AppendLine(EventListener.GCTotalBackground.ToString("0.00", NumberFormat));
+            ThreadPool.GetMaxThreads(out int maxWorkerThreads, out int maxCompletionPortThreads);
+            ThreadPool.GetAvailableThreads(out int workerThreads, out int completionPortThreads);
+            result.Append("WorkerThreads ");
+            result.AppendLine((maxWorkerThreads - workerThreads).ToString());
+            result.Append("CompletionPortThreads ");
+            result.AppendLine((maxCompletionPortThreads- completionPortThreads).ToString());
+
+            int[] rar = new int[22000];
+
+            GC.Collect(2);
 
             return Content(result.ToString());
         }
@@ -83,7 +97,11 @@ namespace TestMe.Presentation.API.ControllersSpecial
         {            
             private const int GC_KEYWORD = 0x1;
             private const int ExceptionKeyword = 0x8000;
-            public readonly Stopwatch GCPause = new Stopwatch();
+            private long GCSuspendEEBegin_V1;
+            private long totalPauseTicksDuringBackgroundGC;
+            private readonly long[] lastGCStart = new long[3];
+            public long GCTotalPause;
+            public long GCTotalBackground;
             public ulong GenerationSize0;
             public ulong GenerationSize1;
             public ulong GenerationSize2;
@@ -104,7 +122,7 @@ namespace TestMe.Presentation.API.ControllersSpecial
                 }
             }
             protected override void OnEventWritten(EventWrittenEventArgs eventData)
-            {
+            {               
                 switch (eventData.EventName)
                 {
                     case "GCHeapStats_V1":
@@ -115,11 +133,34 @@ namespace TestMe.Presentation.API.ControllersSpecial
                         if (exception == "TestMe.SharedKernel.Domain.DomainException") return;
                         ExceptionCount++;
                         break;
-                    case "GCSuspendEEEnd_V1":
-                        GCPause.Start();
+                    case "GCStart_V2":
+                    case "GCStart_V1":
+                        uint startDepth = (uint)eventData.Payload[1];
+                        lastGCStart[startDepth] = eventData.TimeStamp.Ticks;
+                        if (startDepth == 2)
+                        {
+                            totalPauseTicksDuringBackgroundGC = 0;
+                        }
+                        break;
+                    case "GCEnd_V1":
+                        uint endDepth = (uint)eventData.Payload[1];
+                        if (endDepth == 2)
+                        {
+                            long background = eventData.TimeStamp.Ticks - lastGCStart[endDepth] - totalPauseTicksDuringBackgroundGC;
+                            long backgroundInMs = (background / TimeSpan.TicksPerMillisecond);
+                            GCTotalBackground += backgroundInMs;
+                        }
+                        lastGCStart[endDepth] = 0;
+                        break;
+                    case "GCSuspendEEBegin_V1":
+                        GCSuspendEEBegin_V1  = eventData.TimeStamp.Ticks;
                         break;
                     case "GCRestartEEEnd_V1":
-                        GCPause.Stop();
+                        long pause = eventData.TimeStamp.Ticks - GCSuspendEEBegin_V1;
+                        long pauseInMs = (pause / TimeSpan.TicksPerMillisecond);
+                        GCTotalPause += pauseInMs;
+                        long m = Math.Max(GCSuspendEEBegin_V1, lastGCStart[2]);
+                        totalPauseTicksDuringBackgroundGC += eventData.TimeStamp.Ticks - m;
                         break;
                 }
             }
