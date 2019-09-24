@@ -48,7 +48,7 @@ namespace TestMe.TestCreation.Persistence
                     foreach (Answer answer in questionEntry.Entity.Answers)
                     {
                         var answerEntry = context.Entry(answer);
-                        ownedEntitesWereChanged |= answerEntry.State != EntityState.Unchanged;
+                        ownedEntitesWereChanged = answerEntry.State != EntityState.Unchanged;
                         if (ownedEntitesWereChanged) break;
                     }
 
