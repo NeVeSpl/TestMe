@@ -51,7 +51,7 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         }
     }
 
-    fetchQuestion(questionId: number | undefined) : Promise<Question>
+    fetchQuestion(questionId: number | undefined)
     {
         if (questionId !== undefined)
         {
@@ -59,11 +59,9 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
                 .then(x =>
                 {
                     this.originalFormData = ObjectUtils.deepClone(x);
-                    this.setState({ formData: { ...x } as unknown as UpdateQuestion });
-                    return x;
+                    this.setState({ formData: { ...x } as unknown as UpdateQuestion });                    
                 });
-        }
-        return Promise.reject();
+        }        
     }
 
     handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => 
