@@ -20,9 +20,8 @@ namespace TestMe.Presentation.API.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory);
-            client = factory.CreateClient(ValidToken);
-            SeedDatabase(factory);
+            factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory, SeedDatabase);
+            client = factory.CreateClient(ValidToken);            
         }       
 
 

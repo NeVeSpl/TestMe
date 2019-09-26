@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using TestMe.TestCreation.Persistence;
 
@@ -11,7 +11,7 @@ namespace TestMe.Presentation.API
     internal class Program
     {
         public static int Main(string[] args)
-        {
+        {           
             var currentDirectory = Directory.GetCurrentDirectory();
             IConfiguration configuration = CreateConfiguration(currentDirectory);
             CreateSerilogger(configuration, currentDirectory);
@@ -21,13 +21,17 @@ namespace TestMe.Presentation.API
                 Log.Information("Start web host");
 
                 /* Everything what is done here it is only applied to application that runs outside of automatic tests   
-                 * it is why UseSerilog() is invoked here instead within CreateWebHostBuilder()
+                 * it is why UseSerilog() is invoked here instead within CreateHostBuilder()
                  * it is why Migrate...() is invoked here instead within Startup.Configure()
                  * we do not want to invoke them when we are testing app
                   */
-                IWebHost webHost = CreateWebHostBuilder(args).UseSerilog().Build();
+                var hostBuilder = CreateHostBuilder(args).UseSerilog();
+                var webHost = hostBuilder.Build();
                 webHost.Services.MigrateTestCreationDb();
                 webHost.Services.MigrateUserManagementDb();
+
+                Log.Information("Run web host");
+
                 webHost.Run();
 
                 Log.Information("End web host");
@@ -45,16 +49,19 @@ namespace TestMe.Presentation.API
             }
         }
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        private static IHostBuilder CreateHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                          .ConfigureKestrel(x =>
-                          {
-                              x.AllowSynchronousIO = true;
-                              x.AddServerHeader = false;
-                          })
-                          .UseStartup<Startup>();
-        }
+            return Host.CreateDefaultBuilder(args)
+                       .ConfigureWebHostDefaults(webBuilder =>
+                       {
+                           webBuilder.ConfigureKestrel(serverOptions =>
+                           {
+                               serverOptions.AllowSynchronousIO = true;
+                               serverOptions.AddServerHeader = false;
+                           })
+                           .UseStartup<Startup>();
+                       });                         
+        }        
 
         private static IConfiguration CreateConfiguration(string path)
         {           

@@ -23,25 +23,21 @@ namespace TestMe.Presentation.API.Tests.Utils
         }
 
 
-        private protected void SeedDatabase(ApiFactory factory)
-        {
-            using (IServiceScope serviceScope = factory.Server.Host.Services.CreateScope())
+        private protected void SeedDatabase(IServiceScope serviceScope)
+        {            
+            using (var context = serviceScope.ServiceProvider.GetRequiredService<TestCreationDbContext>())
             {
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<TestCreationDbContext>())
-                {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                    TestCreation.TestUtils.Seed(context);
-                }
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<UserManagementDbContext>())
-                {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                    UserManagement.Persistence.TestUtils.Seed(context);
-                }
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                TestCreation.TestUtils.Seed(context);
             }
+            using (var context = serviceScope.ServiceProvider.GetRequiredService<UserManagementDbContext>())
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+                UserManagement.Persistence.TestUtils.Seed(context);
+            }            
         }
-
 
 
         protected async Task CheckAuthorization(string httpMethod, string requestUri)

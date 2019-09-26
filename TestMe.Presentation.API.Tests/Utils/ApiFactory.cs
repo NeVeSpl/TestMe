@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -21,13 +22,15 @@ namespace TestMe.Presentation.API.Tests.Utils
 
         private readonly FakeContextDefinition<TestCreationDbContext> testCreationFakeContextDefinition;
         private readonly FakeContextDefinition<UserManagementDbContext> userManagementFakeContextDefinition;
+        private readonly Action<IServiceScope> onWebHostReady;
         private IServiceScope serviceScope;
        
 
-        public ApiFactory(DatabaseType databaseType, [CallerFilePath]string callerFilePath = "")
+        public ApiFactory(DatabaseType databaseType, Action<IServiceScope> onWebHostReady = null, [CallerFilePath]string callerFilePath = "")
         {
             PostgreSQLConfig config = databaseType == DatabaseType.PostgreSQL ? new PostgreSQLConfig(callerFilePath) : null;
 
+            this.onWebHostReady = onWebHostReady;
             testCreationFakeContextDefinition = new FakeContextDefinition<TestCreationDbContext>(databaseType, config);
             userManagementFakeContextDefinition = new FakeContextDefinition<UserManagementDbContext>(databaseType, config);
         }
@@ -40,7 +43,7 @@ namespace TestMe.Presentation.API.Tests.Utils
         }
         public TContext GetContext<TContext>() where TContext : DbContext
         {
-            serviceScope = serviceScope ?? Server.Host.Services.CreateScope();
+            serviceScope = serviceScope ?? Server.Services.CreateScope();
             TContext context = serviceScope.ServiceProvider.GetRequiredService<TContext>();            
             return context;
         }
@@ -49,11 +52,36 @@ namespace TestMe.Presentation.API.Tests.Utils
         { 
             builder.ConfigureServices(services =>
             {
+                // It appears that in .net core 3.0 DbContextOptions provided for DbContext are registered in DI container as singletons behind our backs,
+                // in order to use our fake DbContext we first need to remove these singletons                
+                RemoveService(services, "DbContextOptions`1"); 
+
                 services.AddDbContextPool<TestCreationDbContext>(options => testCreationFakeContextDefinition.SetOptions(options));
                 services.AddDbContextPool<ReadOnlyTestCreationDbContext>(options => testCreationFakeContextDefinition.SetOptions(options));
                 services.AddDbContextPool<UserManagementDbContext>(options => userManagementFakeContextDefinition.SetOptions(options));
+
+                var serviceProvider = services.BuildServiceProvider();
+               
+                using (var scope = serviceProvider.CreateScope())
+                {
+                    onWebHostReady?.Invoke(scope);
+                }
             });          
         }
+
+        private void RemoveService(IServiceCollection services, string name)
+        {          
+            ServiceDescriptor founded = null;
+            do
+            {
+                founded = services.FirstOrDefault(x => x.ServiceType.Name == name);
+                if (founded != null)
+                {
+                    services.Remove(founded);
+                }
+            } while (founded != null);
+        }
+
         protected override void Dispose(bool disposing)
         {
             serviceScope?.Dispose();
@@ -61,8 +89,7 @@ namespace TestMe.Presentation.API.Tests.Utils
             userManagementFakeContextDefinition.Dispose();
             base.Dispose(disposing);
         }
-
-
+        
         private class FakeContextDefinition<TContext>  where TContext  : DbContext
         {
             private readonly DatabaseType databaseType;
@@ -125,8 +152,7 @@ namespace TestMe.Presentation.API.Tests.Utils
                 options.EnableDetailedErrors();
                 options.EnableSensitiveDataLogging();
             }            
-        }
-      
+        }    
 
         private class PostgreSQLConfig
         {

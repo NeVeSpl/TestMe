@@ -9,8 +9,8 @@ namespace TestMe.Presentation.API.Configurations
             app.Map("/swagger", x =>
             {
                 app.UseStaticFiles();
-                app.UseSwagger();
-                app.UseSwaggerUi3();
+                //app.UseSwagger();
+                //app.UseSwaggerUi3();
             });
         }
     }

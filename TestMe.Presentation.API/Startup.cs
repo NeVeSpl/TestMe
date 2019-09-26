@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using TestMe.Presentation.API.Configurations;
 using TestMe.TestCreation.App;
@@ -16,35 +15,25 @@ namespace TestMe.Presentation.API
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
-        private ILogger<Startup> Logger { get; }
+        private IConfiguration Configuration { get; }       
 
 
-        public Startup(IConfiguration configuration, ILogger<Startup> logger)
+        public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
-            Logger = logger;
+            Configuration = configuration;           
         }
 
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Logger.LogDebug("ConfigureServices begin");
-
             services.AddTestCreationPersistence(Configuration.GetConnectionString("TestCreationDbContext"));
             services.AddTestCreationApplicationServices();
 
             services.AddUserManagementPersistence(Configuration.GetConnectionString("UserManagementDbContext"));
             services.AddUserManagementApplicationServices();
 
-            services.AddJWTAuthentication(Configuration);
-           
-            var mvcBuilder = services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            mvcBuilder.AddApiExplorer();
-            mvcBuilder.AddAuthorization();
-            mvcBuilder.AddCors();
-            mvcBuilder.AddJsonFormatters();
-            mvcBuilder.AddDataAnnotations();
+            services.AddJWTAuthentication(Configuration); 
+            services.AddControllers();            
 
             services.AddCors(options =>
             {
@@ -56,17 +45,12 @@ namespace TestMe.Presentation.API
                 .Build());
             });
 
-            services.AddResponseCaching();
-            //services.AddSwaggerDocument();
-            services.AddHealthChecks();
-
-            Logger.LogDebug("ConfigureServices end");
+            services.AddResponseCaching();            
+            services.AddHealthChecks();  
         }  
         
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            Logger.LogDebug("Configure begin");            
-
             if (env.IsDevelopment())
             {
                 //app.UseDeveloperExceptionPage();
@@ -83,14 +67,18 @@ namespace TestMe.Presentation.API
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            app.UseHealthChecks("/health");
-            app.UseResponseCaching();
-            //app.UseNSwag();            
-            app.UseCors("CorsPolicy");           
-            app.UseAuthentication();
-            app.UseMvc();
 
-            Logger.LogDebug("Configure end");
+            app.UseRouting();  
+            app.UseResponseCaching();
+            app.UseCors("CorsPolicy"); 
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
+            });          
         }
     }
 }

@@ -21,9 +21,8 @@ namespace TestMe.Presentation.API.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory);
-            client = factory.CreateClient(ValidToken);
-            SeedDatabase(factory);           
+            factory = new ApiFactory(ApiFactory.DatabaseType.SQLiteInMemory, SeedDatabase);
+            client = factory.CreateClient(ValidToken);                   
         }
 
 
@@ -96,6 +95,9 @@ namespace TestMe.Presentation.API.Tests
             AssertExt.AreEquivalent(command, actualQuestion);
         }
 
+        /*
+         * This test stopped working after migration to ef core 3.0 due to problem with tracking change of principal entity id 
+         */
         [TestMethod]
         [DataRow(1, 1)]
         [DataRow(2, 2)]
