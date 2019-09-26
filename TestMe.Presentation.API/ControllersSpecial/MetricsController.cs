@@ -79,9 +79,19 @@ namespace TestMe.Presentation.API.ControllersSpecial
             result.Append("CompletionPortThreads ");
             result.AppendLine((maxCompletionPortThreads- completionPortThreads).ToString());
 
-            int[] rar = new int[22000];
+            result.Append("MonitorLockContentionCount ");
+            result.AppendLine(Monitor.LockContentionCount.ToString());
+            result.Append("ThreadpoolThreadCount ");
+            result.AppendLine(ThreadPool.ThreadCount.ToString());
+            result.Append("ThreadpoolQueueLength ");
+            result.AppendLine(ThreadPool.PendingWorkItemCount.ToString());
+            result.Append("ThreadpoolCompletedItemsCount ");
+            result.AppendLine(ThreadPool.CompletedWorkItemCount.ToString());
+            result.Append("ActiveTimerCount ");
+            result.AppendLine(Timer.ActiveCount.ToString());
+        
+            
 
-            GC.Collect(2);
 
             return Content(result.ToString());
         }
