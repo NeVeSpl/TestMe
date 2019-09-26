@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TestMe.SharedKernel.App;
 using TestMe.TestCreation.App.Tests.Output;
+using TestMe.TestCreation.Domain;
 using TestMe.TestCreation.Persistence;
 
 namespace TestMe.TestCreation.App.Tests
@@ -31,14 +32,14 @@ namespace TestMe.TestCreation.App.Tests
                 return Result.Unauthorized();
             }
 
-            var tests = context.Tests.Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.Mapping).ToList();
+            var tests = context.Tests.Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.MappingExpr).ToList();
 
             return Result.Ok(tests);
         }
 
         public Result<TestDTO> GetTest(long ownerId, long testId, bool includeQuestionItemsWithQuestionHeaders)
         {
-            TestDTO test = context.Tests.Where(x => x.TestId == testId).Select(TestDTO.Mapping).FirstOrDefault();
+            Test test = context.Tests.Where(x => x.TestId == testId).FirstOrDefault();            
 
             if (test == null)
             {
@@ -55,16 +56,19 @@ namespace TestMe.TestCreation.App.Tests
                 return Result.Unauthorized();
             }
 
+            TestDTO dto = TestDTO.Mapping(test);
+
             if (includeQuestionItemsWithQuestionHeaders)
             {
-                test.QuestionItems = context.QuestionItems.Include(x => x.Question)
-                                                          .IgnoreQueryFilters()
-                                                          .Where(x => x.TestId == testId)
-                                                          .Select(QuestionItemDTO.Mapping)
-                                                          .ToList();
+                // To do
+                //test.QuestionItems = context.QuestionItems.Include(x => x.Question)
+                //                                          .IgnoreQueryFilters()
+                //                                          .Where(x => x.TestId == testId)
+                //                                          .Select(QuestionItemDTO.Mapping)
+                //                                          .ToList();
             }                             
 
-            return Result.Ok(test);
+            return Result.Ok(dto);
         }
 
     }

@@ -13,7 +13,7 @@ namespace TestMe.TestCreation.Tests
     {
         private protected enum DatabaseType { EFInMemory, SQLiteInMemory }
 
-        private static readonly LoggerFactory LoggerFactory = new LoggerFactory(new[] { new DebugLoggerProvider((_, __) => true) });
+        private static readonly LoggerFactory LoggerFactory = new LoggerFactory(new[] { new DebugLoggerProvider() });
         private FakeContextDefinition<TestCreationDbContext> fakeContextDefinition;            
         private DatabaseType databaseType;
 

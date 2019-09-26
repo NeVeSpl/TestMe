@@ -21,12 +21,12 @@ namespace TestMe.TestCreation.App.Catalogs
 
         public Result<List<CatalogHeaderDTO>> GetCatalogHeaders(long ownerId)
         {
-            var catalogs = context.QuestionsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.Mapping).ToList();
+            var catalogs = context.QuestionsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).ToList();
             return Result.Ok(catalogs);
         }
         public Result<CatalogHeaderDTO> GetCatalogHeader(long ownerId, long catalogId)
         {
-            var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId && x.OwnerId == ownerId).Select(CatalogHeaderDTO.Mapping).FirstOrDefault();
+            var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId && x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).FirstOrDefault();
 
             if (catalog == null)
             {
@@ -38,7 +38,7 @@ namespace TestMe.TestCreation.App.Catalogs
 
         public Result<QuestionsCatalogDTO> GetById(long ownerId, long catalogId)
         {
-            var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId && x.OwnerId == ownerId).Select(QuestionsCatalogDTO.Mapping).FirstOrDefault();
+            var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId && x.OwnerId == ownerId).Select(QuestionsCatalogDTO.MappingExpr).FirstOrDefault();
 
             if (catalog == null)
             {

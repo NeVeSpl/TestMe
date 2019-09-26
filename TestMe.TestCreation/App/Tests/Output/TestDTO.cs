@@ -18,11 +18,12 @@ namespace TestMe.TestCreation.App.Tests.Output
 
 
 
-        internal new static readonly Expression<Func<Test, TestDTO>> Mapping = x =>
+        internal new static readonly Expression<Func<Test, TestDTO>> MappingExpr = x =>
            new TestDTO
            {
                TestId = x.TestId,
                Title = x.Title,           
            };
+        internal static readonly Func<Test, TestDTO> Mapping = MappingExpr.Compile();
     }
 }

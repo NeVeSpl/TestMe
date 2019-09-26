@@ -5,6 +5,10 @@ using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.Persistence.Configurations
 {
+    /// <summary>
+    /// Migartion to EF 3.0, owned types cannot have separate configuration anymore
+    /// https://github.com/aspnet/EntityFrameworkCore/issues/15681    /// 
+    /// </summary>
     internal sealed class QuestionItemConfigurations : IEntityTypeConfiguration<QuestionItem>
     {
         public void Configure(EntityTypeBuilder<QuestionItem> builder)

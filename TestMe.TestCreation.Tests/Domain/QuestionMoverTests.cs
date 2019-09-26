@@ -14,7 +14,9 @@ namespace TestMe.TestCreation.Tests.Domain
             return DatabaseType.EFInMemory;
         }
 
-
+        /*
+         * This test stopped working after migration to ef core 3.0 due to problem with tracking change of principal entity id         * 
+         */
         [TestMethod]
         [DataRow(ValidQuestionId, 2)]
         public void MoveQuestionToCatalog_HappyPath(long questionId, long catalogId)

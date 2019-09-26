@@ -16,7 +16,7 @@ namespace TestMe.TestCreation.App.Catalogs.Output
         }
 
 
-        internal static readonly Expression<Func<Catalog, CatalogHeaderDTO>> Mapping = x =>
+        internal static readonly Expression<Func<Catalog, CatalogHeaderDTO>> MappingExpr = x =>
             new CatalogHeaderDTO
             {
                 CatalogId = x.CatalogId,

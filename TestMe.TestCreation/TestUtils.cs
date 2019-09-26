@@ -96,6 +96,7 @@ namespace TestMe.TestCreation
             q4.AddAnswer("Q4 A3", false);
             q4.AddAnswer("Q4 A4", true);
             catalogB.AddQuestion(q4, policy);
+            context.SaveChanges();
 
             var q5 = Question.Create("Owner 1, Catalog B, Question 5, deleted", owner1.OwnerId);
             q5.AddAnswer("Q5 A1", false);
@@ -105,6 +106,7 @@ namespace TestMe.TestCreation
             q5.AddAnswer("Q5 A5", false);
             q5.Delete();
             catalogB.AddQuestion(q5, policy);
+            context.SaveChanges();
 
             var q6 = Question.Create("Owner 1, Catalog C, Question 6", owner1.OwnerId);
             q6.AddAnswer("Q6 A1", false);
@@ -132,18 +134,20 @@ namespace TestMe.TestCreation
             t1.AddQuestion(q1);
             t1.AddQuestion(q3);
             t1.AddQuestion(q5);
+            context.SaveChanges();
 
             var t2 = Test.Create(owner1.OwnerId, "Owner 1, catalog F, Test 2");
             catalogF.AddTest(t2);
             t2.AddQuestion(q2);
             t2.AddQuestion(q4);
             t2.AddQuestion(q6);
-           
+            context.SaveChanges();
 
             var t3 = Test.Create(owner2.OwnerId, "Owner 2, catalog I, Test 3");
             catalogI.AddTest(t3);
             t3.AddQuestion(q7);
             t3.AddQuestion(q8);
+            context.SaveChanges();
 
 
             var t4 = Test.Create(owner1.OwnerId, "Owner 1, catalog F, Test 4");

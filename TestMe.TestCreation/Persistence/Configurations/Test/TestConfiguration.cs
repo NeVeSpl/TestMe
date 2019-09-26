@@ -9,7 +9,12 @@ namespace TestMe.TestCreation.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Test> builder)
         {
-            builder.OwnsMany(x => x.Questions);
+            builder.OwnsMany(x => x.Questions, questionsBuilder => 
+            {
+                questionsBuilder.HasKey(x => x.QuestionItemId);
+                questionsBuilder.HasIndex(nameof(QuestionItem.QuestionItemId));
+            }
+            );
             builder.HasQueryFilter(p => !p.IsDeleted);
             builder.Property(x => x.Title).HasMaxLength(Test.TitleMaxLength);
             builder.HasIndex(nameof(Test.TestId));

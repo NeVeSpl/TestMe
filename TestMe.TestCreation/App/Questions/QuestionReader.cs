@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TestMe.SharedKernel.App;
 using TestMe.TestCreation.App.Questions.Output;
+using TestMe.TestCreation.Domain;
 using TestMe.TestCreation.Persistence;
 
 namespace TestMe.TestCreation.App.Questions
@@ -20,8 +21,8 @@ namespace TestMe.TestCreation.App.Questions
 
 
         public Result<QuestionDTO> GetQuestion(long ownerId, long questionId, bool includeAnswers)
-        {
-            QuestionDTO question = context.Questions.Where(x => x.QuestionId == questionId).Select(QuestionDTO.Mapping).FirstOrDefault();
+        { 
+            Question question = context.Questions.Where(x => x.QuestionId == questionId).FirstOrDefault();
 
             if (question == null)
             {
@@ -38,17 +39,14 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.Unauthorized();
             }
 
-            if (includeAnswers)
-            {
-                question.Answers = context.Answers.Where(x => x.QuestionId == questionId).OrderBy(x => x.AnswerId).Select(AnswerDTO.Mapping).ToList();
-            }
+            QuestionDTO dto = QuestionDTO.Mapping(question);
 
-            return Result.Ok(question);
+            return Result.Ok(dto);
         }
 
         public Result<QuestionHeaderDTO> GetQuestionHeader(long ownerId, long questionId)
         {
-            var question = context.Questions.Where(x => x.QuestionId == questionId).Select(QuestionHeaderDTO.Mapping).FirstOrDefault();
+            var question = context.Questions.Where(x => x.QuestionId == questionId).Select(QuestionHeaderDTO.MappingExpr).FirstOrDefault();
 
             if (question == null)
             {
@@ -81,7 +79,7 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.Unauthorized();
             }
 
-            var questions = context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToList();
+            var questions = context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.MappingExpr).ToList();
 
             return Result.Ok(questions);
         }
@@ -99,7 +97,7 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.Unauthorized();
             }
 
-            var questions = await context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.Mapping).ToListAsync();
+            var questions = await context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.MappingExpr).ToListAsync();
 
             return Result.Ok(questions);
         }

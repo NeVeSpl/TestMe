@@ -15,12 +15,13 @@ namespace TestMe.TestCreation.App.Questions.Output
         public bool IsCorrect { get; set; }
 
 
-        internal static readonly Expression<Func<Answer, AnswerDTO>> Mapping = x =>
+        internal static readonly Expression<Func<Answer, AnswerDTO>> MappingExpr = x =>
          new AnswerDTO
          {
              AnswerId = x.AnswerId,
              Content = x.Content,
              IsCorrect = x.IsCorrect,
          };
+        internal static readonly Func<Answer, AnswerDTO> Mapping = MappingExpr.Compile();
     }
 }

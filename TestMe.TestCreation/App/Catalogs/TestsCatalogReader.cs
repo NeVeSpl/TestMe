@@ -21,12 +21,12 @@ namespace TestMe.TestCreation.App.Catalogs
 
         public List<CatalogHeaderDTO> GetTestsCatalogs(long ownerId)
         {
-            return context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.Mapping).ToList();
+            return context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).ToList();
         }
 
         public CatalogDTO GetById(long catalogId)
         {
-            return context.TestsCatalogs.Where(x => x.CatalogId == catalogId).Select(CatalogDTO.Mapping).FirstOrDefault();
+            return context.TestsCatalogs.Where(x => x.CatalogId == catalogId).Select(CatalogDTO.MappingExpr).FirstOrDefault();
         }
     }
 }

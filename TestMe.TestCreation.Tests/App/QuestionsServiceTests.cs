@@ -83,6 +83,9 @@ namespace TestMe.TestCreation.Tests.App
             Assert.AreEqual(expectedResult, result.Status);
         }
 
+        /*
+         * This test stopped working after migration to ef core 3.0 due to problem with tracking change of principal entity id         * 
+         */
         [TestMethod]
         [DataRow(ValidQuestionId, ResultStatus.Ok)]
         [DataRow(DeletedQuestionId, ResultStatus.NotFound)]

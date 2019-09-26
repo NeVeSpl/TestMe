@@ -18,7 +18,7 @@ namespace TestMe.TestCreation.App.Tests.Output
         public long CatalogId { get;  set; }
 
 
-        internal static readonly Expression<Func<Question, QuestionHeaderDTO>> Mapping = x =>
+        internal static readonly Expression<Func<Question, QuestionHeaderDTO>> MappingExpr = x =>
            new QuestionHeaderDTO
            {
                QuestionId = x.QuestionId,
