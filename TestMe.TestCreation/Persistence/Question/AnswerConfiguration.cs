@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.Persistence.Configurations
+namespace TestMe.TestCreation.Persistence
 {
     /// <summary>
     /// Migartion to EF 3.0, owned types cannot have separate configuration anymore

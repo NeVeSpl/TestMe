@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.Persistence.Configurations
+namespace TestMe.TestCreation.Persistence
 {
     internal sealed class QuestionsCatalogItemConfigurations : IEntityTypeConfiguration<QuestionsCatalogItem>
     {

@@ -28,7 +28,7 @@ namespace TestMe.TestCreation.Persistence
         {            
             modelBuilder.RemovePluralizingTableNameConvention();
             modelBuilder.HasDefaultSchema("TestCreation");
-            string configurationsPrefix = typeof(Configurations.CatalogConfiguration).Namespace;
+            string configurationsPrefix = typeof(TestCreationDbContext).Namespace;
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), x => x.FullName.StartsWith(configurationsPrefix));         
         }
     }

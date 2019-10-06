@@ -3,7 +3,6 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TestMe.TestCreation.Domain;
-using TestMe.TestCreation.Persistence.Repositories;
 
 namespace TestMe.TestCreation.Persistence
 {

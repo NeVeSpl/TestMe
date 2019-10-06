@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Persistence\Configurations\Question\AnswerConfiguration.cs" />
-    <Compile Remove="Persistence\Configurations\Test\QuestionItemConfigurations.cs" />
+    <Compile Remove="Persistence\Question\AnswerConfiguration.cs" />
+    <Compile Remove="Persistence\Test\QuestionItemConfigurations.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Persistence\Configurations\Question\AnswerConfiguration.cs" />
-    <None Include="Persistence\Configurations\Test\QuestionItemConfigurations.cs" />
+    <None Include="Persistence\Question\AnswerConfiguration.cs" />
+    <None Include="Persistence\Test\QuestionItemConfigurations.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Persistence\Migrations\" />
+    <Folder Include="Persistence\_Migrations\" />
   </ItemGroup>
 
 </Project>

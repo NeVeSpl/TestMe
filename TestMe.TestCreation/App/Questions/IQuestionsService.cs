@@ -14,6 +14,7 @@ namespace TestMe.TestCreation.App.Questions
         Task<Result<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long ownerId, long catalogId);
         Result<QuestionHeaderDTO> ReadQuestionHeader(long ownerId, long questionId);
         Result<QuestionDTO> ReadQuestionWithAnswers(long ownerId, long questionId);
+        Task<Result<QuestionDTO>> ReadQuestionWithAnswersAsync(long ownerId, long questionId);
         Result UpdateQuestionWithAnswers(long ownerId, long questionId, UpdateQuestion updateQuestion);       
     }
 }

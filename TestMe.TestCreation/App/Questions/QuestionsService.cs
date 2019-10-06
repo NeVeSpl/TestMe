@@ -40,6 +40,10 @@ namespace TestMe.TestCreation.App.Questions
         {            
             return questionReader.GetQuestion(ownerId, questionId, true);
         }
+        public async Task<Result<QuestionDTO>> ReadQuestionWithAnswersAsync(long ownerId, long questionId)
+        {
+            return await questionReader.GetQuestionAsync(ownerId, questionId, true);
+        }
 
         public Result<long> CreateQuestionWithAnswers(long ownerId, CreateQuestion createQuestion)
         {

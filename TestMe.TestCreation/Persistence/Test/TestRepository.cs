@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TestMe.SharedKernel.Persistence;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.Persistence.Repositories
+namespace TestMe.TestCreation.Persistence
 {
     internal sealed class TestRepository : GenericRepository<Test, TestCreationDbContext>, ITestRepository
     {

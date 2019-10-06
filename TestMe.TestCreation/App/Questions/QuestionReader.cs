@@ -43,6 +43,29 @@ namespace TestMe.TestCreation.App.Questions
 
             return Result.Ok(dto);
         }
+        public async Task<Result<QuestionDTO>> GetQuestionAsync(long ownerId, long questionId, bool includeAnswers)
+        {
+            Question question = await context.Questions.Where(x => x.QuestionId == questionId).FirstOrDefaultAsync();
+
+            if (question == null)
+            {
+                return Result.NotFound();
+            }
+
+            var catalog = await context.Questions.Where(x => x.QuestionId == questionId).Join(context.QuestionsCatalogs,
+                                                                                         x => x.CatalogId,
+                                                                                         x => x.CatalogId,
+                                                                                         (x, y) => new { x.OwnerId }).FirstOrDefaultAsync();
+
+            if (catalog.OwnerId != ownerId)
+            {
+                return Result.Unauthorized();
+            }
+
+            QuestionDTO dto = QuestionDTO.Mapping(question);
+
+            return Result.Ok(dto);
+        }
 
         public Result<QuestionHeaderDTO> GetQuestionHeader(long ownerId, long questionId)
         {
