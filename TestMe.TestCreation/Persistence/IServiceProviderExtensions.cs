@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using TestMe.TestCreation.Persistence;
 
-namespace TestMe.TestCreation.Persistence
+namespace System
 {
-    public static class IServiceProviderExtensions
+    public static class IServiceProviderExtensionsFromTestCreationPersistence
     {
         public static void MigrateTestCreationDb(this IServiceProvider applicationServices)
         {

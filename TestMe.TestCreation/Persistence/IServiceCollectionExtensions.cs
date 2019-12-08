@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using TestMe.TestCreation.Domain;
+using TestMe.TestCreation.Persistence;
 
-namespace TestMe.TestCreation.Persistence
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class IServiceCollectionExtensions
+    public static class IServiceCollectionExtensionsFromTestCreationPersistence
     {
         public static void AddTestCreationPersistence(this IServiceCollection services, string connectionString)
         {

@@ -1,11 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using TestMe.TestCreation.App.Catalogs;
+﻿using TestMe.TestCreation.App.Catalogs;
 using TestMe.TestCreation.App.Questions;
 using TestMe.TestCreation.App.Tests;
 
-namespace TestMe.TestCreation.App
+namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class IServiceCollectionExtensions
+    public static class IServiceCollectionExtensionsFromTestCreationApp
     {
         public static void AddTestCreationApplicationServices(this IServiceCollection services)
         {
