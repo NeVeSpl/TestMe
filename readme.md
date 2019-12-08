@@ -88,6 +88,5 @@ not available yet
 - use immerjs to create next immutable state instead of home made solution
 - add sample synchronous communication beetwen UserManagement and TestCreation module
 
-[![Build Status](https://dev.azure.com/nevespl/TestMe/_apis/build/status/NeVeSpl.TestMe?branchName=master)](https://dev.azure.com/nevespl/TestMe/_build/latest?definitionId=1&branchName=master)
 
 (*) microservices, REST, Redux, AutoMapper, MediatR, FluentValidation, Autofac
