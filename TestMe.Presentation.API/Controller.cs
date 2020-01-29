@@ -2,19 +2,20 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TestMe.SharedKernel.App;
-
+using TestMe.BuildingBlocks.App;
 
 namespace TestMe.Presentation.API
 {
+    [ApiController]
     public abstract class Controller : ControllerBase
     {
-        protected long UserId;
+        protected long UserId;      
+
 
         [NonAction]
         public void Setup()
         {
-            UserId = GetAuthenticatedUserId();
+            UserId = GetAuthenticatedUserId();           
         }
 
 
@@ -55,7 +56,7 @@ namespace TestMe.Presentation.API
                     }
                     else
                     {
-                        return StatusCode(StatusCodes.Status400BadRequest, CreateProblemDetails(error));
+                        return StatusCode(StatusCodes.Status400BadRequest, CreateProblemDetails(ProblemDetailsType.ExpectedApp, error));
                     }
                 case ResultStatus.NotFound:
                     return NotFound();
@@ -73,25 +74,43 @@ namespace TestMe.Presentation.API
         }
         private long GetAuthenticatedUserId()
         {
-            var identity = HttpContext?.User?.Identity as ClaimsIdentity;
             long result = -1;
 
-            if (identity != null)
+            if (HttpContext?.User?.Identity is ClaimsIdentity identity)
             {
-                string nameIdentifierValue = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                string? nameIdentifierValue = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 Int64.TryParse(nameIdentifierValue, out result);
             }
 
             return result;
         }
-        private ProblemDetails CreateProblemDetails(string error)
+
+        private protected enum ProblemDetailsType { ExpectedApp = 400, ExpectedDomain = 422, UnexpectedError = 500 }
+        private protected ProblemDetails CreateProblemDetails(ProblemDetailsType type, string? detail = null)
         {
             var problemDetails = new ProblemDetails
-            {
-                Title = "An expected app error occurred!",
-                Status = StatusCodes.Status400BadRequest,
-                Detail = error
+            {               
+                Detail = detail
             };
+
+            switch (type)
+            {
+                case ProblemDetailsType.ExpectedApp:
+                    problemDetails.Title = "An expected app error occurred!";
+                    problemDetails.Status = StatusCodes.Status400BadRequest;
+                    break;
+                case ProblemDetailsType.ExpectedDomain:
+                    problemDetails.Title = "An expected domain error occurred!";
+                    problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                    break;
+                case ProblemDetailsType.UnexpectedError:
+                    problemDetails.Title = "An unexpected error occurred!";
+                    problemDetails.Status = StatusCodes.Status500InternalServerError;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
             problemDetails.Extensions["traceId"] = HttpContext.TraceIdentifier;
 
             return problemDetails;

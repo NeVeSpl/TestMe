@@ -9,7 +9,7 @@ namespace TestMe.TestCreation.Persistence
         public void Configure(EntityTypeBuilder<TestsCatalog> builder)
         {
             builder.HasBaseType<Catalog>();          
-            builder.Property(x => x.Name).HasMaxLength(Catalog.NameMaxLength);
+            builder.Property(x => x.Name).HasMaxLength(CatalogConst.NameMaxLength);
             builder.HasMany(x => x.Tests).WithOne().HasForeignKey(x => x.CatalogId).HasPrincipalKey(x => x.CatalogId);
         }
     }

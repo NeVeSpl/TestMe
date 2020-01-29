@@ -27,7 +27,9 @@ namespace TestMe.Presentation.API
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public static void Create([ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)] long id, params object[] _)
+#pragma warning disable IDE0060 // Remove unused parameter
+        public static void Create([ApiConventionNameMatch(ApiConventionNameMatchBehavior.Suffix)]long id, params object[] _)
+#pragma warning restore IDE0060 // Remove unused parameter
         {
         }
 

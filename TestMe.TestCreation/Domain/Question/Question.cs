@@ -4,10 +4,9 @@ using System.Text;
 
 namespace TestMe.TestCreation.Domain
 {
+
     internal sealed class Question
     {
-        public const int ContentMaxLength = 2048;
-
         private readonly List<Answer> _answers = new List<Answer>();
 
 
@@ -27,15 +26,15 @@ namespace TestMe.TestCreation.Domain
         public uint ConcurrencyToken { get; set; }
 
 
-        private Question()
+        private Question(string content)
         {
-
+            Content = content;
         }
 
 
         public static Question Create(string content,  long ownerId)
         {
-            return new Question() {Content = content,  OwnerId = ownerId };
+            return new Question(content) { OwnerId = ownerId };
         }
 
 

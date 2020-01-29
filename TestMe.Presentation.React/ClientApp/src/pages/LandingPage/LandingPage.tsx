@@ -16,8 +16,8 @@ export class LandingPage extends React.Component<RouteComponentProps>
         const params = new URLSearchParams(this.props.location.search);
 
         const loginCredentials = new LoginCredentials();
-        loginCredentials.login = params.get("userId") || "User 1";
-        loginCredentials.password = "whatever";
+        loginCredentials.email = params.get("userId") || "test@test.com";
+        loginCredentials.password = "123456789";
 
         this.tokensService.createToken(loginCredentials)
             .then(x =>

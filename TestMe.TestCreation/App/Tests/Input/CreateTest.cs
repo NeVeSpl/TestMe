@@ -7,11 +7,9 @@ using TestMe.TestCreation.Domain;
 namespace TestMe.TestCreation.App.Tests.Input
 {
     public class CreateTest
-    {
-        [Required]
-        public long? CatalogId { get; set; }
-
-        [StringLength(maximumLength: Test.TitleMaxLength)]
-        public string Title { get; set; }
+    {      
+        public long UserId { get; set; }
+        public long CatalogId { get; set; }
+        public string Title { get; set; } = string.Empty;
     }
 }

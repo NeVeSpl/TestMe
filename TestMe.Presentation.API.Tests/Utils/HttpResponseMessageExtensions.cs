@@ -3,12 +3,14 @@ using Newtonsoft.Json;
 
 namespace TestMe.Presentation.API.Tests.Utils
 {
-    public static class HttpResponseMessageExtensions
+    internal static class HttpResponseMessageExtensions
     {
         public static Content<T> GetContent<T>(this HttpResponseMessage response)
         {
-            var content = new Content<T>();
-            content.Text = response.Content.ReadAsStringAsync().Result;
+            var content = new Content<T>
+            {
+                Text = response.Content.ReadAsStringAsync().Result
+            };
             if (response.IsSuccessStatusCode)
             {
                 content.Value = JsonConvert.DeserializeObject<T>(content.Text);

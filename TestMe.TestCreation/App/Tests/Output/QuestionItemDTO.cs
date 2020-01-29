@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.App.Tests.Output
 {
     public class QuestionItemDTO
     {
-        public QuestionHeaderDTO Question { get; set; }
-
-
-
-
-
+        public QuestionHeaderDTO? Question { get; set; }
 
 
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TestMe.SharedKernel.Domain;
+using TestMe.BuildingBlocks.Domain;
 
 namespace TestMe.TestCreation.Domain
 {
@@ -14,12 +14,12 @@ namespace TestMe.TestCreation.Domain
 
             if (destination == null)
             {
-                throw new DomainException("Catalog not found");                
+                throw new DomainException(DomainExceptions.Catalog_not_found);                
             }
 
             if (source.OwnerId != destination.OwnerId)
             {
-                throw new DomainException("Question can not be moved to catalog that you do not own");
+                throw new DomainException(DomainExceptions.Question_can_not_be_moved_to_catalog_that_you_do_not_own);
             }
 
             source.RemoveQuestion(question);

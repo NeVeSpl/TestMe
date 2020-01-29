@@ -16,8 +16,8 @@ namespace TestMe.TestCreation.Persistence
             }
             );
             builder.HasQueryFilter(p => !p.IsDeleted);
-            builder.Property(x => x.Title).HasMaxLength(Test.TitleMaxLength);
-            builder.HasIndex(nameof(Test.TestId));
+            builder.Property(x => x.Title).HasMaxLength(TestConst.TitleMaxLength);
+            //builder.HasIndex(nameof(Test.TestId));
         }
     }
 }

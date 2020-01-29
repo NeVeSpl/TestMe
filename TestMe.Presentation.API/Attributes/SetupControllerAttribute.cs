@@ -2,6 +2,9 @@
 
 namespace TestMe.Presentation.API
 {
+    /// <summary>
+    /// It invokes controller.Setup(); before action
+    /// </summary>
     internal sealed class SetupControllerAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)

@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace TestMe.Presentation.React
@@ -14,11 +13,14 @@ namespace TestMe.Presentation.React
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)            
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder
                     .ConfigureKestrel(x =>
                     {
                         x.AllowSynchronousIO = false;
@@ -27,6 +29,7 @@ namespace TestMe.Presentation.React
                         x.Limits.MaxConcurrentUpgradedConnections = 1000;
                         x.Limits.MaxRequestBodySize = 5_000_000;
                     })
-                .UseStartup<Startup>();
+                    .UseStartup<Startup>();
+                });
     }
 }

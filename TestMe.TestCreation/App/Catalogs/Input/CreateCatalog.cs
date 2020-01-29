@@ -5,9 +5,8 @@ namespace TestMe.TestCreation.App.Catalogs.Input
 {
     public class CreateCatalog
     {
-        [Required]
-        [StringLength(maximumLength: Catalog.NameMaxLength, MinimumLength = Catalog.NameMinLength)]
-        public string Name { get; set; }
+        public long UserId { get; set; }
+        public string Name { get; set; } = string.Empty;
        
     }
 }

@@ -16,14 +16,16 @@ namespace TestMe.TestCreation.Tests.Architecture
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.Domain")
                               .ShouldNot()
-                              .HaveDependencyOnAny(new[] 
-                              { 
+                              .HaveDependencyOnAny( 
                                 "TestMe.TestCreation.Persistence",
                                 "TestMe.TestCreation.App",
-                                "TestMe.SharedKernel.Persistence",
-                                "TestMe.SharedKernel.App",
-                                "Microsoft.EntityFrameworkCore",
-                              }) 
+                                "TestMe.TestCreation.Infrastructure",
+                                "TestMe.BuildingBlocks.App",
+                                "TestMe.BuildingBlocks.EventBus",
+                                "TestMe.BuildingBlocks.Persistence",
+                                "TestMe.UserManagement.IntegrationEvents",
+                                "Microsoft.EntityFrameworkCore"
+                              ) 
                               .GetResult();
             Assert.IsTrue(result.IsSuccessful, "Domain has lost its independence!");                             
         }
@@ -35,12 +37,12 @@ namespace TestMe.TestCreation.Tests.Architecture
                              .That()
                              .ResideInNamespace("TestMe.TestCreation.Persistence")                             
                              .ShouldNot()
-                             .HaveDependencyOnAny(new[]
-                             {
-                                 "TestMe.TestCreation.App",
-                                 "TestMe.SharedKernel.App",
-                                 "TestMe.SharedKernel.Domain",
-                             }
+                             .HaveDependencyOnAny(
+                                "TestMe.TestCreation.Infrastructure",
+                                "TestMe.TestCreation.App",
+                                "TestMe.BuildingBlocks.App",                                
+                                "TestMe.BuildingBlocks.Domain",
+                                "TestMe.UserManagement.IntegrationEvents"                             
                              )
                              .GetResult();
             Assert.IsTrue(result.IsSuccessful, "Persistence has lost its independence!");
@@ -53,11 +55,10 @@ namespace TestMe.TestCreation.Tests.Architecture
                              .That()
                              .ResideInNamespace("TestMe.TestCreation.App")
                              .ShouldNot()
-                             .HaveDependencyOnAny(new[]
-                             {
-                                 "TestMe.SharedKernel.Persistence",
-                                 "TestMe.SharedKernel.Domain",
-                             }
+                             .HaveDependencyOnAny(
+                                "TestMe.TestCreation.Infrastructure",
+                                "TestMe.BuildingBlocks.Domain",                               
+                                "TestMe.BuildingBlocks.Persistence"                            
                              )
                              .GetResult();
             Assert.IsTrue(result.IsSuccessful, "App has lost its independence!");

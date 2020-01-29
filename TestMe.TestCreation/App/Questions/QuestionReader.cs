@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TestMe.SharedKernel.App;
+using TestMe.BuildingBlocks.App;
 using TestMe.TestCreation.App.Questions.Output;
 using TestMe.TestCreation.Domain;
 using TestMe.TestCreation.Persistence;
@@ -21,7 +21,7 @@ namespace TestMe.TestCreation.App.Questions
 
 
         public Result<QuestionDTO> GetQuestion(long ownerId, long questionId, bool includeAnswers)
-        { 
+        {
             Question question = context.Questions.Where(x => x.QuestionId == questionId).FirstOrDefault();
 
             if (question == null)
@@ -29,15 +29,15 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.NotFound();
             }
 
-            var catalog = context.Questions.Where(x => x.QuestionId == questionId).Join(context.QuestionsCatalogs, 
+            var catalog = context.Questions.Where(x => x.QuestionId == questionId).Join(context.QuestionsCatalogs,
                                                                                          x => x.CatalogId,
                                                                                          x => x.CatalogId,
-                                                                                         (x,y) =>  new { x.OwnerId }).FirstOrDefault();
+                                                                                         (x, y) => new { x.OwnerId }).FirstOrDefault();
 
             if (catalog.OwnerId != ownerId)
             {
                 return Result.Unauthorized();
-            }
+            }           
 
             QuestionDTO dto = QuestionDTO.Mapping(question);
 

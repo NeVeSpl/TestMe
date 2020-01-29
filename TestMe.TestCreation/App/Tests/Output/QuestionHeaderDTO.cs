@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.App.Tests.Output
@@ -13,8 +11,8 @@ namespace TestMe.TestCreation.App.Tests.Output
             get;
             set;
         }
-        public string Content { get; set; }
-      
+        public string Content { get; set; } = string.Empty;
+
         public long CatalogId { get;  set; }
 
 

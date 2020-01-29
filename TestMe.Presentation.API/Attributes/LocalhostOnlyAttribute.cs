@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TestMe.Presentation.API.Attributes
 {
+    /// <summary>
+    /// It allows accessing to endpoint only if a request comes from localhost
+    /// </summary>
     internal sealed class LocalHostOnlyAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(ActionExecutingContext context)

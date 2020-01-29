@@ -7,7 +7,7 @@ namespace TestMe.TestCreation.App.Catalogs.Output
     public class CatalogHeaderDTO
     {
         public long CatalogId { get;  set; }
-        public string Name { get;  set; }
+        public string Name { get; set; } = String.Empty;
 
 
         public CatalogHeaderDTO()

@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using TestMe.UserManagement.Domain;
+using TestMe.UserManagement.App.Users.Output;
 
 namespace TestMe.Presentation.API.Services
 {
@@ -13,12 +13,13 @@ namespace TestMe.Presentation.API.Services
         public const string ConfigurationKey = "Jwt:Key";
 
 
-        public static string BuildToken(User user, string jwtIssuer, string jwtKey)
+        public static string BuildToken(UserCredentialsDTO userCredentials, string jwtIssuer, string jwtKey)
         {
             var claims = new Claim[]
             {              
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                new Claim(ClaimTypes.NameIdentifier, userCredentials.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(ClaimTypes.Role, userCredentials.UserRole.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey));
@@ -28,7 +29,7 @@ namespace TestMe.Presentation.API.Services
                   claims: claims,
                   issuer: jwtIssuer,
                   audience: jwtIssuer,
-                  expires: DateTime.Now.AddDays(30),
+                  expires: DateTime.Now.AddMonths(1),
                   signingCredentials: credentials
               );
 

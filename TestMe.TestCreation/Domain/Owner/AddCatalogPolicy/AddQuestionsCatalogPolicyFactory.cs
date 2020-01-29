@@ -1,30 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TestMe.SharedKernel.Domain;
 
 namespace TestMe.TestCreation.Domain
 {
     internal static class AddQuestionsCatalogPolicyFactory
     {
         public static IAddQuestionsCatalogPolicy Create(MembershipLevel membershipLevel)
-        {
-            int maxNumberOfQuestionsCatalogs = 0;
-
-            switch (membershipLevel)
+        { 
+            int maxNumberOfQuestionsCatalogs = membershipLevel switch
             {
-                case MembershipLevel.Regular:
-                    maxNumberOfQuestionsCatalogs = 5;
-                    break;
-                case MembershipLevel.Silver:
-                    maxNumberOfQuestionsCatalogs = 8;
-                    break;
-                case MembershipLevel.Gold:
-                    maxNumberOfQuestionsCatalogs = 13;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
+                MembershipLevel.Regular => 5,
+                MembershipLevel.Silver => 8,
+                MembershipLevel.Gold => 13,
+                _ => throw new NotImplementedException(),
+            };
             return new AddQuestionsCatalogPolicy(maxNumberOfQuestionsCatalogs);
         }
     }

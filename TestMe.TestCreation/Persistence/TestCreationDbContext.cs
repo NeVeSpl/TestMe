@@ -1,5 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TestMe.BuildingBlocks.EventBus;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.Persistence
@@ -16,24 +18,26 @@ namespace TestMe.TestCreation.Persistence
 
         public DbSet<Test> Tests { get; protected set; }
         
+        public DbSet<Event> Inbox { get; protected set; }
 
 
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
         public TestCreationDbContext(DbContextOptions options) : base(options)
         {
-                  
+            ChangeTracker.DeleteOrphansTiming = CascadeTiming.OnSaveChanges;
         }
-
+#pragma warning restore CS8618 // Non-nullable field is uninitialized. Consider declaring as nullable.
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {            
-            modelBuilder.RemovePluralizingTableNameConvention();
+            //modelBuilder.RemovePluralizingTableNameConvention();
             modelBuilder.HasDefaultSchema("TestCreation");
-            string configurationsPrefix = typeof(TestCreationDbContext).Namespace;
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), x => x.FullName.StartsWith(configurationsPrefix));         
+            string? configurationsPrefix = typeof(TestCreationDbContext).Namespace;
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly(), x => x.FullName?.StartsWith(configurationsPrefix!) ?? false);         
         }
     }
 
-    internal class ReadOnlyTestCreationDbContext : TestCreationDbContext
+    internal sealed class ReadOnlyTestCreationDbContext : TestCreationDbContext
     {
         /* Migration to EF core 3.0 - owned entites cannot be longer used also as Query Type/Keyless Entity Types
         public DbSet<Answer> Answers

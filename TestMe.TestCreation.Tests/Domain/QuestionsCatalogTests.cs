@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using TestMe.SharedKernel.Domain;
+using TestMe.BuildingBlocks.Domain;
+using TestMe.BuildingBlocks.Tests;
 using TestMe.TestCreation.Domain;
 using static TestMe.TestCreation.TestUtils;
 
@@ -9,9 +10,9 @@ namespace TestMe.TestCreation.Tests.Domain
     [TestClass]
     public class QuestionsCatalogTests : BaseFixture
     {
-        private protected override DatabaseType GetDatabaseType()
+        private protected override FakeDatabaseType GetDatabaseType()
         {
-            return DatabaseType.EFInMemory;
+            return FakeDatabaseType.EFInMemory;
         }
 
 
@@ -25,7 +26,7 @@ namespace TestMe.TestCreation.Tests.Domain
             using (var context = CreateTestCreationDbContext())
             {
                 var uow = TestUtils.CreateTestCreationUoW(context);
-                var catalog = uow.QuestionsCatalogs.GetById(ValidQuestionsCatalogId);
+                var catalog = uow.QuestionsCatalogs.GetById(ValidQuestionsCatalog1Id);
 
                 var q1 = Question.Create("Q1", OwnerId);               
                 Assert.ThrowsException<DomainException>(() => catalog.AddQuestion(q1, policyMock.Object));
@@ -43,7 +44,7 @@ namespace TestMe.TestCreation.Tests.Domain
             using (var context = CreateTestCreationDbContext())
             {
                 var uow = TestUtils.CreateTestCreationUoW(context);
-                var catalog = uow.QuestionsCatalogs.GetById(ValidQuestionsCatalogId);
+                var catalog = uow.QuestionsCatalogs.GetById(ValidQuestionsCatalog1Id);
 
                 var q1 = Question.Create("Q1", OwnerId);
 
@@ -53,7 +54,7 @@ namespace TestMe.TestCreation.Tests.Domain
 
             using (var context = CreateTestCreationDbContext())
             {
-                var catalog = context.QuestionsCatalogs.Find(ValidQuestionsCatalogId);
+                var catalog = context.QuestionsCatalogs.Find(ValidQuestionsCatalog1Id);
                 Assert.AreEqual(maxNumberOfQuestionsInCatalog, catalog.QuestionsCount);
             }
         }

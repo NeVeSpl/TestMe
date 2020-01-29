@@ -7,5 +7,7 @@ namespace TestMe.TestCreation.Domain
     internal interface IOwnerRepository
     {
         Owner GetById(long ownerId);
+
+        public void Add(Owner owner);
     }
 }

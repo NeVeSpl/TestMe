@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Design;
-using TestMe.SharedKernel.Persistence;
+using TestMe.BuildingBlocks.Persistence;
 
 namespace TestMe.TestCreation.Persistence
 {

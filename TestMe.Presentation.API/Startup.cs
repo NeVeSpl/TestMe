@@ -5,11 +5,17 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using TestMe.BuildingBlocks.EventBus;
+using TestMe.Infrastructure.EventBus.InMemory;
+using TestMe.Presentation.API.BackgroundServices;
 using TestMe.Presentation.API.Configurations;
+using TestMe.Presentation.API.Services;
 using TestMe.TestCreation.App;
+using TestMe.TestCreation.Infrastructure;
 using TestMe.TestCreation.Persistence;
 using TestMe.UserManagement.App;
-using TestMe.UserManagement.Persistence;
+using TestMe.UserManagement.Infrastructure;
+using TestMe.UserManagement.Persistence.Extensions;
 
 namespace TestMe.Presentation.API
 {
@@ -28,31 +34,32 @@ namespace TestMe.Presentation.API
         {
             services.AddTestCreationPersistence(Configuration.GetConnectionString("TestCreationDbContext"));
             services.AddTestCreationApplicationServices();
+            services.AddTestCreationInfrastructureServices();
 
             services.AddUserManagementPersistence(Configuration.GetConnectionString("UserManagementDbContext"));
             services.AddUserManagementApplicationServices();
+            services.AddUserManagementInfrastructureServices();
 
             services.AddJWTAuthentication(Configuration); 
-            services.AddControllers();            
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy",
-                    builder => builder.WithOrigins("https://localhost:44362", "https://testme.mw-neves.pl")                   
-                                      .AllowAnyMethod()
-                                      .AllowAnyHeader()
-                                      .AllowCredentials()
-                .Build());
-            });
-
+            services.AddControllers();
+            services.AddCORS();
+            services.AddOpenAPI();
             services.AddResponseCaching();            
-            services.AddHealthChecks();  
-        }  
-        
+            services.AddHealthChecks();
+
+            services.AddHostedService<PostManService>();
+            services.AddSingleton<IEventBus, InMemoryEventBus>();
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
+        }   
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.SubscribeTestCreationEventHandlers();
+           
             if (env.IsDevelopment())
             {
+                app.UseOpenAPI();
                 //app.UseDeveloperExceptionPage();
                 //app.UseDatabaseErrorPage();
                 app.UseExceptionHandler("/Error");
@@ -70,7 +77,7 @@ namespace TestMe.Presentation.API
 
             app.UseRouting();  
             app.UseResponseCaching();
-            app.UseCors("CorsPolicy"); 
+            app.UseCORS(); 
             app.UseAuthentication();
             app.UseAuthorization();
 

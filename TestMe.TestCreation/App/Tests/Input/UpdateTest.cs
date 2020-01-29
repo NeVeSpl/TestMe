@@ -6,7 +6,7 @@ namespace TestMe.TestCreation.App.Tests.Input
 {
     public class UpdateTest  : CreateTest
     {
-       
+        public long TestId { get; set; }
        
     }
 }

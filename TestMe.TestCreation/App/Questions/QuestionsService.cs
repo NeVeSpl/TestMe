@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TestMe.SharedKernel.App;
+using TestMe.BuildingBlocks.App;
 using TestMe.TestCreation.App.Questions.Input;
 using TestMe.TestCreation.App.Questions.Output;
 using TestMe.TestCreation.Domain;
@@ -25,7 +25,6 @@ namespace TestMe.TestCreation.App.Questions
         { 
             return questionReader.GetQuestionsHeaders(ownerId, catalogId);
         }
-
         public async Task<Result<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long ownerId, long catalogId)
         {
             return await questionReader.GetQuestionsHeadersAsync(ownerId, catalogId);
@@ -45,20 +44,20 @@ namespace TestMe.TestCreation.App.Questions
             return await questionReader.GetQuestionAsync(ownerId, questionId, true);
         }
 
-        public Result<long> CreateQuestionWithAnswers(long ownerId, CreateQuestion createQuestion)
+        public Result<long> CreateQuestionWithAnswers(CreateQuestion createQuestion)
         {
-            var catalog = uow.QuestionsCatalogs.GetById(createQuestion.CatalogId.Value);
+            var catalog = uow.QuestionsCatalogs.GetById(createQuestion.CatalogId);
 
             if (catalog == null)
             {
                 return Result.Error("Catalog not found");
             }
-            if (catalog.OwnerId != ownerId)
+            if (catalog.OwnerId != createQuestion.UserId)
             {
                 return Result.Unauthorized();
             }
 
-            var question = Question.Create(createQuestion.Content, ownerId);
+            var question = Question.Create(createQuestion.Content, createQuestion.UserId);
 
             if (createQuestion.Answers != null)
             {
@@ -68,27 +67,26 @@ namespace TestMe.TestCreation.App.Questions
                 }
             }
 
-            var policy = AddQuestionPolicyFactory.Create(MembershipLevel.Regular);
+            var owner = uow.Owners.GetById(catalog.OwnerId);
+            var policy = AddQuestionPolicyFactory.Create(owner.MembershipLevel);
             catalog.AddQuestion(question, policy);
             uow.Save();
 
             return Result.Ok(question.QuestionId);
         }
 
-        public Result UpdateQuestionWithAnswers(long ownerId, long questionId, UpdateQuestion updateQuestion)
+        public Result UpdateQuestionWithAnswers(UpdateQuestion updateQuestion)
         {
-            Question question = uow.Questions.GetByIdWithAnswers(questionId);
+            Question question = uow.Questions.GetByIdWithAnswers(updateQuestion.QuestionId);
 
             if (question == null)
             {
                 return Result.NotFound();
             }
-
-            if (question.OwnerId != ownerId) // todo : check catalog instead
+            if (question.OwnerId != updateQuestion.UserId) // todo : check catalog instead
             {
                 return Result.Unauthorized();
             }
-
             if (updateQuestion.ConcurrencyToken.HasValue)
             {
                 if (question.ConcurrencyToken != updateQuestion.ConcurrencyToken.Value)
@@ -101,13 +99,14 @@ namespace TestMe.TestCreation.App.Questions
 
             if (question.CatalogId != updateQuestion.CatalogId)
             {
-                var policy = AddQuestionPolicyFactory.Create(MembershipLevel.Regular);
-                QuestionMover.MoveQuestionToCatalog(question, updateQuestion.CatalogId.Value, uow.QuestionsCatalogs, policy);
+                var owner = uow.Owners.GetById(question.OwnerId);
+                var policy = AddQuestionPolicyFactory.Create(owner.MembershipLevel);
+                QuestionMover.MoveQuestionToCatalog(question, updateQuestion.CatalogId, uow.QuestionsCatalogs, policy);
             }
 
             question.Answers.MergeWith(updateQuestion.Answers, x => x.AnswerId, y => y.AnswerId,
                                        onAdd:     x => question.AddAnswer(x.Content, x.IsCorrect), 
-                                       onUpdate:  (x, y) => { x.Content = y.Content; x.IsCorrect = y.IsCorrect; },// todo : update answer
+                                       onUpdate:  (x, y) => { x.Content = y.Content; x.IsCorrect = y.IsCorrect; },
                                        onDelete:  y => question.DeleteAnswer(y));
            
             uow.Save();                     
@@ -115,9 +114,9 @@ namespace TestMe.TestCreation.App.Questions
             return Result.Ok();
         }
 
-        public Result DeleteQuestionWithAnswers(long ownerId, long questionId)
+        public Result DeleteQuestionWithAnswers(DeleteQuestion deleteQuestion)
         {
-            var question = uow.Questions.GetByIdWithAnswers(questionId);
+            var question = uow.Questions.GetByIdWithAnswers(deleteQuestion.QuestionId);
 
             if (question == null)
             {
@@ -126,7 +125,7 @@ namespace TestMe.TestCreation.App.Questions
 
             var catalog = uow.QuestionsCatalogs.GetById(question.CatalogId);
 
-            if (catalog.OwnerId != ownerId)
+            if (catalog.OwnerId != deleteQuestion.UserId)
             {
                 return Result.Unauthorized();
             }

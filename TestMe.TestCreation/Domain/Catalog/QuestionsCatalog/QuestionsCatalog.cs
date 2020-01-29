@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TestMe.SharedKernel.Domain;
+using TestMe.BuildingBlocks.Domain;
 
 namespace TestMe.TestCreation.Domain
 {
@@ -44,7 +44,7 @@ namespace TestMe.TestCreation.Domain
             }
             else
             {
-                throw new DomainException("Limit of questions in the current catalog has been reached, thus you cannot add a new question.");
+                throw new DomainException(DomainExceptions.Limit_of_questions_in_the_current_catalog_has_been_reached_thus_you_cannot_add_a_new_question);
             }
         }
         /// <summary>

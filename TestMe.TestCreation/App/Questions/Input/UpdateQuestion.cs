@@ -10,5 +10,7 @@ namespace TestMe.TestCreation.App.Questions.Input
         /// When ConcurrencyToken is not provided update will be forced (it will succeed even if concurrent edit happened)
         /// </summary>
         public uint? ConcurrencyToken { get; set; }
+
+        public long QuestionId { get; set; }
     }
 }

@@ -2,18 +2,19 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using TestMe.SharedKernel.App;
+
 using TestMe.TestCreation.Domain;
+using TestMe.BuildingBlocks.App;
 
 namespace TestMe.TestCreation.App.Questions.Output
 {
-    public class QuestionDTO : QuestionHeaderDTO, IHasConcurrencyToken
-    {       
+    public class QuestionDTO : QuestionHeaderDTO, IHaveConcurrencyToken
+    {
         public List<AnswerDTO> Answers
         {
             get;
             set;
-        }
+        } = new List<AnswerDTO>();
 
         public uint ConcurrencyToken { get; set; }
 

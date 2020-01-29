@@ -1,5 +1,5 @@
-﻿using TestMe.UserManagement.App.Users;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TestMe.UserManagement.App.Users;
 
 namespace TestMe.UserManagement.App
 {
@@ -7,7 +7,7 @@ namespace TestMe.UserManagement.App
     {
         public static void AddUserManagementApplicationServices(this IServiceCollection services)
         {  
-            services.AddTransient<UsersService, UsersService>();
+            services.AddTransient<UsersService>();
         }
     }
 }

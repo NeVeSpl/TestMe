@@ -1,19 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
     <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
-    <AssemblyName>TestMe.Presentation.React</AssemblyName>
     <RootNamespace>TestMe.Presentation.React</RootNamespace>
+    <AssemblyName>TestMe.Presentation.React</AssemblyName>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>CS8600;CS8602;CS8603;CS8618</WarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,110 +22,6 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="ClientApp\src\api\ApiBaseService.tsx" />
-    <None Remove="ClientApp\src\api\ApiError.ts" />
-    <None Remove="ClientApp\src\api\base\index.tsx" />
-    <None Remove="ClientApp\src\api\index.tsx" />
-    <None Remove="ClientApp\src\api\QuestionsCatalogsService.tsx" />
-    <None Remove="ClientApp\src\api\QuestionsService.tsx" />
-    <None Remove="ClientApp\src\api\TestsCatalogsService.tsx" />
-    <None Remove="ClientApp\src\api\TestsService.tsx" />
-    <None Remove="ClientApp\src\App.js" />
-    <None Remove="ClientApp\src\components\BusyIndicator\BusyIndicator.module.css" />
-    <None Remove="ClientApp\src\components\ErrorBoundary.tsx" />
-    <None Remove="ClientApp\src\components\Layout\Layout.tsx" />
-    <None Remove="ClientApp\src\components\Layout\NavigationMenu.tsx" />
-    <None Remove="ClientApp\src\components\MagicForm\FormItem.tsx" />
-    <None Remove="ClientApp\src\components\MagicForm\MagicForm.tsx" />
-    <None Remove="ClientApp\src\components\MagicForm\MagicTextInput.tsx" />
-    <None Remove="ClientApp\src\components\MagicForm\TextInput2.tsx" />
-    <None Remove="ClientApp\src\components\Home.tsx" />
-    <None Remove="ClientApp\src\components\index.tsx" />
-    <None Remove="ClientApp\src\components\Loading.tsx" />
-    <None Remove="ClientApp\src\components\Modal.tsx" />
-    <None Remove="ClientApp\src\components\ObjectForm\ObjectForm.tsx" />
-    <None Remove="ClientApp\src\components\Window\Window.module.css" />
-    <None Remove="ClientApp\src\components\Window\Window.tsx" />
-    <None Remove="ClientApp\src\components\Window\WindowTemplate.tsx" />
-    <None Remove="ClientApp\src\pages\index.tsx" />
-    <None Remove="ClientApp\src\pages\Page404\Page404.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\Question.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\QuestionEditor.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\QuestionsCatalog.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\QuestionsCatalogEditor.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\QuestionsCatalogs.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\Question\index.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\Test.tsx" />
-    <None Remove="ClientApp\src\index.js" />
-    <None Remove="ClientApp\src\pages\TestCreation\TestCreationPage.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\TestsCatalog.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\TestsCatalogEditor.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\TestsCatalogs.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\Test\index.tsx" />
-    <None Remove="ClientApp\src\pages\TestCreation\Test\TestEditor.tsx" />
-    <None Remove="ClientApp\src\services\index.tsx" />
-    <None Remove="ClientApp\src\services\UserService.tsx" />
-    <None Remove="ClientApp\src\utils\ArrayUtils.tsx" />
-    <None Remove="ClientApp\src\utils\index.tsx" />
-    <None Remove="ClientApp\src\utils\ObjectUtils.tsx" />
-    <None Remove="ClientApp\src\utils\StringUtils.tsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ClientApp\tsconfig.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\api\base\ApiBaseService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\base\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\base\ErrorCode.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\base\ApiError.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\TestsCatalogsService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\TestsService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\QuestionsService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\QuestionsCatalogsService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\BusyIndicator\BusyIndicator.module.css" />
-    <TypeScriptCompile Include="ClientApp\src\components\ErrorBoundary\ErrorBoundary.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\Layout\Layout.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\Layout\NavigationMenu.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\ObjectForm\ObjectForm.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\ObjectForm\ObjectFormItem.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\ObjectForm\TextInput.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\MagicForm\MagicForm.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\MagicForm\MagicTextInput.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\BusyIndicator\BusyIndicator.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\Window\WindowTemplate.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\Window\Window.module.css" />
-    <TypeScriptCompile Include="ClientApp\src\components\Window\Window.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\LandingPage\LandingPage.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\api\base\ProblemDetails.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\Page404\Page404.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\QuestionsCatalogEditor.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\QuestionEditor.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\components\Window\Prompt.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\TestEditor.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\TestsCatalogEditor.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\TestsCatalogs.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\QuestionsCatalogs.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\TestsCatalog.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Test\Test.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\Question.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\Question\QuestionsCatalog.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\pages\TestCreation\TestCreationPage.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\services\index.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\services\UserService.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\utils\ObjectUtils.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\utils\StringUtils.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\utils\ArrayUtils.tsx" />
-    <TypeScriptCompile Include="ClientApp\src\utils\index.tsx" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -148,6 +45,7 @@
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>

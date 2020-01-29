@@ -1,4 +1,4 @@
-﻿using TestMe.SharedKernel.Persistence;
+﻿using TestMe.BuildingBlocks.Persistence;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.Persistence

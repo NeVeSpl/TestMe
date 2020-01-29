@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TestMe.BuildingBlocks.Domain;
 using TestMe.SharedKernel.Domain;
 
 namespace TestMe.TestCreation.Domain
@@ -21,6 +22,7 @@ namespace TestMe.TestCreation.Domain
         {
             get => _testsCatalogs;
         }
+        public MembershipLevel MembershipLevel { get; set; }
 
 
         private Owner()
@@ -40,7 +42,7 @@ namespace TestMe.TestCreation.Domain
             }
             else
             {
-                throw new DomainException("Limit of questions catalogs has been reached, thus you cannot add a new questions catalog.");
+                throw new DomainException(DomainExceptions.Limit_of_questions_catalogs_has_been_reached_thus_you_cannot_add_a_new_questions_catalog);
             }
         }
 
@@ -53,11 +55,9 @@ namespace TestMe.TestCreation.Domain
 
 
 
-
-
-        public static Owner Create(long ownerId)
+        public static Owner Create(long ownerId, MembershipLevel membershipLevel)
         {
-            return new Owner() { OwnerId = ownerId };
+            return new Owner() { OwnerId = ownerId, MembershipLevel = membershipLevel };
         }
 
         public void DeleteQuestionsCatalog(QuestionsCatalog catalog)

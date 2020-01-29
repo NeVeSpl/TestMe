@@ -15,12 +15,12 @@ export interface CreateTokenResponse
 }
 export class LoginCredentials
 {
-    login: string;
+    email: string;
     password: string;
 
     constructor()
     {
-        this.login = "";
+        this.email = "";
         this.password = "";
     }
 }

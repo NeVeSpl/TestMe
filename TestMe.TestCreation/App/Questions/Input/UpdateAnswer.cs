@@ -3,9 +3,8 @@
 namespace TestMe.TestCreation.App.Questions.Input
 {
     public class UpdateAnswer : CreateAnswer
-    {
-        [Required]
-        public long? AnswerId
+    {   
+        public long AnswerId
         {
             get;
             set;

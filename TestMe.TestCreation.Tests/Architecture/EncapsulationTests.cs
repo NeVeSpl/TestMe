@@ -12,36 +12,41 @@ namespace TestMe.TestCreation.Tests.Architecture
 
 
         [TestMethod]
-        public void DomainIsNotAccessibleFromOutside()
+        public void DomainIsNotAccessibleFromOutsideOfModule()
         {
             var result = Types.InAssembly(TestCreationAssembly)
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.Domain")
+                              .And()
+                              .DoNotHaveNameEndingWith("Const")
                               .Should()
                               .NotBePublic()
                               .GetResult();
             Assert.IsTrue(result.IsSuccessful);
         }
 
-        /// <summary>
-        /// This test fails because of a bug in NetArchTest
-        /// </summary>
+
         [TestMethod]
-        public void PersistenceIsNotAccessibleFromOutside()
+        public void PersistenceIsNotAccessibleFromOutsideOfModule()
         {
             var result = Types.InAssembly(TestCreationAssembly)
                               .That()
-                              .ResideInNamespace("TestMe.TestCreation.Persistence")                             
+                              .ResideInNamespace("TestMe.TestCreation.Persistence")
+                              .And()
+                              .DoNotHaveNameStartingWith("IServiceCollectionExtensions")
+                              .And()
+                              .DoNotHaveNameStartingWith("IServiceProviderExtensions")
                               .Should()
-                              .NotBePublic()                             
+                              .NotBePublic()
                               .GetResult();
             Assert.IsTrue(result.IsSuccessful);
         }
-       
+
         [TestMethod]
         [DataRow("Service")]
         [DataRow("Readers")]
-        public void AppServicesAndReadersAreNotAccessibleFromOutside(string end)
+        [DataRow("Handler")]
+        public void AppServicesAndReadersAndHandlersAreNotAccessibleFromOutsideOfModule(string end)
         {
             var result = Types.InAssembly(TestCreationAssembly)
                               .That()
@@ -49,7 +54,22 @@ namespace TestMe.TestCreation.Tests.Architecture
                               .And()
                               .AreClasses()
                               .And()
-                              .HaveNameEndingWith(end)                              
+                              .HaveNameEndingWith(end)
+                              .Should()
+                              .NotBePublic()
+                              .GetResult();
+            Assert.IsTrue(result.IsSuccessful);
+        }
+
+
+        [TestMethod]
+        public void InfrastructureIsNotAccessibleFromOutsideOfModule()
+        {
+            var result = Types.InAssembly(TestCreationAssembly)
+                              .That()
+                              .ResideInNamespace("TestMe.TestCreation.Infrastructure")
+                              .And()
+                              .DoNotHaveNameStartingWith("IServiceCollectionExtensions")
                               .Should()
                               .NotBePublic()
                               .GetResult();

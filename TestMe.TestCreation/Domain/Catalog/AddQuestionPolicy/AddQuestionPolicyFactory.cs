@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TestMe.SharedKernel.Domain;
 
 namespace TestMe.TestCreation.Domain
 {
@@ -8,23 +9,13 @@ namespace TestMe.TestCreation.Domain
     {
         public static IAddQuestionPolicy Create(MembershipLevel membershipLevel)
         {
-            int maxNumberOfQuestionsInCatalog = 0;
-
-            switch (membershipLevel)
+            int maxNumberOfQuestionsInCatalog = membershipLevel switch
             {
-                case MembershipLevel.Regular:
-                    maxNumberOfQuestionsInCatalog = 5;
-                    break;
-                case MembershipLevel.Silver:
-                    maxNumberOfQuestionsInCatalog = 8;
-                    break;
-                case MembershipLevel.Gold:
-                    maxNumberOfQuestionsInCatalog = 13;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
+                MembershipLevel.Regular => 5,
+                MembershipLevel.Silver => 8,
+                MembershipLevel.Gold => 13,
+                _ => throw new NotImplementedException(),
+            };
             return new AddQuestionPolicy(maxNumberOfQuestionsInCatalog);
         }
     }

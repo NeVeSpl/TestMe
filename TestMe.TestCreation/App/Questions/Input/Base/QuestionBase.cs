@@ -7,12 +7,9 @@ namespace TestMe.TestCreation.App.Questions.Input
 {
     public abstract class QuestionBase<T> where T: CreateAnswer
     {
-        [StringLength(maximumLength: Question.ContentMaxLength)]
-        public string Content { get; set; }
-
-        public List<T> Answers { get; set; }
-
-        [Required]
-        public long? CatalogId { get; set; }
+        public long UserId { get; set; }
+        public string Content { get; set; } = string.Empty;
+        public List<T> Answers { get; set; } = new List<T>();     
+        public long CatalogId { get; set; }
     }
 }

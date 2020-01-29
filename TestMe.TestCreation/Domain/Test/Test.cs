@@ -5,9 +5,7 @@ using System.Text;
 namespace TestMe.TestCreation.Domain
 {
     internal sealed class Test
-    {
-        public const int TitleMaxLength = 2048;
-
+    {   
         private readonly List<QuestionItem> _questions = new List<QuestionItem>();
 
 
@@ -22,15 +20,15 @@ namespace TestMe.TestCreation.Domain
         public bool IsDeleted { get; private set; }
 
 
-        private Test()
+        private Test(string title)
         {
-
+            Title = title;
         }
 
 
         public static Test Create(long ownerId, string title)
         {
-            return new Test() {  OwnerId = ownerId, Title = title };
+            return new Test(title) { OwnerId = ownerId };
         }
 
 

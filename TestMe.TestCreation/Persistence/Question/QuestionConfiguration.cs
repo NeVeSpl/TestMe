@@ -8,16 +8,16 @@ namespace TestMe.TestCreation.Persistence
     {
         public void Configure(EntityTypeBuilder<Question> builder)
         {
-            builder.Property(x => x.Content).HasMaxLength(Question.ContentMaxLength);
+            builder.Property(x => x.Content).HasMaxLength(QuestionConst.ContentMaxLength);
             builder.OwnsMany(x => x.Answers, 
                 answerBuilder => 
                 {
                     answerBuilder.HasKey(x => x.AnswerId);
-                    answerBuilder.Property(x => x.Content).HasMaxLength(Answer.ContentMaxLength);
+                    answerBuilder.Property(x => x.Content).HasMaxLength(AnswerConst.ContentMaxLength);
                 });
             builder.HasQueryFilter(p => !p.IsDeleted);
 
-            builder.HasIndex(nameof(Question.QuestionId));
+            //builder.HasIndex(nameof(Question.QuestionId));
 
             //builder.ForNpgsqlUseXminAsConcurrencyToken();
             //builder.Property("xmin").HasDefaultValue(0);

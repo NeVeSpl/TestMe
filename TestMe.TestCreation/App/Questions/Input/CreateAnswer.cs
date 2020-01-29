@@ -4,10 +4,8 @@ using TestMe.TestCreation.Domain;
 namespace TestMe.TestCreation.App.Questions.Input
 {
     public class CreateAnswer
-    {  
-        [Required]
-        [StringLength(maximumLength: Answer.ContentMaxLength)]
-        public string Content { get; set; }
+    {
+        public string Content { get; set; } = string.Empty;
 
         public bool IsCorrect { get; set; }
     }

@@ -11,7 +11,7 @@ namespace TestMe.TestCreation.App.Questions.Output
             get;
             set;
         }
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
         public bool IsCorrect { get; set; }
 
 

@@ -9,23 +9,27 @@ namespace TestMe.TestCreation.Persistence
     internal sealed class TestCreationUoW : ITestCreationUoW, IDisposable
     {
         private readonly TestCreationDbContext context;
+        private readonly Lazy<IQuestionRepository> questions;
+        private readonly Lazy<IQuestionsCatalogRepository> questionsCatalogs;
+        private readonly Lazy<ITestsCatalogRepository> testsCatalogs;
+        private readonly Lazy<ITestRepository> tests;
+        private readonly Lazy<IOwnerRepository> owners;
 
-        public IQuestionRepository Questions { get; }
-        public IQuestionsCatalogRepository QuestionsCatalogs { get; }
-        public ITestsCatalogRepository TestsCatalogs { get; }
-        public ITestRepository Tests { get; }
-        public IOwnerRepository Owners { get; }
+        public IQuestionRepository Questions { get => questions.Value; }
+        public IQuestionsCatalogRepository QuestionsCatalogs { get => questionsCatalogs.Value; }
+        public ITestsCatalogRepository TestsCatalogs { get => testsCatalogs.Value; }
+        public ITestRepository Tests { get => tests.Value; }
+        public IOwnerRepository Owners { get => owners.Value; }
 
 
         public TestCreationUoW(TestCreationDbContext context)
         {
             this.context = context;
-            Questions = new QuestionRepository(context);
-            QuestionsCatalogs = new QuestionsCatalogRepository(context);
-            TestsCatalogs = new TestsCatalogRepository(context);
-            Tests = new TestRepository(context);
-            Owners = new OwnerRepository(context);
-
+            questions = new Lazy<IQuestionRepository>(() => new QuestionRepository(context));
+            questionsCatalogs = new Lazy<IQuestionsCatalogRepository>(() => new QuestionsCatalogRepository(context));
+            testsCatalogs = new Lazy<ITestsCatalogRepository>(() => new TestsCatalogRepository(context));
+            tests = new Lazy<ITestRepository>(() => new TestRepository(context));
+            owners = new Lazy<IOwnerRepository>(() => new OwnerRepository(context));
         }
 
         public void Save()

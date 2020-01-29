@@ -4,17 +4,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using Serilog.Core;
 using TestMe.TestCreation.Persistence;
+using TestMe.UserManagement.Persistence.Extensions;
 
 namespace TestMe.Presentation.API
 {
-    internal class Program
+    internal sealed class Program
     {
         public static int Main(string[] args)
         {           
             var currentDirectory = Directory.GetCurrentDirectory();
             IConfiguration configuration = CreateConfiguration(currentDirectory);
-            CreateSerilogger(configuration, currentDirectory);
+            Log.Logger = CreateSerilogger(configuration, currentDirectory);
 
             try
             {
@@ -57,7 +59,7 @@ namespace TestMe.Presentation.API
                            webBuilder.ConfigureKestrel(serverOptions =>
                            {
                                serverOptions.AllowSynchronousIO = true;
-                               serverOptions.AddServerHeader = false;
+                               serverOptions.AddServerHeader = false;                              
                            })
                            .UseStartup<Startup>();
                        });                         
@@ -77,19 +79,18 @@ namespace TestMe.Presentation.API
             return configuration;
         }        
 
-        private static void CreateSerilogger(IConfiguration configuration, string path)
+        private static Logger CreateSerilogger(IConfiguration configuration, string path)
         {
-            Log.Logger = new LoggerConfiguration()
+            return new LoggerConfiguration()
                 .ReadFrom.Configuration(configuration)            
                 .Enrich.FromLogContext()
                 .WriteTo.File
                 (
                     path: Path.Combine(path, @".log"),
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {RequestId} {SourceContext} {EventId}{NewLine}               {Message:lj}{NewLine}{Exception}",                   
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {RequestId} {SourceContext} {EventId} {Message:lj}{NewLine}{Exception}",                   
                     rollingInterval: RollingInterval.Day
                 )
-
-            .CreateLogger();
+                .CreateLogger();
         }
     }
 }

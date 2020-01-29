@@ -5,7 +5,6 @@
 
     <IsPackable>false</IsPackable>
 
-    <LangVersion>7.2</LangVersion>
 
     <RootNamespace>TestMe.TestCreation.Tests</RootNamespace>
 
@@ -13,19 +12,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
-    <PackageReference Include="NetArchTest.Rules" Version="1.2.3" />
+    <PackageReference Include="NetArchTest.Rules" Version="1.2.4" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TestMe.BuildingBlocks.Tests\BuildingBlocks.Tests.csproj" />
     <ProjectReference Include="..\TestMe.TestCreation\TestCreation.csproj" />
-    <ProjectReference Include="..\TestMe.UserManagement\UserManagement.csproj" />
   </ItemGroup>
 
 </Project>

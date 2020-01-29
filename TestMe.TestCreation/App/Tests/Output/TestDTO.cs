@@ -9,7 +9,7 @@ namespace TestMe.TestCreation.App.Tests.Output
 {
     public class TestDTO : TestHeaderDTO
     {
-        public List<QuestionItemDTO> QuestionItems { get; set; }
+        public List<QuestionItemDTO> QuestionItems { get; set; } = new List<QuestionItemDTO>();
 
 
 

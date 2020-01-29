@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using TestMe.SharedKernel.App;
+using TestMe.BuildingBlocks.App;
 using TestMe.TestCreation.App.Tests.Output;
 using TestMe.TestCreation.Domain;
 using TestMe.TestCreation.Persistence;

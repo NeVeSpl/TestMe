@@ -6,9 +6,6 @@ namespace TestMe.TestCreation.Domain
 {
     internal sealed class Answer
     {
-        public const int ContentMaxLength = 2048;
-
-
         public long AnswerId
         {
             get;
@@ -21,14 +18,14 @@ namespace TestMe.TestCreation.Domain
        
 
 
-        private Answer()
+        private Answer(string content)
         {
-
+            Content = content;
         }
 
         public static Answer Create(string content, bool isCorrect)
         {
-            return new Answer() { Content = content, IsCorrect = isCorrect };
+            return new Answer(content) { IsCorrect = isCorrect };
         }
     }
 }
