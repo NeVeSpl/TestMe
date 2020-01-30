@@ -40,14 +40,17 @@ namespace TestMe.Presentation.API
             services.AddUserManagementApplicationServices();
             services.AddUserManagementInfrastructureServices();
 
-            services.AddJWTAuthentication(Configuration); 
+            services.Configure<AuthenticationService.Config>(Configuration.GetSection("Jwt"));
+            services.AddJWTAuthentication(Configuration, "Jwt"); 
             services.AddControllers();
             services.AddCORS();
             services.AddOpenAPI();
             services.AddResponseCaching();            
             services.AddHealthChecks();
 
+            services.Configure<PostManService.Config>(Configuration.GetSection("PostManService"));
             services.AddHostedService<PostManService>();
+
             services.AddSingleton<IEventBus, InMemoryEventBus>();
 
             services.AddHttpContextAccessor();

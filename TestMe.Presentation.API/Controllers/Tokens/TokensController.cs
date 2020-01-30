@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using TestMe.Presentation.API.Controllers.Tokens.Input;
 using TestMe.Presentation.API.Controllers.Tokens.Output;
 using TestMe.Presentation.API.Services;
@@ -19,13 +20,13 @@ namespace TestMe.Presentation.API.Controllers.Tokens
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult CreateToken(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IConfiguration config)
+        public IActionResult CreateToken(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
         {
             var userCredentials = service.VerifyUserCredentials(loginCredentials.CreateCommand());
             IActionResult response;
             if (userCredentials != null)
             {
-                var tokenString = AuthenticationService.BuildToken(userCredentials, config[AuthenticationService.ConfigurationIssuer], config[AuthenticationService.ConfigurationKey]);
+                var tokenString = AuthenticationService.BuildToken(userCredentials, config.Value);
                 response = Ok(new TokenDTO { Token = tokenString });
             }
             else
@@ -41,13 +42,13 @@ namespace TestMe.Presentation.API.Controllers.Tokens
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
-        public async Task<IActionResult> CreateTokenAsync(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IConfiguration config)
+        public async Task<IActionResult> CreateTokenAsync(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
         {
             var userCredentials = await service.VerifyUserCredentialsAsync(loginCredentials.CreateCommand());
             IActionResult response;
             if (userCredentials != null)
             {
-                var tokenString = AuthenticationService.BuildToken(userCredentials, config[AuthenticationService.ConfigurationIssuer], config[AuthenticationService.ConfigurationKey]);
+                var tokenString = AuthenticationService.BuildToken(userCredentials, config.Value);
                 response = Ok(new TokenDTO { Token = tokenString });
             }
             else

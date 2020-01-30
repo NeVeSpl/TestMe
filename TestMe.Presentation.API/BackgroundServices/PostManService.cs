@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using TestMe.BuildingBlocks.EventBus;
 
 namespace TestMe.Presentation.API.BackgroundServices
@@ -14,19 +14,14 @@ namespace TestMe.Presentation.API.BackgroundServices
         private readonly IServiceProvider serviceProvider;
         private readonly ILogger<PostManService> logger;
         private readonly static SemaphoreSlim semaphore = new SemaphoreSlim(1, 1);
-        private readonly int delayTimeBetweenDispatches;
+        private readonly Config config;
 
 
-        public PostManService(IServiceProvider services, ILogger<PostManService> logger, IConfiguration config)
+        public PostManService(IServiceProvider services, ILogger<PostManService> logger, IOptions<Config> config)
         {
             this.serviceProvider = services;
             this.logger = logger;
-
-            var delayTimeBetweenCheckingsString = config["PostManService:DelayTimeBetweenDispatches"];
-            if (!Int32.TryParse(delayTimeBetweenCheckingsString, out delayTimeBetweenDispatches))
-            {
-                delayTimeBetweenDispatches = 1000;
-            }
+            this.config = config.Value;
         }
 
 
@@ -35,7 +30,7 @@ namespace TestMe.Presentation.API.BackgroundServices
             while (!cancellationToken.IsCancellationRequested)
             {
                 await DispatchMessages(cancellationToken);
-                await Task.Delay(delayTimeBetweenDispatches, cancellationToken);
+                await Task.Delay(config.DelayTimeBetweenDispatches, cancellationToken);
             }
         }
 
@@ -63,6 +58,20 @@ namespace TestMe.Presentation.API.BackgroundServices
             finally
             {
                 semaphore.Release();
+            }
+        }
+
+
+
+        public class Config
+        {
+            public int DelayTimeBetweenDispatches { get; set; }
+
+
+
+            public Config()
+            {
+                DelayTimeBetweenDispatches = 1000;
             }
         }
     }

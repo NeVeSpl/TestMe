@@ -26,8 +26,8 @@ namespace TestMe.Presentation.API.Tests.Utils
 
         static BaseFixture()
         {
-            ValidOwnerToken = AuthenticationService.BuildToken(userCredentials: new UserCredentialsDTO(TestUtils.OwnerId) { UserRole = UserRole.Regular }, JWTIssuer, JWTKey);
-            ValidAdminToken = AuthenticationService.BuildToken(userCredentials: new UserCredentialsDTO(TestUtils.OwnerId) { UserRole = UserRole.Admin }, JWTIssuer, JWTKey);
+            ValidOwnerToken = AuthenticationService.BuildToken(userCredentials: new UserCredentialsDTO(TestUtils.OwnerId) { UserRole = UserRole.Regular }, new AuthenticationService.Config() { Issuer = JWTIssuer, Key= JWTKey });
+            ValidAdminToken = AuthenticationService.BuildToken(userCredentials: new UserCredentialsDTO(TestUtils.OwnerId) { UserRole = UserRole.Admin }, new AuthenticationService.Config() { Issuer = JWTIssuer, Key = JWTKey });
         }
 
 
