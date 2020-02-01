@@ -11,7 +11,7 @@ namespace TestMe.Infrastructure.EventBus.InMemory
     public partial class InMemoryEventBus : IEventBus
     {
         private readonly IServiceProvider services;
-        private readonly Dictionary<string, SubscriptionInfo> eventHandlers = new Dictionary<string, SubscriptionInfo>();
+        private readonly SubscriptionsManager subscriptionsManager = new SubscriptionsManager();
 
         public InMemoryEventBus(IServiceProvider services)
         {
@@ -21,52 +21,20 @@ namespace TestMe.Infrastructure.EventBus.InMemory
 
         public async Task<bool> Publish(Event @event)
         {
-            if (eventHandlers.ContainsKey(@event.RoutingKey))
+            foreach(var subscription in subscriptionsManager.GetSubscriptions(@event.RoutingKey))
             {
-                using (var scope = services.CreateScope())
-                {
-                    var subscription = eventHandlers[@event.RoutingKey];
-                    var eventHandler = scope.ServiceProvider.GetRequiredService(subscription.HandlerType);
-
-                    if (eventHandler == null)
-                    {
-                        return true;
-                    }
-
-                    Type eventHandlerType = typeof(IEventHandler<>).MakeGenericType(subscription.PayloadType);
-                    MethodInfo handler = eventHandlerType.GetMethod(nameof(IEventHandler<object>.Handle))!;
-                    var payload = JsonSerializer.Deserialize(@event.Payload, subscription.PayloadType);
-
-                    await Task.Yield();
-
-                    if (scope.ServiceProvider.GetRequiredService(subscription.InterceptorType) is IEventInterceptor eventInterceptor)
-                    {
-                        await eventInterceptor.ReceiveEvent(@event, () => (Task)handler.Invoke(eventHandler, new[] { payload })!);
-                    }
-                    else
-                    {
-                        await (Task)handler.Invoke(eventHandler, new[] { payload })!;
-                    }
-                }
+                await subscription.ProcessEvent(services, @event);                
             }            
             
             return true;                        
         }
 
-        public void Subscribe<T, TEH, TEI>()
-            where T : class
-            where TEH : IEventHandler<T>
-            where TEI : IEventInterceptor
+        public void Subscribe<TEvent, TEventHandler, TEventInterceptor>(string queueName)
+            where TEvent : class
+            where TEventHandler : IEventHandler<TEvent>
+            where TEventInterceptor : IEventInterceptor
         {
-            var routingKey = GetEventKey<T>();
-            eventHandlers[routingKey] = new SubscriptionInfo(typeof(T), typeof(TEH), typeof(TEI));
-        }
-
-        private string GetEventKey<T>()
-        {
-#pragma warning disable CS8603 // Possible null reference return.
-            return typeof(T).FullName;
-#pragma warning restore CS8603 // Possible null reference return.
+            subscriptionsManager.Subscribe<TEvent, TEventHandler, TEventInterceptor>(queueName);    
         }
     }
 }

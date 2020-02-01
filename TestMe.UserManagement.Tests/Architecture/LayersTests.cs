@@ -40,6 +40,7 @@ namespace TestMe.UserManagement.Tests.Architecture
                              .HaveDependencyOnAny(
                                 "TestMe.UserManagement.Infrastructure",
                                 "TestMe.UserManagement.App",
+                                "TestMe.BuildingBlocks.Domain",
                                 "TestMe.BuildingBlocks.App",
                                 "TestMe.UserManagement.IntegrationEvents"                             
                              )
@@ -57,7 +58,8 @@ namespace TestMe.UserManagement.Tests.Architecture
                              .HaveDependencyOnAny(
                                 "TestMe.UserManagement.Infrastructure",
                                 "TestMe.BuildingBlocks.Domain",                               
-                                "TestMe.BuildingBlocks.Persistence"                            
+                                "TestMe.BuildingBlocks.Persistence",
+                                "TestMe.BuildingBlocks.EventBus"
                              )
                              .GetResult();
             Assert.IsTrue(result.IsSuccessful, "App has lost its independence!");

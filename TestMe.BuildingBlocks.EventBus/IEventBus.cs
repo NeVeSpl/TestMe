@@ -6,9 +6,9 @@ namespace TestMe.BuildingBlocks.EventBus
     {
         Task<bool> Publish(Event @event);
 
-        void Subscribe<T, TH, TEI>()
-            where T : class
-            where TH : IEventHandler<T>
-            where TEI: IEventInterceptor;
+        public void Subscribe<TEvent, TEventHandler, TEventInterceptor>(string queueName)
+            where TEvent : class
+            where TEventHandler : IEventHandler<TEvent>
+            where TEventInterceptor : IEventInterceptor;
     }
 }

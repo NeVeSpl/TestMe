@@ -12,7 +12,7 @@ namespace TestMe.TestCreation.App
         public static void SubscribeTestCreationEventHandlers(this IApplicationBuilder applicationBuilder)
         {
             var eventBus = applicationBuilder.ApplicationServices.GetRequiredService<IEventBus>();
-            eventBus.Subscribe<UserCreatedV1, UserCreatedEventHandler, EventReceiver>();           
+            eventBus.Subscribe<UserCreatedV1, UserCreatedEventHandler, EventReceiver>("TestMe.TestCreation.App");           
         }
     }
 }

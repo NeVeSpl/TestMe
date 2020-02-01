@@ -6,7 +6,6 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using TestMe.BuildingBlocks.App;
 using TestMe.BuildingBlocks.Domain;
-using TestMe.BuildingBlocks.EventBus;
 using TestMe.UserManagement.App.Users.Input;
 using TestMe.UserManagement.App.Users.Output;
 using TestMe.UserManagement.Domain;
@@ -64,7 +63,7 @@ namespace TestMe.UserManagement.App.Users
                 context.Users.Add(createdUser);
                 context.SaveChanges();
 
-                context.Outbox.Add(new Event(createdUser.CreateEvent(), correlationIdProvider.CorrelationId));
+                context.AddEvent(createdUser.CreateEvent(), correlationIdProvider.CorrelationId);
                 context.SaveChanges();
 
                 transaction.Commit();

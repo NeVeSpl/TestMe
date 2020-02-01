@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using TestMe.BuildingBlocks.EventBus;
 using TestMe.Infrastructure.EventBus.InMemory;
+using TestMe.Infrastructure.EventBus.RabbitMQ;
 using TestMe.Presentation.API.BackgroundServices;
 using TestMe.Presentation.API.Configurations;
 using TestMe.Presentation.API.Services;
@@ -51,7 +52,9 @@ namespace TestMe.Presentation.API
             services.Configure<PostManService.Config>(Configuration.GetSection("PostManService"));
             services.AddHostedService<PostManService>();
 
-            services.AddSingleton<IEventBus, InMemoryEventBus>();
+            services.Configure<RabbitMQEventBus.Config>(Configuration.GetSection("RabbitMQ"));
+            services.AddSingleton<IEventBus, RabbitMQEventBus>();
+            //services.AddSingleton<IEventBus, InMemoryEventBus>();
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();

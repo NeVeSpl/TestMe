@@ -20,6 +20,12 @@ namespace TestMe.UserManagement.Persistence
 #pragma warning restore CS8618 
 
 
+        public void AddEvent(object @event, string correlationId)
+        {
+            Outbox.Add(new Event(@event, correlationId));
+        }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

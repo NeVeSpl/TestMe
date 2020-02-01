@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TestMe.BuildingBlocks.EventBus;
 using TestMe.UserManagement.Persistence;
 
@@ -22,7 +23,7 @@ namespace TestMe.UserManagement.Infrastructure.EventBus
 
         public async Task SendEvents(CancellationToken cancellationToken)
         {
-            var eventsToSend = dbContext.Outbox.Where(x => x.PostDateTime == null).OrderBy(x => x.EventId).Take(100);
+            var eventsToSend = await dbContext.Outbox.Where(x => x.PostDateTime == null).OrderBy(x => x.EventId).Take(100).ToListAsync();
             foreach(var eventToSend in eventsToSend)
             {
                 eventToSend.PostDateTime = DateTimeOffset.UtcNow;
