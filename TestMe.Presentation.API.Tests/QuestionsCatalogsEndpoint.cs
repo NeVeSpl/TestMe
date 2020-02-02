@@ -28,10 +28,10 @@ namespace TestMe.Presentation.API.Tests
         }
 
 
-        [TestMethod]
+        [TestMethod]     
         public async Task ReadCatalogHeaders_HappyPathIsSuccessful()
         {
-            var response = await client.GetAsync($"{EndpointName}/headers");
+            var response = await client.GetAsync($"{EndpointName}/headers?ownerId={TestUtils.OwnerId}");
             AssertExt.EnsureSuccessStatusCode(response);
             
             var catalogs = response.GetContent<CatalogHeaderDTO[]>().Value;

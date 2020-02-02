@@ -19,19 +19,19 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long ownerId)
+        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId)
         {            
-            return catalogReader.GetCatalogHeaders(ownerId);
+            return catalogReader.GetCatalogHeaders(userId, ownerId);
         }
 
-        public Result<CatalogHeaderDTO> ReadCatalogHeader(long ownerId, long catalogId)
+        public Result<CatalogHeaderDTO> ReadCatalogHeader(long userId, long catalogId)
         {          
-            return catalogReader.GetCatalogHeader(ownerId, catalogId);
+            return catalogReader.GetCatalogHeader(userId, catalogId);
         }
 
-        public Result<QuestionsCatalogDTO> ReadCatalog(long ownerId, long catalogId)
+        public Result<QuestionsCatalogDTO> ReadCatalog(long userId, long catalogId)
         {            
-            return catalogReader.GetById(ownerId, catalogId);
+            return catalogReader.GetById(userId, catalogId);
         }
 
         public Result<long> CreateCatalog(CreateCatalog createCatalog)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using TestMe.BuildingBlocks.App;
 using TestMe.TestCreation.App.Catalogs.Output;
 using TestMe.TestCreation.Persistence;
 
@@ -17,9 +18,13 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public List<CatalogHeaderDTO> GetTestsCatalogs(long ownerId)
+        public Result<List<CatalogHeaderDTO>> GetTestsCatalogs(long userId, long ownerId)
         {
-            return context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).ToList();
+            if (userId != ownerId)
+            {
+                return Result.Unauthorized();
+            }
+            return Result.Ok(context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).ToList());
         }
 
         public CatalogDTO GetById(long catalogId)

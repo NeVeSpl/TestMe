@@ -24,9 +24,9 @@ namespace TestMe.Presentation.API.Controllers.TestsCatalogs
         
 
         [HttpGet("headers")]
-        public ActionResult<List<CatalogHeaderDTO>> ReadCatalogHeaders()
+        public ActionResult<List<CatalogHeaderDTO>> ReadCatalogHeaders(long ownerId)
         {
-            var result = service.ReadCatalogHeaders(UserId);
+            var result = service.ReadCatalogHeaders(UserId, ownerId);
             return ActionResult(result);
         }
 

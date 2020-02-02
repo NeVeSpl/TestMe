@@ -11,8 +11,8 @@ namespace TestMe.TestCreation.App.Catalogs
         Result DeleteCatalog(DeleteCatalog deleteCatalog);
         Result UpdateCatalog(UpdateCatalog updateCatalog);
 
-        Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long ownerId);
-        Result<CatalogHeaderDTO> ReadCatalogHeader(long ownerId, long catalogId);
-        Result<QuestionsCatalogDTO> ReadCatalog(long owner, long catalogId);
+        Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId);
+        Result<CatalogHeaderDTO> ReadCatalogHeader(long userId, long catalogId);
+        Result<QuestionsCatalogDTO> ReadCatalog(long userId, long catalogId);
     }
 }

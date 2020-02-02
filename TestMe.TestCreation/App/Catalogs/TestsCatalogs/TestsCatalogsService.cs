@@ -19,12 +19,12 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long ownerId)
+        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId)
         {
-            return Result.Ok(catalogReader.GetTestsCatalogs(ownerId));
+            return catalogReader.GetTestsCatalogs(userId, ownerId);
         }
 
-        public Result<CatalogDTO> ReadCatalog(long owner, long catalogId)
+        public Result<CatalogDTO> ReadCatalog(long userId, long catalogId)
         {
             // todo : check if owner has access to given catalog
             var catalog = catalogReader.GetById(catalogId);

@@ -2,9 +2,9 @@
 
 export class QuestionsCatalogsService extends ApiBaseService 
 {
-    ReadQuestionsCatalogHeaders(): Promise<CatalogHeader[]>
+    ReadQuestionsCatalogHeaders(ownerId: string): Promise<CatalogHeader[]>
     {
-        return this.MakeRequest<CatalogHeader[]>("GET", "QuestionsCatalogs/headers");
+        return this.MakeRequest<CatalogHeader[]>("GET", `QuestionsCatalogs/headers?ownerId=${ownerId}`);
     }
 
     ReadQuestionsCatalogHeader(catalogId: number): Promise<CatalogHeader>

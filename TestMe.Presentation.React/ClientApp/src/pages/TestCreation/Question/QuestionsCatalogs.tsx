@@ -3,6 +3,7 @@ import { ArrayUtils } from '../../../utils';
 import { BusyIndicator, Window } from '../../../components';
 import { QuestionsCatalogsService, CatalogHeader, ApiError } from '../../../api';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '.';
+import { UserService } from '../../../services';
 
 interface QuestionsCatalogsProps
 {
@@ -38,7 +39,7 @@ export default class QuestionsCatalogs extends React.Component<QuestionsCatalogs
 
     fetchCatalogs()
     {
-        this.service.ReadQuestionsCatalogHeaders().then(x => this.setState({ questionsCatalogs: x }));
+        this.service.ReadQuestionsCatalogHeaders(UserService.getUserID()).then(x => this.setState({ questionsCatalogs: x }));
     }
     async fetchCatalog(catalogId : number)
     {     
