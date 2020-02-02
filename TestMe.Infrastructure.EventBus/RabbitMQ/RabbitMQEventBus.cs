@@ -59,6 +59,7 @@ namespace TestMe.Infrastructure.EventBus.RabbitMQ
                 {
                     channel.ExchangeDeclare(exchange: ExchangeName, type: "direct", durable: true, autoDelete: false);
                     channel.QueueDeclare(queue: queueName, durable: true, exclusive: false, autoDelete: false, arguments: null);
+                    channel.BasicQos(prefetchSize: 0, prefetchCount: 10, global: false);
                 }
                 channel.QueueBind(queue: queueName, exchange: ExchangeName, routingKey: routingKey);
             }

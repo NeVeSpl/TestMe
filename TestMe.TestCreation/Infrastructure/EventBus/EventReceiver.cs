@@ -17,11 +17,11 @@ namespace TestMe.TestCreation.Infrastructure.EventBus
 
 
         public async Task ReceiveEvent(Event @event, Func<Task> handleEvent)
-        {
-            using (var transaction = testCreationDbContext.Database.BeginTransaction())
+        {           
+            bool eventAlreadyProcessed = testCreationDbContext.Inbox.Any(x => x.EventId == @event.EventId);
+            if (!eventAlreadyProcessed)
             {
-                bool eventAlreadyProcessed = testCreationDbContext.Inbox.Any(x => x.EventId == @event.EventId);
-                if (!eventAlreadyProcessed)
+                using (var transaction = testCreationDbContext.Database.BeginTransaction())
                 {
                     await handleEvent();
                     @event.ReceivedDateTime = DateTimeOffset.UtcNow;
