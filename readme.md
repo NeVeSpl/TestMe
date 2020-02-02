@@ -5,12 +5,13 @@
 3. [Layer : Presentation.React](#React)
 4. [Layer : Presentation.API](#API)
 5. [Module comparison](#ModuleComparison)
-6. [Module : UserManagement](#UserManagement)
-7. [Module : TestCreation](#TestCreation)
-8. [Module : TestConducting](#TestConducting)
-9. [Module : TestResults](#TestResults)
-10. [Working demo](#DEMO)
-11. [ToDo](#TODO)
+6. [Communication between modules](#CommunicationBetweenModules)
+7. [Module : UserManagement](#UserManagement)
+8. [Module : TestCreation](#TestCreation)
+9. [Module : TestConducting](#TestConducting)
+10. [Module : TestResults](#TestResults)
+11. [Working demo](#DEMO)
+12. [ToDo](#TODO)
 
 
 
@@ -20,7 +21,9 @@
 - backend: asp.net core, entity framework core, postgresql
 - tests: mstest v2, sqllite in memory, detroit school of testing 
 - frontend: react + typescript
+- communication between modules : RabbitMQ or in memory
 - enabled non-null reference types 
+
 
 ![projects_dependencies](docs/TestMe.Architecture.png)
 
@@ -29,6 +32,7 @@
 ## <a name="ADR"></a> 2. Architecture decision record
 
 1) Use async/await or not
+2) Why not to use AutoMapper
 
 
 
@@ -92,9 +96,12 @@ domain model                | anemic + a few value objects        | rich
 data access layer           | Entity Framework                    | Repository + unit of work for writes / Entity Framework for reads
 exceptional situations      | DomainException                     | Result + DomainException
 
+## <a name="CommunicationBetweenModules"></a> 6. Communication between modules
+- reliable communication between modules without using a distributed transaction
 
+![projects_dependencies](docs/CommunicationBetweenModules.png)
 
-## <a name="UserManagement"></a> 6. Module : UserManagement
+## <a name="UserManagement"></a> 7. Module : UserManagement
 - domain model: anemic
 - architecture : layers + transaction script
 - data driven unit tests and architectural tests
@@ -107,13 +114,13 @@ exceptional situations      | DomainException                     | Result + Dom
 
 
 
-## <a name="TestCreation"></a> 7. Module : TestCreation
+## <a name="TestCreation"></a> 8. Module : TestCreation
 - domain model: rich
 - architecture : clean architecture + minimal CQRS
 - data driven unit tests and architectural tests
 - soft delete for all entities
 - optimistic concurrency and conflic resloving for Question aggregate
-- inbox pattern for receiving integration events in a reliable way without using two phase commit - deduplication of event
+- inbox pattern for receiving integration events in a reliable way without using two phase commit - deduplication of events
 
 #### Architecture
 ![projects_dependencies](docs/TestCreation.png)
@@ -123,34 +130,33 @@ exceptional situations      | DomainException                     | Result + Dom
 
 
 
-## <a name="TestConducting"></a> 8. Module : TestConducting
+## <a name="TestConducting"></a> 9. Module : TestConducting
 not available yet
 
 
 
 
-## <a name="TestResults"></a> 9. Module : TestResults
+## <a name="TestResults"></a> 10. Module : TestResults
 not available yet
 
 
 
 
 
-## <a name="DEMO"></a> 10. Working demo
+## <a name="DEMO"></a> 11. Working demo
 ![projects_dependencies](docs/TestMe.ResolveOptimisticConcurrencyConflict.gif)
 
 
 
 
-## <a name="TODO"></a> 11. ToDo
-- setup development environment in docker (postgresql, TICK stack)
+## <a name="TODO"></a> 12. ToDo
+- setup development environment in docker (postgresql, TICK stack, RabbitMQ)
 - automated tests for frontend (maybe Cypress?)
 - use immerjs to create next immutable state instead of home made solution
 - add ELK
 - introduce Architecture decision record (ADR)
 - finish /Tests endpoint
-- add eventbus implementation backed on RabbitMQ
-- deal with poisonous messages in InMemory implementation of eventbus
+- deal with poisonous integration events (dead letter queue)
 
 
 ---
