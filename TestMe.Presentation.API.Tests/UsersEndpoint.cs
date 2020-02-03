@@ -7,6 +7,7 @@ using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.Users.Input;
 using TestMe.Presentation.API.Tests.Utils;
 using TestMe.TestCreation.Persistence;
+using TestMe.UserManagement;
 using TestMe.UserManagement.App.Users.Output;
 using TestMe.UserManagement.Persistence;
 
@@ -66,6 +67,20 @@ namespace TestMe.Presentation.API.Tests
 
             var users = response.GetContent<CursorPagedResults<UserDTO>>().Value;
             AssertExt.AreEquivalent(expectedUsers, users.Result);
+        }
+
+        [TestMethod]
+        [DataRow(TestUtils.ValidUser1Mail, true)]
+        [DataRow(TestUtils.ValidUser2Mail, true)]
+        [DataRow("bjorn@ironside.sk", false)]
+        public async Task IsEmailAddressTaken_HappyPathIsSuccessful(string emailAddress, bool expectedIsTaken)
+        {
+            var response = await client.GetAsync($"{EndpointName}/EmailAddress/IsTaken?emailAddress={emailAddress}");
+            AssertExt.EnsureSuccessStatusCode(response);
+
+            bool actualIsTaken = response.GetContent<bool>().Value;
+
+            Assert.AreEqual(expectedIsTaken, actualIsTaken);
         }
     }
 }

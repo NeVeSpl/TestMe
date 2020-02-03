@@ -47,6 +47,11 @@ namespace TestMe.UserManagement.App.Users
             return null;
         }
 
+        public bool IsEmailAddressTaken(string emailAddress)
+        {
+            return context.Users.AsNoTracking().Any(x => x.EmailAddress.Value == emailAddress);
+        }
+
         public long CreateUser(CreateUser createUser)
         {
             bool emailIsTaken = context.Users.AsNoTracking().Any(x => x.EmailAddress.Value == createUser.EmailAddress);

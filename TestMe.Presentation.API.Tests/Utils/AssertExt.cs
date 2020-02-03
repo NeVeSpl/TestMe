@@ -17,7 +17,7 @@ namespace TestMe.Presentation.API.Tests.Utils
             if (!response.IsSuccessStatusCode)
             {
                 string content = response.Content.ReadAsStringAsync().Result;
-                string parsedContent = JToken.Parse(content).ToString();
+                string parsedContent = string.IsNullOrEmpty(content) ? string.Empty : JToken.Parse(content).ToString();
                 Assert.Fail($"Response status code does not indicate success: {(int)response.StatusCode}\r\n{parsedContent}");
             }
         }

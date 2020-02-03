@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
@@ -40,6 +39,13 @@ namespace TestMe.Presentation.API.Controllers.Users
         public ActionResult<CursorPagedResults<UserDTO>> ReadUsers([FromRoute]CursorPagination pagination)
         {
             var result = service.GetUsers(new ReadUsers() { Pagination = pagination });
+            return Ok(result);
+        }
+
+        [HttpGet("EmailAddress/IsTaken")]
+        public ActionResult<bool> IsEmailAddressTaken(string emailAddress)
+        {
+            var result = service.IsEmailAddressTaken(emailAddress);
             return Ok(result);
         }
     }
