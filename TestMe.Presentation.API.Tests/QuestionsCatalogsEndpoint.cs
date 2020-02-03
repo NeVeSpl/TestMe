@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestMe.BuildingBlocks.App;
 using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input;
 using TestMe.Presentation.API.Tests.Utils;
@@ -34,12 +35,35 @@ namespace TestMe.Presentation.API.Tests
             var response = await client.GetAsync($"{EndpointName}/headers?ownerId={TestUtils.OwnerId}");
             AssertExt.EnsureSuccessStatusCode(response);
             
-            var catalogs = response.GetContent<CatalogHeaderDTO[]>().Value;
+            var catalogs = response.GetContent<OffsetPagedResults<CatalogHeaderDTO>>().Value;
             var context = factory.GetService<TestCreationDbContext>();
             var expectedCatalogs = context.QuestionsCatalogs.Where(x => x.OwnerId == TestUtils.OwnerId && x.IsDeleted == false).ToList();
 
-            AssertExt.AreEquivalent(expectedCatalogs, catalogs);
+            AssertExt.AreEquivalent(expectedCatalogs, catalogs.Result);
         }
+
+        [TestMethod]
+        [DataRow(2, 0)]
+        [DataRow(3, 0)]
+        [DataRow(4, 0)]
+        [DataRow(2, 1)]
+        [DataRow(3, 1)]       
+        public async Task ReadCatalogHeadersWithPagination_HappyPathIsSuccessful(int limit, int offset)
+        {
+            var response = await client.GetAsync($"{EndpointName}/headers?ownerId={TestUtils.OwnerId}&limit={limit}&offset={offset}");
+            AssertExt.EnsureSuccessStatusCode(response);
+
+            var catalogs = response.GetContent<OffsetPagedResults<CatalogHeaderDTO>>().Value;
+            var context = factory.GetService<TestCreationDbContext>();
+            var expectedCatalogs = context.QuestionsCatalogs
+                                                            .Where(x => x.OwnerId == TestUtils.OwnerId && x.IsDeleted == false)
+                                                            .Skip(offset)
+                                                            .Take(limit)
+                                                            .ToList();
+
+            AssertExt.AreEquivalent(expectedCatalogs, catalogs.Result);
+        }
+
 
         [TestMethod]
         [DataRow(TestUtils.ValidQuestionsCatalog1Id)]

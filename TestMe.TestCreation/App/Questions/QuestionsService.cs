@@ -21,9 +21,9 @@ namespace TestMe.TestCreation.App.Questions
         }
 
 
-        public Result<List<QuestionHeaderDTO>> ReadQuestionHeaders(long ownerId, long catalogId)
+        public Result<OffsetPagedResults<QuestionHeaderDTO>> ReadQuestionHeaders(long ownerId, long catalogId, OffsetPagination pagination)
         { 
-            return questionReader.GetQuestionsHeaders(ownerId, catalogId);
+            return questionReader.GetQuestionsHeaders(ownerId, catalogId, pagination);
         }
         public async Task<Result<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long ownerId, long catalogId)
         {

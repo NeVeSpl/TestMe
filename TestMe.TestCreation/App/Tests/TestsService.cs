@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using TestMe.BuildingBlocks.App;
 using TestMe.TestCreation.App.Tests.Input;
 using TestMe.TestCreation.App.Tests.Output;
@@ -20,9 +19,9 @@ namespace TestMe.TestCreation.App.Tests
         }
 
 
-        public Result<List<TestHeaderDTO>> ReadTestHeaders(long ownerId, long catalogId)
+        public Result<OffsetPagedResults<TestHeaderDTO>> ReadTestHeaders(long ownerId, long catalogId, OffsetPagination pagination)
         {
-            return testReader.GetTestHeaders(ownerId, catalogId);
+            return testReader.GetTestHeaders(ownerId, catalogId, pagination);
         }
 
         public Result<TestDTO> ReadTestWithQuestionItemsAndQuestionHeaders(long ownerId, long testId)

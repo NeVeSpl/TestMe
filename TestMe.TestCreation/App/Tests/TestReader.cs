@@ -18,7 +18,7 @@ namespace TestMe.TestCreation.App.Tests
         }
 
 
-        public Result<List<TestHeaderDTO>> GetTestHeaders(long ownerId, long catalogId)
+        public Result<OffsetPagedResults<TestHeaderDTO>> GetTestHeaders(long ownerId, long catalogId, OffsetPagination pagination)
         {
             var catalog = context.TestsCatalogs.Where(x => x.CatalogId == catalogId).Select(x => new { x.OwnerId }).FirstOrDefault();
 
@@ -31,9 +31,12 @@ namespace TestMe.TestCreation.App.Tests
                 return Result.Unauthorized();
             }
 
-            var tests = context.Tests.Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.MappingExpr).ToList();
+            var tests = context.Tests.Where(x => x.CatalogId == catalogId).Select(TestHeaderDTO.MappingExpr)
+                                     .Skip(pagination.Offset)
+                                     .Take(pagination.Limit)
+                                     .ToList();
 
-            return Result.Ok(tests);
+            return Result.Ok(new OffsetPagedResults<TestHeaderDTO>(tests, pagination.Limit));
         }
 
         public Result<TestDTO> GetTest(long ownerId, long testId, bool includeQuestionItemsWithQuestionHeaders)

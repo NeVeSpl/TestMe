@@ -37,9 +37,9 @@ namespace TestMe.Presentation.API.Controllers.Users
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public ActionResult<CursorPagedResults<UserDTO>> ReadUsers(int cursor = 0, [Range(-10, 10)]int fetchNext = 10)
+        public ActionResult<CursorPagedResults<UserDTO>> ReadUsers([FromRoute]CursorPagination pagination)
         {
-            var result = service.GetUsers(new ReadUsers() { Cursor = cursor, FetchNext = fetchNext });
+            var result = service.GetUsers(new ReadUsers() { Pagination = pagination });
             return Ok(result);
         }
     }

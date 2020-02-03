@@ -58,6 +58,7 @@ namespace TestMe.Presentation.API
 
             services.AddHttpContextAccessor();
             services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
+            services.AddScoped<IUserIdProvider, UserIdProvider>();
         }   
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -12,7 +12,7 @@ namespace TestMe.TestCreation.App.Tests
         Result UpdateTest(UpdateTest updateTest);
 
 
-        Result<List<TestHeaderDTO>> ReadTestHeaders(long ownerId, long catalogId);
+        Result<OffsetPagedResults<TestHeaderDTO>> ReadTestHeaders(long ownerId, long catalogId, OffsetPagination pagination);
         Result<TestDTO> ReadTestWithQuestionItemsAndQuestionHeaders(long ownerId, long testId);
         
 

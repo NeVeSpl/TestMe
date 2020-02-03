@@ -17,14 +17,21 @@ namespace TestMe.TestCreation.App.Catalogs
         }
                
 
-        public Result<List<CatalogHeaderDTO>> GetCatalogHeaders(long userId, long ownerId)
+        public Result<OffsetPagedResults<CatalogHeaderDTO>> GetCatalogHeaders(long userId, long ownerId, OffsetPagination pagination)
         {
             if (userId != ownerId)
             {
                 return Result.Unauthorized();
             }
-            var catalogs = context.QuestionsCatalogs.Where(x => x.OwnerId == userId).Select(CatalogHeaderDTO.MappingExpr).ToList();
-            return Result.Ok(catalogs);
+
+            var catalogs = context.QuestionsCatalogs.Where(x => x.OwnerId == userId)
+                                                    .Skip(pagination.Offset)
+                                                    .Take(pagination.Limit + 1)
+                                                    .Select(CatalogHeaderDTO.MappingExpr).ToList();
+
+            var pagedResult = new OffsetPagedResults<CatalogHeaderDTO>(catalogs, pagination.Limit);
+
+            return Result.Ok(pagedResult);
         }
         public Result<CatalogHeaderDTO> GetCatalogHeader(long userId, long catalogId)
         {
@@ -38,7 +45,7 @@ namespace TestMe.TestCreation.App.Catalogs
             return Result.Ok(catalog);
         }
 
-        public Result<QuestionsCatalogDTO> GetById(long userId, long catalogId)
+        public Result<QuestionsCatalogDTO> GetCatalog(long userId, long catalogId)
         {
             var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId && x.OwnerId == userId).Select(QuestionsCatalogDTO.MappingExpr).FirstOrDefault();
 

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input;
 using TestMe.TestCreation.App.Catalogs;
 using TestMe.TestCreation.App.Catalogs.Input;
@@ -24,9 +24,9 @@ namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs
 
         
         [HttpGet("headers")]       
-        public ActionResult<List<CatalogHeaderDTO>> ReadQuestionsCatalogHeaders(long ownerId)
+        public ActionResult<OffsetPagedResults<CatalogHeaderDTO>> ReadQuestionsCatalogHeaders(long ownerId, [FromQuery]OffsetPagination pagination)
         {
-            var result = service.ReadCatalogHeaders(UserId, ownerId);
+            var result = service.ReadCatalogHeaders(UserId, ownerId, pagination);
             return ActionResult(result);
         }
 

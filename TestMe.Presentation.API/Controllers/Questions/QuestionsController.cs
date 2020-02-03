@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Attributes;
 using TestMe.Presentation.API.Controllers.Questions.Input;
 using TestMe.TestCreation.App.Questions;
@@ -26,9 +27,9 @@ namespace TestMe.Presentation.API.Controllers.Questions
 
 
         [HttpGet("headers")]       
-        public ActionResult<List<QuestionHeaderDTO>> ReadQuestionHeaders(long catalogId)
+        public ActionResult<OffsetPagedResults<QuestionHeaderDTO>> ReadQuestionHeaders(long catalogId, [FromQuery]OffsetPagination pagination)
         {
-            var result = service.ReadQuestionHeaders(UserId, catalogId);
+            var result = service.ReadQuestionHeaders(UserId, catalogId, pagination);
             return ActionResult(result);
         }
         [HttpGet("headers/async")]

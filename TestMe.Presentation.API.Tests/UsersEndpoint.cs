@@ -62,10 +62,10 @@ namespace TestMe.Presentation.API.Tests
             AssertExt.EnsureSuccessStatusCode(response);
 
             var userManagementContext = factory.GetService<UserManagementDbContext>();
-            var expectedUserCount = userManagementContext.Users.Count();
+            var expectedUsers = userManagementContext.Users.ToList();
 
             var users = response.GetContent<CursorPagedResults<UserDTO>>().Value;
-            Assert.AreEqual(expectedUserCount, users.Result.Count());
+            AssertExt.AreEquivalent(expectedUsers, users.Result);
         }
     }
 }

@@ -18,13 +18,21 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public Result<List<CatalogHeaderDTO>> GetTestsCatalogs(long userId, long ownerId)
+        public Result<OffsetPagedResults<CatalogHeaderDTO>> GetTestsCatalogs(long userId, long ownerId, OffsetPagination pagination)
         {
             if (userId != ownerId)
             {
                 return Result.Unauthorized();
             }
-            return Result.Ok(context.TestsCatalogs.Where(x => x.OwnerId == ownerId).Select(CatalogHeaderDTO.MappingExpr).ToList());
+
+            var catalogs = context.TestsCatalogs.Where(x => x.OwnerId == userId)
+                                                .Skip(pagination.Offset)
+                                                .Take(pagination.Limit + 1)
+                                                .Select(CatalogHeaderDTO.MappingExpr).ToList();
+
+            var pagedResult = new OffsetPagedResults<CatalogHeaderDTO>(catalogs, pagination.Limit);
+
+            return Result.Ok(pagedResult);
         }
 
         public CatalogDTO GetById(long catalogId)

@@ -19,9 +19,9 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId)
+        public Result<OffsetPagedResults<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId, OffsetPagination pagination)
         {            
-            return catalogReader.GetCatalogHeaders(userId, ownerId);
+            return catalogReader.GetCatalogHeaders(userId, ownerId, pagination);
         }
 
         public Result<CatalogHeaderDTO> ReadCatalogHeader(long userId, long catalogId)
@@ -31,7 +31,7 @@ namespace TestMe.TestCreation.App.Catalogs
 
         public Result<QuestionsCatalogDTO> ReadCatalog(long userId, long catalogId)
         {            
-            return catalogReader.GetById(userId, catalogId);
+            return catalogReader.GetCatalog(userId, catalogId);
         }
 
         public Result<long> CreateCatalog(CreateCatalog createCatalog)

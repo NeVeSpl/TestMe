@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestMe.BuildingBlocks.App;
 using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.Questions.Input;
 using TestMe.Presentation.API.Tests.Utils;
@@ -37,11 +38,35 @@ namespace TestMe.Presentation.API.Tests
             var response = await client.GetAsync($"{EndpointName}/headers?catalogId={catalogId}");
             AssertExt.EnsureSuccessStatusCode(response);
 
-            var actualQuestions = response.GetContent<QuestionHeaderDTO[]>().Value;
+            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionHeaderDTO>>().Value;
             var context = factory.GetService<TestCreationDbContext>();
             var expectedQuestions = context.Questions.Where(x => x.CatalogId == catalogId && x.IsDeleted == false).ToList();
 
-            AssertExt.AreEquivalent(expectedQuestions, actualQuestions);
+            AssertExt.AreEquivalent(expectedQuestions, actualQuestions.Result);
+        }
+        [TestMethod]
+        [DataRow(1, 0)]
+        [DataRow(2, 0)]
+        [DataRow(3, 0)]      
+        [DataRow(1, 1)]
+        [DataRow(2, 1)]
+        [DataRow(3, 1)]
+        [DataRow(1, 2)]
+        [DataRow(2, 2)]
+        [DataRow(3, 2)]
+        public async Task ReadQuestionHeadersWithPagination_HappyPathIsSuccessful(int limit, int offset)
+        {
+            var response = await client.GetAsync($"{EndpointName}/headers?catalogId={TestUtils.ValidQuestionsCatalog2Id}&limit={limit}&offset={offset}");
+            AssertExt.EnsureSuccessStatusCode(response);
+
+            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionHeaderDTO>>().Value;
+            var context = factory.GetService<TestCreationDbContext>();
+            var expectedQuestions = context.Questions.Where(x => x.CatalogId == TestUtils.ValidQuestionsCatalog2Id && x.IsDeleted == false)
+                                                     .Skip(offset)
+                                                     .Take(limit)
+                                                     .ToList();
+
+            AssertExt.AreEquivalent(expectedQuestions, actualQuestions.Result);
         }
 
         [TestMethod]

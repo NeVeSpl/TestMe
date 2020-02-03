@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestMe.BuildingBlocks.App;
 using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.Tests.Input;
 using TestMe.Presentation.API.Tests.Utils;
@@ -35,11 +36,11 @@ namespace TestMe.Presentation.API.Tests
             var response = await client.GetAsync($"{EndpointName}/headers?catalogId={catalogId}");
             AssertExt.EnsureSuccessStatusCode(response);
 
-            var actualTests = response.GetContent<TestHeaderDTO[]>().Value;
+            var actualTests = response.GetContent<OffsetPagedResults<TestHeaderDTO>>().Value;
             var context = factory.GetService<TestCreationDbContext>();
             var expectedTests = context.Tests.Where(x => x.CatalogId == catalogId && x.IsDeleted == false).ToList();
 
-            AssertExt.AreEquivalent(expectedTests, actualTests);
+            AssertExt.AreEquivalent(expectedTests, actualTests.Result);
         }
 
         [TestMethod]

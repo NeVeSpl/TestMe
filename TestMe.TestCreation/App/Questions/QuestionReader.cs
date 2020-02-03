@@ -89,7 +89,7 @@ namespace TestMe.TestCreation.App.Questions
             return Result.Ok(question);
         }
 
-        public Result<List<QuestionHeaderDTO>> GetQuestionsHeaders(long ownerId, long catalogId)
+        public Result<OffsetPagedResults<QuestionHeaderDTO>> GetQuestionsHeaders(long ownerId, long catalogId, OffsetPagination pagination)
         {
             var catalog = context.QuestionsCatalogs.Where(x => x.CatalogId == catalogId).Select(x => new { x.OwnerId } ).FirstOrDefault();
 
@@ -102,9 +102,13 @@ namespace TestMe.TestCreation.App.Questions
                 return Result.Unauthorized();
             }
 
-            var questions = context.Questions.Where(x => x.CatalogId == catalogId).Select(QuestionHeaderDTO.MappingExpr).ToList();
+            var questions = context.Questions.Where(x => x.CatalogId == catalogId)
+                                             .Skip(pagination.Offset)
+                                             .Take(pagination.Limit + 1)
+                                             .Select(QuestionHeaderDTO.MappingExpr)
+                                             .ToList();
 
-            return Result.Ok(questions);
+            return Result.Ok(new OffsetPagedResults<QuestionHeaderDTO>(questions, pagination.Limit));
         }
 
         public async Task<Result<List<QuestionHeaderDTO>>> GetQuestionsHeadersAsync(long ownerId, long catalogId)

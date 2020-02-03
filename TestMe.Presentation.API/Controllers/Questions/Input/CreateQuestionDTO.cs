@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using TestMe.TestCreation.App.Questions.Input;
-using TestMe.TestCreation.Domain;
+﻿using TestMe.TestCreation.App.Questions.Input;
 
 namespace TestMe.Presentation.API.Controllers.Questions.Input
 {

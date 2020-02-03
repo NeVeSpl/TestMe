@@ -41,7 +41,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerTestsCatalogId, ResultStatus.Unauthorized)]
         public void ReadTestHeaders(long catalogId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadTestHeaders(OwnerId, catalogId);
+            Result result = serviceUnderTest.ReadTestHeaders(OwnerId, catalogId, new OffsetPagination());
             Assert.AreEqual(expectedResult, result.Status);
         }
 

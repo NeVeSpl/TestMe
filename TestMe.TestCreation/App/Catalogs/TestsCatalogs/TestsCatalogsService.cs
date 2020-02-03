@@ -19,9 +19,9 @@ namespace TestMe.TestCreation.App.Catalogs
         }
 
 
-        public Result<List<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId)
+        public Result<OffsetPagedResults<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId, OffsetPagination pagination)
         {
-            return catalogReader.GetTestsCatalogs(userId, ownerId);
+            return catalogReader.GetTestsCatalogs(userId, ownerId, pagination);
         }
 
         public Result<CatalogDTO> ReadCatalog(long userId, long catalogId)

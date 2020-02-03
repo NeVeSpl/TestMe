@@ -76,16 +76,16 @@ namespace TestMe.UserManagement.App.Users
         {
             var result = new CursorPagedResults<UserDTO>();
 
-            if (readUsers.FetchNext > 0)
+            if (readUsers.Pagination.FetchNext > 0)
             {
-                result.Result = context.Users.AsNoTracking().Where(x => x.UserId > readUsers.Cursor).Take(readUsers.FetchNext).ProjectTo<UserDTO>(mapperConfiguration).ToList();
-                result.Cursor = readUsers.Cursor;
+                result.Result = context.Users.AsNoTracking().Where(x => x.UserId > readUsers.Pagination.Cursor).Take(readUsers.Pagination.FetchNext).ProjectTo<UserDTO>(mapperConfiguration).ToList();
+                result.Cursor = readUsers.Pagination.Cursor;
                 result.NextCursor = result.Result.LastOrDefault()?.UserId;
             }
             else
             {
-                var users = context.Users.AsNoTracking().Where(x => x.UserId <= readUsers.Cursor).TakeLast(readUsers.FetchNext - 1).ProjectTo<UserDTO>(mapperConfiguration).ToList();
-                if (users.Count() != Math.Abs(readUsers.FetchNext))
+                var users = context.Users.AsNoTracking().Where(x => x.UserId <= readUsers.Pagination.Cursor).TakeLast(readUsers.Pagination.FetchNext - 1).ProjectTo<UserDTO>(mapperConfiguration).ToList();
+                if (users.Count() != Math.Abs(readUsers.Pagination.FetchNext))
                 {
                     result.Result = users;
                     result.Cursor = 0;
@@ -95,7 +95,7 @@ namespace TestMe.UserManagement.App.Users
                     result.Result = users.Skip(1).ToList();
                     result.Cursor = result.Result.FirstOrDefault()?.UserId;
                 }
-                result.NextCursor = readUsers.Cursor;
+                result.NextCursor = readUsers.Pagination.Cursor;
             }
 
             return result;

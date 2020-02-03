@@ -3,6 +3,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
+using TestMe.Presentation.API.Services;
 
 namespace TestMe.Presentation.API
 {
@@ -15,7 +16,7 @@ namespace TestMe.Presentation.API
         [NonAction]
         public void Setup()
         {
-            UserId = GetAuthenticatedUserId();           
+            UserId = UserIdProvider.GetAuthenticatedUserId(HttpContext);
         }
 
 
@@ -72,18 +73,7 @@ namespace TestMe.Presentation.API
             string controllerFullName = this.GetType().Name;
             return controllerFullName.Substring(0, controllerFullName.Length - "Controller".Length);
         }
-        private long GetAuthenticatedUserId()
-        {
-            long result = -1;
-
-            if (HttpContext?.User?.Identity is ClaimsIdentity identity)
-            {
-                string? nameIdentifierValue = identity.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                Int64.TryParse(nameIdentifierValue, out result);
-            }
-
-            return result;
-        }
+       
 
         private protected enum ProblemDetailsType { ExpectedApp = 400, ExpectedDomain = 422, UnexpectedError = 500 }
         private protected ProblemDetails CreateProblemDetails(ProblemDetailsType type, string? detail = null)

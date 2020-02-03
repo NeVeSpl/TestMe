@@ -12,7 +12,7 @@ namespace TestMe.TestCreation.App.Questions
         Result UpdateQuestionWithAnswers(UpdateQuestion updateQuestion);
         Result DeleteQuestionWithAnswers(DeleteQuestion deleteQuestion);
 
-        Result<List<QuestionHeaderDTO>> ReadQuestionHeaders(long ownerId, long catalogId);
+        Result<OffsetPagedResults<QuestionHeaderDTO>> ReadQuestionHeaders(long ownerId, long catalogId, OffsetPagination pagination);
         Task<Result<List<QuestionHeaderDTO>>> ReadQuestionHeadersAsync(long ownerId, long catalogId);
         Result<QuestionHeaderDTO> ReadQuestionHeader(long ownerId, long questionId);
         Result<QuestionDTO> ReadQuestionWithAnswers(long ownerId, long questionId);

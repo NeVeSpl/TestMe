@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Controllers.Tests.Input;
 using TestMe.TestCreation.App.Tests;
 using TestMe.TestCreation.App.Tests.Input;
@@ -24,9 +25,9 @@ namespace TestMe.Presentation.API.Controllers.Tests
 
 
         [HttpGet("headers")]        
-        public ActionResult<List<TestHeaderDTO>> ReadTestHeaders(long catalogId)
+        public ActionResult<OffsetPagedResults<TestHeaderDTO>> ReadTestHeaders(long catalogId, [FromQuery]OffsetPagination pagination)
         {
-            var result = service.ReadTestHeaders(UserId, catalogId);
+            var result = service.ReadTestHeaders(UserId, catalogId, pagination);
             return ActionResult(result);
         }
 
