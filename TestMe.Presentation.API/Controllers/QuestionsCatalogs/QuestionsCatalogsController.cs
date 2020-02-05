@@ -38,7 +38,7 @@ namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs
         }
 
         [HttpGet("{catalogId}")] 
-        public ActionResult<CatalogDTO> ReadQuestionsCatalog(long catalogId)
+        public ActionResult<QuestionsCatalogDTO> ReadQuestionsCatalog(long catalogId)
         {
             var result = service.ReadCatalog(UserId, catalogId);
             return ActionResult(result);

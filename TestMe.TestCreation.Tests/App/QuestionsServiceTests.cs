@@ -41,7 +41,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerQuestionsCatalogId, ResultStatus.Unauthorized)]
         public void ReadQuestionHeaders(long catalogId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadQuestionHeaders(OwnerId, catalogId, new OffsetPagination());
+            var result = serviceUnderTest.ReadQuestionHeaders(OwnerId, catalogId, new OffsetPagination());
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -52,7 +52,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
         public void ReadQuestionHeader(long questionId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadQuestionHeader(OwnerId, questionId);
+            var result = serviceUnderTest.ReadQuestionHeader(OwnerId, questionId);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -63,7 +63,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
         public void ReadQuestionWithAnswers(long questionId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadQuestionWithAnswers(OwnerId, questionId);
+            var result = serviceUnderTest.ReadQuestionWithAnswers(OwnerId, questionId);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -81,7 +81,7 @@ namespace TestMe.TestCreation.Tests.App
                 Content = "Dani Carvajal",
                 CatalogId = catalogId,
             };
-            Result result = serviceUnderTest.CreateQuestionWithAnswers(command);
+            var result = serviceUnderTest.CreateQuestionWithAnswers(command);
             Assert.AreEqual(expectedResult, result.Status);
         }
 

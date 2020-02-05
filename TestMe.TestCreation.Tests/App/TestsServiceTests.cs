@@ -41,7 +41,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerTestsCatalogId, ResultStatus.Unauthorized)]
         public void ReadTestHeaders(long catalogId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadTestHeaders(OwnerId, catalogId, new OffsetPagination());
+            var result = serviceUnderTest.ReadTestHeaders(OwnerId, catalogId, new OffsetPagination());
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -52,7 +52,7 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(OtherOwnerTestId, ResultStatus.Unauthorized)]
         public void ReadTestWithQuestionItemsAndQuestionHeaders(long testId, ResultStatus expectedResult)
         {
-            Result result = serviceUnderTest.ReadTestWithQuestionItemsAndQuestionHeaders(OwnerId, testId);
+            var result = serviceUnderTest.ReadTestWithQuestionItemsAndQuestionHeaders(OwnerId, testId);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -70,7 +70,7 @@ namespace TestMe.TestCreation.Tests.App
                 Title = "Roberto Carlos",
                 CatalogId = catalogId,
             };
-            Result result = serviceUnderTest.CreateTest(command);
+            var result = serviceUnderTest.CreateTest(command);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -121,7 +121,7 @@ namespace TestMe.TestCreation.Tests.App
                 QuestionId = ValidQuestion1Id,
                 TestId = testId
             };
-            Result result = serviceUnderTest.CreateQuestionItem(command);
+            var result = serviceUnderTest.CreateQuestionItem(command);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -138,7 +138,7 @@ namespace TestMe.TestCreation.Tests.App
                 QuestionId = questionId,
                 TestId = ValidTest1Id,
             };
-            Result result = serviceUnderTest.CreateQuestionItem(command);
+            var result = serviceUnderTest.CreateQuestionItem(command);
             Assert.AreEqual(expectedResult, result.Status);
         }
 

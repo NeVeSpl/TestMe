@@ -8,7 +8,7 @@ using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input;
 using TestMe.Presentation.API.Tests.Utils;
 using TestMe.TestCreation;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.QuestionsCatalogs.Output;
 using TestMe.TestCreation.Domain;
 using TestMe.TestCreation.Persistence;
 

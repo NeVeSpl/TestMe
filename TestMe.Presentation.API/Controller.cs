@@ -28,9 +28,16 @@ namespace TestMe.Presentation.API
             }
             return @object;
         }
+        protected ActionResult<T> ActionResult<T>(Result<T> result, bool resultOfCreatingResource = false)
+        {
+            return ActionResult2(result, resultOfCreatingResource);
+        }
+        protected ActionResult ActionResult(Result result, bool resultOfCreatingResource = false)
+        {
+            return ActionResult2(result, resultOfCreatingResource);
+        }
 
-
-        protected ActionResult ActionResult(IResult result, bool resultOfCreatingResource = false)
+        private ActionResult ActionResult2(IResult result, bool resultOfCreatingResource = false)
         {
             switch (result.Status)
             {
