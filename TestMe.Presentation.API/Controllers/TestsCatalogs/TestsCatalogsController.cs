@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Controllers.TestsCatalogs.Input;
-using TestMe.TestCreation.App.Catalogs;
-using TestMe.TestCreation.App.Catalogs.Input;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.TestsCatalogs;
+using TestMe.TestCreation.App.TestsCatalogs.Input;
+using TestMe.TestCreation.App.TestsCatalogs.Output;
 
 namespace TestMe.Presentation.API.Controllers.TestsCatalogs
 {

@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TestMe.TestCreation.App.Catalogs.Input;
+using TestMe.TestCreation.App.QuestionsCatalogs.Input;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input

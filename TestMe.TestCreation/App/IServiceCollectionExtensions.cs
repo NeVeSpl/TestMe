@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TestMe.TestCreation.App.Catalogs;
 using TestMe.TestCreation.App.EventHandlers;
 using TestMe.TestCreation.App.Questions;
+using TestMe.TestCreation.App.QuestionsCatalogs;
 using TestMe.TestCreation.App.Tests;
+using TestMe.TestCreation.App.TestsCatalogs;
 
 namespace TestMe.TestCreation.App
 {

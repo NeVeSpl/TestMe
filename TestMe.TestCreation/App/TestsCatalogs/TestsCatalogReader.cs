@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TestMe.BuildingBlocks.App;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.TestsCatalogs.Output;
 using TestMe.TestCreation.Persistence;
 
 
-namespace TestMe.TestCreation.App.Catalogs
+namespace TestMe.TestCreation.App.TestsCatalogs
 {
     internal sealed class TestsCatalogReader
     {

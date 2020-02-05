@@ -1,8 +1,8 @@
 ﻿using TestMe.BuildingBlocks.App;
-using TestMe.TestCreation.App.Catalogs.Input;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.QuestionsCatalogs.Input;
+using TestMe.TestCreation.App.QuestionsCatalogs.Output;
 
-namespace TestMe.TestCreation.App.Catalogs
+namespace TestMe.TestCreation.App.QuestionsCatalogs
 {
     public interface IQuestionsCatalogsService
     {

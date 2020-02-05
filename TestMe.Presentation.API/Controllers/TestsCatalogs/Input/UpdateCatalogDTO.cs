@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TestMe.TestCreation.App.Catalogs.Input;
+﻿using TestMe.TestCreation.App.TestsCatalogs.Input;
 
 namespace TestMe.Presentation.API.Controllers.TestsCatalogs.Input
 {

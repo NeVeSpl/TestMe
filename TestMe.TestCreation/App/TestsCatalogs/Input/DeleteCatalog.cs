@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace TestMe.TestCreation.App.Catalogs.Input
+namespace TestMe.TestCreation.App.TestsCatalogs.Input
 {
     public class DeleteCatalog
     {

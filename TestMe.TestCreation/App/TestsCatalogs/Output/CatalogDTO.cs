@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.App.Catalogs.Output
+namespace TestMe.TestCreation.App.TestsCatalogs.Output
 {
     public class CatalogDTO : CatalogHeaderDTO
     {

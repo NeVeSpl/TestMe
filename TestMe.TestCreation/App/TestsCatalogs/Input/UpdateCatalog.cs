@@ -1,4 +1,4 @@
-﻿namespace TestMe.TestCreation.App.Catalogs.Input
+﻿namespace TestMe.TestCreation.App.TestsCatalogs.Input
 {
     public class UpdateCatalog : CreateCatalog
     {

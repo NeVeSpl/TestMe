@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.App.Catalogs.Input
+namespace TestMe.TestCreation.App.QuestionsCatalogs.Input
 {
     public class CreateCatalog
     {

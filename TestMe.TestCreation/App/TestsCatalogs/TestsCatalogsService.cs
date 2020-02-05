@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using TestMe.BuildingBlocks.App;
-using TestMe.TestCreation.App.Catalogs.Input;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.TestsCatalogs.Input;
+using TestMe.TestCreation.App.TestsCatalogs.Output;
 using TestMe.TestCreation.Domain;
 
-namespace TestMe.TestCreation.App.Catalogs
+namespace TestMe.TestCreation.App.TestsCatalogs
 {
-    internal sealed class QuestionsCatalogsService : IQuestionsCatalogsService
+    internal sealed class TestsCatalogsService : ITestsCatalogsService
     {
-        private readonly QuestionsCatalogReader catalogReader;
+        private readonly TestsCatalogReader catalogReader;
         private readonly ITestCreationUoW uow;
 
 
-        public QuestionsCatalogsService(QuestionsCatalogReader catalogReader, ITestCreationUoW uow)
+        public TestsCatalogsService(TestsCatalogReader catalogReader, ITestCreationUoW uow)
         {
             this.catalogReader = catalogReader;
             this.uow = uow;
@@ -20,39 +20,42 @@ namespace TestMe.TestCreation.App.Catalogs
 
 
         public Result<OffsetPagedResults<CatalogHeaderDTO>> ReadCatalogHeaders(long userId, long ownerId, OffsetPagination pagination)
-        {            
-            return catalogReader.GetCatalogHeaders(userId, ownerId, pagination);
+        {
+            return catalogReader.GetTestsCatalogs(userId, ownerId, pagination);
         }
 
-        public Result<CatalogHeaderDTO> ReadCatalogHeader(long userId, long catalogId)
-        {          
-            return catalogReader.GetCatalogHeader(userId, catalogId);
-        }
+        public Result<CatalogDTO> ReadCatalog(long userId, long catalogId)
+        {
+            // todo : check if owner has access to given catalog
+            var catalog = catalogReader.GetById(catalogId);
 
-        public Result<QuestionsCatalogDTO> ReadCatalog(long userId, long catalogId)
-        {            
-            return catalogReader.GetCatalog(userId, catalogId);
+            if (catalog == null)
+            {
+                return Result.NotFound();
+            }
+
+            return Result.Ok(catalog);
         }
 
         public Result<long> CreateCatalog(CreateCatalog createCatalog)
         {
             Owner owner = uow.Owners.GetById(createCatalog.UserId);
 
-            var policy = AddQuestionsCatalogPolicyFactory.Create(owner.MembershipLevel);
-            QuestionsCatalog catalog = owner.AddQuestionsCatalog(createCatalog.Name, policy);
+            TestsCatalog catalog = owner.AddTestsCatalog(createCatalog.Name);    
             uow.Save();
 
             return Result.Ok(catalog.CatalogId);
         }
 
         public Result UpdateCatalog(UpdateCatalog updateCatalog)
-        {          
-            QuestionsCatalog catalog = uow.QuestionsCatalogs.GetById(updateCatalog.CatalogId);
+        {
+            var catalog = uow.TestsCatalogs.GetById(updateCatalog.CatalogId);
 
             if (catalog == null)
             {
                 return Result.NotFound();
             }
+
             if (catalog.OwnerId != updateCatalog.UserId)
             {
                 return Result.Unauthorized();
@@ -63,22 +66,22 @@ namespace TestMe.TestCreation.App.Catalogs
 
             return Result.Ok();
         }
-       
+
         public Result DeleteCatalog(DeleteCatalog deleteCatalog)
         {
-            var owner = uow.Owners.GetById(deleteCatalog.UserId);
-            var catalog = uow.QuestionsCatalogs.GetById(deleteCatalog.CatalogId, includeQuestions: true);        
+            var catalog = uow.TestsCatalogs.GetById(deleteCatalog.CatalogId, includeTests: true);
 
             if (catalog == null)
             {
                 return Result.NotFound();
             }
+
             if (catalog.OwnerId != deleteCatalog.UserId)
             {
                 return Result.Unauthorized();
             }
 
-            owner.DeleteQuestionsCatalog(catalog); 
+            catalog.Delete();           
             uow.Save();
 
             return Result.Ok();

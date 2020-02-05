@@ -1,4 +1,4 @@
-﻿using TestMe.TestCreation.App.Catalogs.Input;
+﻿using TestMe.TestCreation.App.QuestionsCatalogs.Input;
 
 namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input
 {

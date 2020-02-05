@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using TestMe.BuildingBlocks.App;
-using TestMe.TestCreation.App.Catalogs.Input;
-using TestMe.TestCreation.App.Catalogs.Output;
+using TestMe.TestCreation.App.TestsCatalogs.Input;
+using TestMe.TestCreation.App.TestsCatalogs.Output;
 
-namespace TestMe.TestCreation.App.Catalogs
+namespace TestMe.TestCreation.App.TestsCatalogs
 {
     public interface ITestsCatalogsService
     {
