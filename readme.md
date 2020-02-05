@@ -1,5 +1,7 @@
 ﻿# Sample Modular Monolith application without fluff/hype(*) but with tests
 
+
+
 1. [Overview](#Overview)
 2. [Architecture decision record](#ADR)
 3. [Layer : Presentation.React](#React)
@@ -33,7 +35,7 @@
 
 1) Use async/await or not
 2) Why not to use AutoMapper
-
+3) 
 
 
 ## <a name="React"></a> 3. Layer : Presentation.React
@@ -55,7 +57,7 @@
 | /Tests/                   | Endpoint that allows editing only aggregate root from Test aggregate (Test + QuestionItem)  |
 | /Tests/{testId}/questions/|  Endpoint that allows editing  QuestionItem entity from Test aggregate (Test + QuestionItem) as a sub-resource |
 | /Tokens/                  |   |
-| /Metrics/lineprotocol/    | A special endpoint available only from localhost that returns metrics (CPU usage, RAM usage, no. GC collections, GC heaps sizes, GC pause time, GC background time, ThreadpoolThreadCount, ThreadpoolQueueLength, ExceptionCount, MonitorLockContentionCount) in a format that can be directly pulled by Telegraf to InfluxDB |
+| /Metrics/lineprotocol/    | A special endpoint available only from localhost that returns metrics : <br/>- CPU usage,<br/>- RAM usage,<br/>- no. GC collections,<br/>- GC heaps sizes,<br/>- GC pause time,<br/>- GC background time,<br/>- ThreadpoolThreadCount,<br/>- ThreadpoolQueueLength,<br/>- ExceptionCount,<br/>- MonitorLockContentionCount<br/> in a format that can be directly pulled by Telegraf to InfluxDB |
 | /Users/                   |
 
 #### Load testing results
@@ -95,9 +97,11 @@ architecture                | layers + transaction script         | clean archit
 domain model                | anemic + a few value objects        | rich 
 data access layer           | Entity Framework                    | Repository + unit of work for writes / Entity Framework for reads
 exceptional situations      | DomainException                     | Result + DomainException
+pagination                  | cursor based                        | offset based
 
 ## <a name="CommunicationBetweenModules"></a> 6. Communication between modules
 - reliable communication between modules without using a distributed transaction
+- two available implementations, RabbitMQ based for production use and in memory for tests  
 
 ![projects_dependencies](docs/CommunicationBetweenModules.png)
 
@@ -155,7 +159,7 @@ not available yet
 - use immerjs to create next immutable state instead of home made solution
 - add ELK
 - introduce Architecture decision record (ADR)
-- finish /Tests endpoint
+- finish /Tests endpoints
 - deal with poisonous integration events (dead letter queue)
 
 

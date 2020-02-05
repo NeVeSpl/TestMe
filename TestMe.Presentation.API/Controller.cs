@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Services;
+using TestMe.TestCreation.App;
 
 namespace TestMe.Presentation.API
 {
@@ -17,6 +17,16 @@ namespace TestMe.Presentation.API
         public void Setup()
         {
             UserId = UserIdProvider.GetAuthenticatedUserId(HttpContext);
+        }
+
+
+        private protected T Enrich<T>(T @object) 
+        {
+            if (@object is ItHasUserId itHasUserId)
+            {
+                itHasUserId.UserId = UserId;
+            }
+            return @object;
         }
 
 

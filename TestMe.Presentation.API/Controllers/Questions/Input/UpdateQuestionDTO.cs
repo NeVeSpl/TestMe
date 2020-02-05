@@ -11,14 +11,14 @@ namespace TestMe.Presentation.API.Controllers.Questions.Input
 
 
 
-        public UpdateQuestion CreateCommand(long userId, long questionId)
+        public UpdateQuestion CreateCommand(long questionId)
         {
             return new UpdateQuestion()
             {
                 Content = Content,
                 Answers = Answers.ConvertAll(thisAnswer => thisAnswer.CreateAnswer()),
                 CatalogId = CatalogId!.Value,
-                UserId = userId,
+              
                 QuestionId = questionId,
                 ConcurrencyToken = ConcurrencyToken
             };

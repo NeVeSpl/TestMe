@@ -63,7 +63,7 @@ namespace TestMe.Presentation.API.Controllers.Questions
         [HttpPost]       
         public ActionResult<long> CreateQuestionWithAnswers(CreateQuestionDTO createQuestion)
         {
-            var result = service.CreateQuestionWithAnswers(createQuestion.CreateCommand(UserId));
+            var result = service.CreateQuestionWithAnswers(Enrich(createQuestion.CreateCommand()));
             return ActionResult(result);
         }
        
@@ -71,14 +71,14 @@ namespace TestMe.Presentation.API.Controllers.Questions
         [ApiConventionMethod(typeof(ApiConventions), nameof(ApiConventions.UpdateWithConcurrencyCheck))]       
         public ActionResult UpdateQuestionWithAnswers(long questionId, UpdateQuestionDTO updateQuestion)
         {         
-            var result = service.UpdateQuestionWithAnswers(updateQuestion.CreateCommand(UserId, questionId));
+            var result = service.UpdateQuestionWithAnswers(Enrich(updateQuestion.CreateCommand(questionId)));
             return ActionResult(result);
         }
       
         [HttpDelete("{questionId}")]      
         public ActionResult DeleteQuestionWithAnswers(long questionId)
         {
-            var result = service.DeleteQuestionWithAnswers(new DeleteQuestion(UserId, questionId));
+            var result = service.DeleteQuestionWithAnswers(Enrich(new DeleteQuestion(questionId)));
             return ActionResult(result);
         }
     }
