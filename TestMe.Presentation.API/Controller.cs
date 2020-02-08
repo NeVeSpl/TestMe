@@ -20,24 +20,24 @@ namespace TestMe.Presentation.API
         }
 
 
-        private protected T Enrich<T>(T @object) 
+        private protected TOutput Execute<TInput, TOutput>(Func<TInput, TOutput> commandHandler, TInput command) where TInput : class
         {
-            if (@object is ItHasUserId itHasUserId)
+            if (@command is ItHasUserId itHasUserId)
             {
                 itHasUserId.UserId = UserId;
             }
-            return @object;
+            return commandHandler(command);
         }
         protected ActionResult<T> ActionResult<T>(Result<T> result, bool resultOfCreatingResource = false)
         {
-            return ActionResult2(result, resultOfCreatingResource);
+            return ActionResultImplementation(result, resultOfCreatingResource);
         }
         protected ActionResult ActionResult(Result result, bool resultOfCreatingResource = false)
         {
-            return ActionResult2(result, resultOfCreatingResource);
+            return ActionResultImplementation(result, resultOfCreatingResource);
         }
 
-        private ActionResult ActionResult2(IResult result, bool resultOfCreatingResource = false)
+        private ActionResult ActionResultImplementation(IResult result, bool resultOfCreatingResource = false)
         {
             switch (result.Status)
             {
