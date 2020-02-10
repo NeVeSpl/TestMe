@@ -57,8 +57,7 @@ namespace TestMe.Presentation.API
             //services.AddSingleton<IEventBus, InMemoryEventBus>();
 
             services.AddHttpContextAccessor();
-            services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
-            services.AddScoped<IUserIdProvider, UserIdProvider>();
+            services.AddPresentationAPIServices();
         }   
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
