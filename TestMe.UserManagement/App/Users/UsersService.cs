@@ -28,23 +28,23 @@ namespace TestMe.UserManagement.App.Users
 
         
         /// <returns>null if credentials were verified negatively</returns>
-        public UserCredentialsDTO? VerifyUserCredentials(LoginUser credentials)
+        public AuthenticationResult VerifyUserCredentials(LoginUser credentials)
         {
             var user = context.Users.AsNoTracking().FirstOrDefault(x => x.EmailAddress.Value == credentials.Email);
             if ((user != null) && (user.Password.VerifyPassword(credentials.Password)))
             {
-                return new UserCredentialsDTO(user);
+                return new AuthenticationResult(new UserCredentialsDTO(user));
             }
-            return null;
+            return new AuthenticationResult(false);
         }  
-        public async Task<UserCredentialsDTO?> VerifyUserCredentialsAsync(LoginUser credentials)
+        public async Task<AuthenticationResult> VerifyUserCredentialsAsync(LoginUser credentials)
         {
             var user = await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.EmailAddress.Value == credentials.Email);
             if ((user != null) && (user.Password.VerifyPassword(credentials.Password)))
             {
-                return new UserCredentialsDTO(user);
+                return new AuthenticationResult(new UserCredentialsDTO(user));
             }
-            return null;
+            return new AuthenticationResult(false);
         }
 
         public bool IsEmailAddressTaken(string emailAddress)
