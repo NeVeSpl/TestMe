@@ -23,8 +23,9 @@
 - backend: asp.net core, entity framework core, postgresql
 - tests: mstest v2, sqllite in memory, detroit school of testing 
 - frontend: react + typescript
-- communication between modules : RabbitMQ or in memory
+- communication between modules : RabbitMQ or in memory bus
 - enabled non-null reference types 
+- every module in separate transaction scope
 
 
 ![projects_dependencies](docs/TestMe.Architecture.png)
