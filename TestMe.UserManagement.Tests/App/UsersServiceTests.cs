@@ -5,6 +5,7 @@ using TestMe.BuildingBlocks.Tests;
 using TestMe.UserManagement.App;
 using TestMe.UserManagement.App.Users;
 using TestMe.UserManagement.App.Users.Input;
+using TestMe.UserManagement.App.Users.Output;
 using TestMe.UserManagement.Domain;
 using TestMe.UserManagement.Persistence;
 
@@ -97,8 +98,8 @@ namespace TestMe.UserManagement.Tests
                 Email = email,
                 Password = password
             };
-            var credentials = serviceUnderTest.VerifyUserCredentials(command);
-            Assert.IsNull(credentials);
+            AuthenticationResult credentials = serviceUnderTest.VerifyUserCredentials(command);
+            Assert.IsFalse(credentials.IsAuthenticated);
         }
     }
 }
