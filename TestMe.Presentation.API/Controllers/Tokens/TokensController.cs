@@ -20,10 +20,10 @@ namespace TestMe.Presentation.API.Controllers.Tokens
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public IActionResult CreateToken(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
+        public ActionResult<TokenDTO> CreateToken(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
         {
             var result = service.VerifyUserCredentials(loginCredentials.CreateCommand());
-            IActionResult response;
+            ActionResult<TokenDTO> response;
             if (result.IsAuthenticated)
             {
                 var tokenString = AuthenticationService.BuildToken(result.UserCredentials!, config.Value);
@@ -42,10 +42,10 @@ namespace TestMe.Presentation.API.Controllers.Tokens
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
-        public async Task<IActionResult> CreateTokenAsync(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
+        public async Task<ActionResult<TokenDTO>> CreateTokenAsync(LoginCredentialsDTO loginCredentials, [FromServices]UsersService service, [FromServices]IOptions<AuthenticationService.Config> config)
         {
             var result = await service.VerifyUserCredentialsAsync(loginCredentials.CreateCommand());
-            IActionResult response;
+            ActionResult<TokenDTO> response;
             if (result.IsAuthenticated)
             {
                 var tokenString = AuthenticationService.BuildToken(result.UserCredentials!, config.Value);

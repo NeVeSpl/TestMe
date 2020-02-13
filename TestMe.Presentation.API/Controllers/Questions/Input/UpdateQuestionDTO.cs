@@ -1,9 +1,20 @@
-﻿using TestMe.TestCreation.App.Questions.Input;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using TestMe.TestCreation.App.Questions.Input;
+using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.Questions.Input
 {
-    public class UpdateQuestionDTO : QuestionBaseDTO<UpdateAnswerDTO>
+    public class UpdateQuestionDTO 
     {
+        [StringLength(maximumLength: QuestionConst.ContentMaxLength)]
+        public string Content { get; set; } = string.Empty;
+
+        public List<UpdateAnswerDTO> Answers { get; set; } = new List<UpdateAnswerDTO>();
+
+        [Required]
+        public long? CatalogId { get; set; }
+
         /// <summary>
         /// When ConcurrencyToken is not provided update will be forced (it will succeed even if concurrent edit happened)
         /// </summary>
