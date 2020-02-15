@@ -8,7 +8,7 @@ namespace TestMe.Presentation.API.Services
     {
         public static void AddPresentationAPIServices(this IServiceCollection services)
         {
-            services.AddScoped<ICorrelationIdProvider, CorrelationIdProvider>();
+            services.AddScoped<ITraceIdProvider, TraceIdProvider>();
             services.AddScoped<IUserIdProvider, UserIdProvider>();
         }
     }

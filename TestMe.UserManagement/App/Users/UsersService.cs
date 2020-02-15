@@ -16,10 +16,10 @@ namespace TestMe.UserManagement.App.Users
     public class UsersService
     {
         private readonly UserManagementDbContext context;
-        private readonly ICorrelationIdProvider correlationIdProvider;
+        private readonly ITraceIdProvider correlationIdProvider;
         private readonly IConfigurationProvider mapperConfiguration;
 
-        public UsersService(UserManagementDbContext context, ICorrelationIdProvider correlationIdProvider, IConfigurationProvider mapperConfiguration)
+        public UsersService(UserManagementDbContext context, ITraceIdProvider correlationIdProvider, IConfigurationProvider mapperConfiguration)
         {
             this.context = context;
             this.correlationIdProvider = correlationIdProvider;
@@ -68,7 +68,7 @@ namespace TestMe.UserManagement.App.Users
                 context.Users.Add(createdUser);
                 context.SaveChanges();
 
-                context.AddEvent(createdUser.CreateEvent(), correlationIdProvider.CorrelationId);
+                context.AddEvent(createdUser.CreateEvent(), correlationIdProvider.TraceId);
                 context.SaveChanges();
 
                 transaction.Commit();

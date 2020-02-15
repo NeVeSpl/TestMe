@@ -27,8 +27,8 @@ namespace TestMe.UserManagement.Tests
         {
             userManagementDbContext = CreateUserManagementDbContext();
 
-            var correlationIdProviderMock = new Mock<ICorrelationIdProvider>();
-            correlationIdProviderMock.Setup(x => x.CorrelationId).Returns(() => "666");
+            var correlationIdProviderMock = new Mock<ITraceIdProvider>();
+            correlationIdProviderMock.Setup(x => x.TraceId).Returns(() => "666");
 
             serviceUnderTest = new UsersService(userManagementDbContext, correlationIdProviderMock.Object, CreateAutoMapper());
         }
