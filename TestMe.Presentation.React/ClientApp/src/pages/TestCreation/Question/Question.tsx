@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { BusyIndicator, Window, Prompt } from '../../../components';
-import { QuestionsService, Question as QuestionDTO, ApiError, QuestionHeader } from '../../../api';
+//import { QuestionsService, Question as QuestionDTO, ApiError, QuestionHeader } from '../../../api';
 import { QuestionEditor } from '.';
 import style from './Question.module.css';
+import { QuestionDTO, ApiError, QuestionsService } from '../../../autoapi/services/QuestionsService';
 
 interface QuestionProps 
 {
@@ -13,6 +14,8 @@ interface QuestionProps
     onQuestionUpdated: (questionId: number) => void;
     windowNestingLevel: number;
 }
+enum ChildWindows { None, QuestionDeletePrompt, QuestionEditor }
+
 class QuestionState
 {
     question: QuestionDTO;
@@ -27,7 +30,7 @@ class QuestionState
         this.openedChildWindow = ChildWindows.None;
     }
 }
-enum ChildWindows { None, QuestionDeletePrompt, QuestionEditor }
+
 
 export default class Question extends React.Component<QuestionProps, QuestionState>
 {
@@ -48,7 +51,7 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
 
     fetchQuestion(questionId: number)
     {
-        this.service.ReadQuestionWithAnswers(questionId).then((x) => this.setState({ question: x}));      
+        this.service.readQuestionWithAnswers(questionId).then((x) => this.setState({ question: x}));      
     }
 
     setOpenedChildWindow = (event: React.MouseEvent<HTMLElement> | null, childWindow: ChildWindows) =>
@@ -64,7 +67,7 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
     handleDeleteQuestion = () =>
     {
         this.setOpenedChildWindow(null, ChildWindows.None);
-        this.service.DeleteQuestionWithAnswers(this.props.questionId)
+        this.service.deleteQuestionWithAnswers(this.props.questionId)
             .then(x =>
             {
                     this.props.onQuestionDeleted(this.props.questionId);               
@@ -81,7 +84,7 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
     {
         return (
             <>
-                <Window level={this.props.windowNestingLevel} title={"Question : " + this.state.question.content} onCancel={this.props.onCancel} onOk={this.props.onCancel} error={this.state.apiError} isEnabled={this.state.openedChildWindow == ChildWindows.None}>
+                <Window level={this.props.windowNestingLevel} title={"Question : " + this.state.question.content} onCancel={this.props.onCancel} onOk={this.props.onCancel} error={this.state.apiError} isEnabled={this.state.openedChildWindow === ChildWindows.None}>
                     <div className="text-right mb-3" >
                         <button type="button" className="btn btn-outline-danger mr-1" onClick={() => this.setOpenedChildWindow(null, ChildWindows.QuestionDeletePrompt)} >Delete question</button>
                         <button type="button" className="btn btn-outline-info" onClick={() => this.setOpenedChildWindow(null, ChildWindows.QuestionEditor)}>Edit question</button>

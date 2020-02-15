@@ -1,6 +1,7 @@
 ﻿import * as React from 'react';
-import { QuestionsCatalogsService, UpdateCatalog, ApiError, CreateCatalog } from '../../../api';
+//import { QuestionsCatalogsService, UpdateCatalog, ApiError, CreateCatalog } from '../../../api';
 import { Window, TextInput, ObjectForm, BusyIndicator, ObjectFormItem } from '../../../components';
+import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 class QuestionsCatalogEditorForm
 {    
@@ -57,7 +58,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
     {
         if (catalogId !== undefined)
         {
-            this.service.ReadQuestionsCatalog(catalogId)
+            this.service.readQuestionsCatalog(catalogId)
                 .then(x =>
                 {
                     this.setState({ form: ObjectForm.mapToForm(x, new QuestionsCatalogEditorForm()) });
@@ -103,7 +104,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
 
         if (this.props.catalogId === undefined)
         {
-            this.service.CreateCatalog(ObjectForm.mapToDTO(this.state.form, new CreateCatalog()))
+            this.service.createCatalog(ObjectForm.mapToDTO(this.state.form, new CreateCatalogDTO()))
                 .then(x => 
                 {                  
                     if (this.props.onCatalogCreated !== undefined)
@@ -114,7 +115,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
         }
         else
         {
-            this.service.UpdateCatalog(this.props.catalogId, ObjectForm.mapToDTO(this.state.form, new UpdateCatalog()))
+            this.service.updateCatalog(this.props.catalogId, ObjectForm.mapToDTO(this.state.form, new UpdateCatalogDTO()))
                 .then(x =>
                 {                    
                     if (this.props.onCatalogUpdated !== undefined)

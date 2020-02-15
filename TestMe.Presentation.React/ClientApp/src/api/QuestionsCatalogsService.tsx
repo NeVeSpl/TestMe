@@ -2,9 +2,9 @@
 
 export class QuestionsCatalogsService extends ApiBaseService 
 {
-    ReadQuestionsCatalogHeaders(ownerId: string): Promise<CatalogHeader[]>
+    ReadQuestionsCatalogHeaders(ownerId: string): Promise<OffsetPagedResults<CatalogHeader>>
     {
-        return this.MakeRequest<CatalogHeader[]>("GET", `QuestionsCatalogs/headers?ownerId=${ownerId}`);
+        return this.MakeRequest<OffsetPagedResults<CatalogHeader>>("GET", `QuestionsCatalogs/headers?ownerId=${ownerId}`);
     }
 
     ReadQuestionsCatalogHeader(catalogId: number): Promise<CatalogHeader>
@@ -62,4 +62,9 @@ export class CatalogHeader
 export class Catalog extends CatalogHeader
 {
     
+}
+
+export interface OffsetPagedResults<T>
+{
+    result: T[];
 }

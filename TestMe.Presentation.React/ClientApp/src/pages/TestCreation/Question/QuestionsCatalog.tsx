@@ -1,9 +1,10 @@
 ﻿import * as React from 'react';
 import { ArrayUtils, StringUtils } from '../../../utils';
 import { BusyIndicator, Window, Prompt } from '../../../components';
-import { QuestionHeader, QuestionsService, Catalog, QuestionsCatalogsService, ApiError} from '../../../api';
+//import { QuestionHeader, QuestionsService, Catalog, QuestionsCatalogsService, ApiError} from '../../../api';
 import { Question, QuestionsCatalogEditor, QuestionEditor } from '.';
-
+import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 export interface QuestionsCatalogProps 
 {
@@ -13,10 +14,11 @@ export interface QuestionsCatalogProps
     onCancel: () => void;
     windowNestingLevel: number;
 }
+enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, QuestionsCatalogDeletePrompt }
 export class QuestionCatalogState
 {   
-    catalog: Catalog;
-    questions: QuestionHeader[];
+    catalog: CatalogDTO;
+    questions: QuestionHeaderDTO[];
     catalogsApiError: ApiError | undefined;
     questionsApiError: ApiError | undefined;
     catalogsIsBusy: boolean;
@@ -26,7 +28,7 @@ export class QuestionCatalogState
 
     constructor()
     {
-        this.catalog = new Catalog();
+        this.catalog = new CatalogDTO();
         this.questions = [];
         this.catalogsIsBusy = true;
         this.questionsIsBusy = true;
@@ -34,7 +36,7 @@ export class QuestionCatalogState
         this.openedChildWindow = ChildWindows.None;
     }
 }
-enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, QuestionsCatalogDeletePrompt }
+
 
 export default class QuestionsCatalog extends React.Component<QuestionsCatalogProps, QuestionCatalogState>
 {
@@ -59,15 +61,15 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
 
     fetchCatalog(catalogId: number)
     {        
-        this.catalogService.ReadQuestionsCatalog(catalogId).then(x => this.setState({ catalog: x}));
+        this.catalogService.readQuestionsCatalog(catalogId).then(x => this.setState({ catalog: x}));
     }
     fetchQuestions(catalogId: number)
     {
-        this.questionService.ReadQuestionHeaders(catalogId).then(x => this.setState({ questions: x }));        
+        this.questionService.readQuestionHeaders(catalogId, { limit : 10, offset : 0 }).then(x => this.setState({ questions: x.result }));        
     }  
     async fetchQuestion(questionId: number)
     {
-        return await this.questionService.ReadQuestionHeader(questionId);
+        return await this.questionService.readQuestionHeader(questionId);
     }
 
     setOpenedChildWindow = (event: React.MouseEvent<HTMLElement> | null, childWindow: ChildWindows) =>
@@ -93,7 +95,7 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     handleDeleteCatalog = () =>
     {
         this.setOpenedChildWindow(null, ChildWindows.None);
-        this.catalogService.DeleteCatalog(this.props.catalogId)
+        this.catalogService.deleteCatalog(this.props.catalogId)
             .then(x =>
             {
                 this.props.onCatalogDeleted(this.props.catalogId);                
@@ -109,19 +111,19 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     handleQuestionUpdated = async (updatedQuestionId: number) =>
     {      
         const updatedQuestion = await this.fetchQuestion(updatedQuestionId);
-        this.setState({ questions: ArrayUtils.ReplaceFirst(this.state.questions, x => x.questionId == updatedQuestionId, updatedQuestion) });       
+        this.setState({ questions: ArrayUtils.ReplaceFirst(this.state.questions, x => x.questionId === updatedQuestionId, updatedQuestion) });       
     }
     handleQuestionDeleted = (questionId: number) => 
     {       
         this.setOpenedChildWindow(null, ChildWindows.None);
-        this.setState({ questions: this.state.questions.filter(x => x.questionId != questionId) });        
+        this.setState({ questions: this.state.questions.filter(x => x.questionId !== questionId) });        
     }  
        
     render()
     {
         return (
             <>
-                <Window level={this.props.windowNestingLevel} title={"Catalog : " + this.state.catalog.name} onCancel={this.props.onCancel} onOk={this.props.onCancel} error={this.state.catalogsApiError || this.state.questionsApiError} isEnabled={this.state.openedChildWindow == ChildWindows.None}>
+                <Window level={this.props.windowNestingLevel} title={"Catalog : " + this.state.catalog.name} onCancel={this.props.onCancel} onOk={this.props.onCancel} error={this.state.catalogsApiError || this.state.questionsApiError} isEnabled={this.state.openedChildWindow === ChildWindows.None}>
                     <div className="text-right mb-3" >
                         <button type="button" className="btn btn-outline-danger mr-1" onClick={(e) => this.setOpenedChildWindow(e, ChildWindows.QuestionsCatalogDeletePrompt)}>Delete catalog</button>
                         <button type="button" className="btn btn-outline-info m-0" onClick={(e) => this.setOpenedChildWindow(e, ChildWindows.QuestionsCatalogEditor)}>Edit catalog</button>

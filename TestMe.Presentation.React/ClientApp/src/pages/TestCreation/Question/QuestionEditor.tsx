@@ -1,8 +1,9 @@
 ﻿import * as React from 'react';
-import { QuestionsService, UpdateQuestion, ApiError, Answer, Question } from '../../../api';
+//import { QuestionsService, UpdateQuestion, ApiError, Answer, Question } from '../../../api';
 import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
 import { ReactComponent as DeleteIco }  from './outline-delete_forever-24px.svg';
 import { ObjectUtils } from '../../../utils';
+import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../autoapi/services/QuestionsService';
 
 interface QuestionEditorProps
 {
@@ -17,7 +18,7 @@ class QuestionEditorState
 {
     apiError: ApiError | undefined;
     isBusy: boolean;
-    formData: UpdateQuestion;
+    formData: UpdateQuestionDTO;
     validationErrors: MagicDict;
     conflictErrors: MagicDict;
     hasValidationErrors: boolean;
@@ -25,7 +26,7 @@ class QuestionEditorState
     constructor()
     {
         this.isBusy = false;
-        this.formData = new UpdateQuestion();
+        this.formData = new UpdateQuestionDTO();
         this.validationErrors = {};
         this.conflictErrors = {};
         this.hasValidationErrors = false;       
@@ -37,7 +38,7 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     service: QuestionsService = new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }), x => this.handleConcurrencyConflict());
     state = new QuestionEditorState();
     isFormItemTouched: Set<string> = new Set();
-    originalFormData: Question | undefined;
+    originalFormData: QuestionDTO | undefined;
 
     componentDidMount()
     {
@@ -55,11 +56,11 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     {
         if (questionId !== undefined)
         {
-            this.service.ReadQuestionWithAnswers(questionId)
+            this.service.readQuestionWithAnswers(questionId)
                 .then(x =>
                 {
                     this.originalFormData = ObjectUtils.deepClone(x);
-                    this.setState({ formData: { ...x } as unknown as UpdateQuestion });                    
+                    this.setState({ formData: { ...x } as unknown as UpdateQuestionDTO });                    
                 });
         }        
     }
@@ -74,13 +75,13 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     {        
         const userFormData = this.state.formData;
         const originalFormData = this.originalFormData!;
-        const serverFormData = await this.service.ReadQuestionWithAnswers(this.props.questionId!);
+        const serverFormData = await this.service.readQuestionWithAnswers(this.props.questionId!);
         const result = MagicForm.ResolveConflicts(originalFormData, userFormData, serverFormData);
         result.resolvedFormData.concurrencyToken = serverFormData.concurrencyToken;
         this.setState({ formData: result.resolvedFormData, conflictErrors: result.conflictErrors });       
     }
    
-    validate(data: UpdateQuestion, forceValidation: boolean = false)
+    validate(data: UpdateQuestionDTO, forceValidation: boolean = false)
     {        
         const validationErrors: MagicDict = {};
         if (this.isFormItemTouched.has('content') || forceValidation)  
@@ -127,7 +128,7 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         
         if (this.props.questionId === undefined)
         {
-            this.service.CreateQuestionWithAnswers(formData)
+            this.service.createQuestionWithAnswers(formData)
                 .then(x =>
                 {
                     if (this.props.onQuestionCreated !== undefined)
@@ -138,7 +139,7 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         }
         else
         {
-            this.service.UpdateQuestionWithAnswers(this.props.questionId, formData)
+            this.service.updateQuestionWithAnswers(this.props.questionId, formData)
                 .then(x =>
                 {                  
                     if (this.props.onQuestionUpdated !== undefined)
@@ -153,17 +154,17 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     { 
         event.preventDefault();
         const newData = { ...this.state.formData };
-        newData.answers = [...this.state.formData.answers, new Answer()];
+        newData.answers = [...this.state.formData.answers, new AnswerDTO()];
         this.setFormData(newData);
     }
     handleDeleteAnswer = (event: React.MouseEvent<HTMLElement>, answerIndex: number) =>
     {
         event.preventDefault();
         const newData = { ...this.state.formData };
-        newData.answers = newData.answers.filter((x, i) => i != answerIndex);
+        newData.answers = newData.answers.filter((x, i) => i !== answerIndex);
         this.setFormData(newData);
     }
-    setFormData(formData: UpdateQuestion)
+    setFormData(formData: UpdateQuestionDTO)
     {
         this.validate(formData);
         this.setState({ formData });

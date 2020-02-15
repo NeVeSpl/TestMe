@@ -1,16 +1,18 @@
 ﻿import * as React from 'react';
 import { ArrayUtils } from '../../../utils';
 import { BusyIndicator, Window } from '../../../components';
-import { QuestionsCatalogsService, CatalogHeader, ApiError } from '../../../api';
+//import { QuestionsCatalogsService, CatalogHeader, ApiError } from '../../../api';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '.';
 import { UserService } from '../../../services';
+import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagination } from '../../../autoapi/services/QuestionsCatalogsService';
 
 interface QuestionsCatalogsProps
 {
 }
+enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
 class QuestionsCatalogsState
 {
-    questionsCatalogs: CatalogHeader[];
+    questionsCatalogs: CatalogHeaderDTO[];
     isBusy: boolean;
     apiError: ApiError | undefined;  
     openedQuestionsCatalogId: number;
@@ -24,7 +26,7 @@ class QuestionsCatalogsState
         this.openedChildWindow = ChildWindows.None;
     }
 }
-enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
+
 
 export default class QuestionsCatalogs extends React.Component<QuestionsCatalogsProps, QuestionsCatalogsState>
 {
@@ -39,11 +41,11 @@ export default class QuestionsCatalogs extends React.Component<QuestionsCatalogs
 
     fetchCatalogs()
     {
-        this.service.ReadQuestionsCatalogHeaders(UserService.getUserID()).then(x => this.setState({ questionsCatalogs: x }));
+        this.service.readQuestionsCatalogHeaders(UserService.getUserID(), { limit : 10, offset : 0 } ).then(x => this.setState({ questionsCatalogs: x.result }));
     }
     async fetchCatalog(catalogId : number)
     {     
-        return await this.service.ReadQuestionsCatalogHeader(catalogId);
+        return await this.service.readQuestionsCatalogHeader(catalogId);
     }
 
     setOpenedChildWindow = (event : React.MouseEvent<HTMLElement> | null, childWindow : ChildWindows) =>
@@ -70,19 +72,19 @@ export default class QuestionsCatalogs extends React.Component<QuestionsCatalogs
     handleCatalogUpdated = async (updatedCatalogId: number) =>
     {       
         const updatedCatalog = await this.fetchCatalog(updatedCatalogId);
-        this.setState({ questionsCatalogs: ArrayUtils.ReplaceFirst(this.state.questionsCatalogs, x => x.catalogId == updatedCatalogId, updatedCatalog)});
+        this.setState({ questionsCatalogs: ArrayUtils.ReplaceFirst(this.state.questionsCatalogs, x => x.catalogId === updatedCatalogId, updatedCatalog)});
     }
     handleCatalogDeleted = (catalogId: number) =>
     {  
         this.setOpenedChildWindow(null, ChildWindows.None);
-        this.setState({ questionsCatalogs: this.state.questionsCatalogs.filter(x => x.catalogId != catalogId) });        
+        this.setState({ questionsCatalogs: this.state.questionsCatalogs.filter(x => x.catalogId !== catalogId) });        
     } 
 
     render()
     {     
         return (
             <>
-                <Window title="Catalogs of questions" error={this.state.apiError} isEnabled={this.state.openedChildWindow == ChildWindows.None} >
+                <Window title="Catalogs of questions" error={this.state.apiError} isEnabled={this.state.openedChildWindow === ChildWindows.None} >
                     <BusyIndicator isBusy={this.state.isBusy}>
                         {this.renderCatalogs}
                     </BusyIndicator>

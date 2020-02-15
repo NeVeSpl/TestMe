@@ -14,7 +14,7 @@ export class UserService
         localStorage.setItem('token', token);
     }
 
-    static getUserID() : string
+    static getUserID() : number
     {
         const token = localStorage.getItem("token");
         if (token != null)
@@ -22,6 +22,6 @@ export class UserService
             const obj = jwt_decode(token) as any;
             return obj["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
         } 
-        return "";
+        return -1;
     }
 }
