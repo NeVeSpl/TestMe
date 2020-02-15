@@ -12,7 +12,11 @@ interface MagicFormProps
     conflictErrors?: MagicDict;
 }
 
-enum ParentType {None, Object, Array}
+enum ParentType { None, Object, Array }
+
+interface IDictionary {
+    [id: string]: any;
+}
 
 export class MagicForm extends React.PureComponent<MagicFormProps>
 {    
@@ -43,7 +47,7 @@ export class MagicForm extends React.PureComponent<MagicFormProps>
 
         return new ResolveConflictsResult(conflictErrors, resolvedFormData);
     }
-    private static ResolveConflictsRecursively<T extends MagicDict>(originalFormData: MagicDict, currentFormData: T, newFormData: MagicDict, resolvedFormData: T, conflictErrors: MagicDict, path: string, parentType: ParentType)
+    private static ResolveConflictsRecursively<T extends MagicDict>(originalFormData: MagicDict, currentFormData: T, newFormData: MagicDict, resolvedFormData: IDictionary, conflictErrors: MagicDict, path: string, parentType: ParentType)
     {
         let keys = Array.from(new Set([...Object.keys(currentFormData), ...Object.keys(newFormData)]));
         for (let key of keys)
@@ -101,7 +105,7 @@ export class MagicForm extends React.PureComponent<MagicFormProps>
         MagicForm.ApplyChangeOnPath(path, newState, value);
         return newState;
     }
-    private static ApplyChangeOnPath<T extends MagicDict>(path: string, state: T, value: any)
+    private static ApplyChangeOnPath<T extends MagicDict>(path: string, state: IDictionary, value: any)
     {
         const tokenEnd = path.indexOf(".");
 

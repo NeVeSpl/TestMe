@@ -59,7 +59,7 @@ export class ObjectForm
     }
 
 
-    public static mapToDTO<Tfrom extends ObjectWithIndexer, Tto extends ObjectWithIndexer>(form: Tfrom, dto: Tto): Tto
+    public static mapToDTO<Tfrom extends ObjectWithIndexer, Tto extends ObjectWithIndexer>(form: Tfrom, dto: ObjectWithIndexer): Tto
     {       
         for (const [key, value] of Object.entries(form))
         {
@@ -72,7 +72,7 @@ export class ObjectForm
                 throw Error(`ObjectForm error, property ${key} does not exist on object ${dto.toSource()}`);
             }
         }
-        return dto;
+        return dto as Tto;
     }
     public static mapToForm<Tfrom extends ObjectWithIndexer, Tto extends ObjectWithIndexer>(dto: Tfrom, form: Tto): Tto
     {

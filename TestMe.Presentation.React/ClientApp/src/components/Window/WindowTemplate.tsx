@@ -16,7 +16,7 @@ export function WindowTemplate(props: WindowTemplateProps)
     return (
         <div className={style}>
             <div className={styles.modal_dialog}>
-                <div className={styles.modal_content + " " + (!props.isEnabled && styles.modal_content_disabled || "")}>
+                <div className={styles.modal_content + " " + ((!props.isEnabled && styles.modal_content_disabled) || "")}>
                     <div className={styles.modal_header}>
                         {props.header}
                     </div>
