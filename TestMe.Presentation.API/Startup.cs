@@ -5,11 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
+using Serilog;
 using TestMe.BuildingBlocks.EventBus;
 using TestMe.Infrastructure.EventBus.InMemory;
 using TestMe.Infrastructure.EventBus.RabbitMQ;
 using TestMe.Presentation.API.BackgroundServices;
 using TestMe.Presentation.API.Configurations;
+using TestMe.Presentation.API.Middleware;
 using TestMe.Presentation.API.Services;
 using TestMe.TestCreation.App;
 using TestMe.TestCreation.Infrastructure;
@@ -62,7 +64,10 @@ namespace TestMe.Presentation.API
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.SubscribeTestCreationEventHandlers();
-           
+
+            //app.UseSerilogRequestLogging();
+            app.UseRequestLogger();
+
             if (env.IsDevelopment())
             {
                 app.UseOpenAPI();
@@ -81,7 +86,7 @@ namespace TestMe.Presentation.API
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
 
-            app.UseRouting();  
+            app.UseRouting();      
             app.UseResponseCaching();
             app.UseCORS(); 
             app.UseAuthentication();
