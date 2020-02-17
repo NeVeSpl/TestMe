@@ -1,7 +1,6 @@
 ﻿import * as React from 'react';
 import { ArrayUtils, StringUtils } from '../../../utils';
 import { BusyIndicator, Window, Prompt } from '../../../components';
-//import { QuestionHeader, QuestionsService, Catalog, QuestionsCatalogsService, ApiError} from '../../../api';
 import { Question, QuestionsCatalogEditor, QuestionEditor } from '.';
 import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
 import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';

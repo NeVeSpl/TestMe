@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { BusyIndicator, Window, Prompt } from '../../../components';
-//import { QuestionsService, Question as QuestionDTO, ApiError, QuestionHeader } from '../../../api';
 import { QuestionEditor } from '.';
 import style from './Question.module.css';
 import { QuestionDTO, ApiError, QuestionsService } from '../../../autoapi/services/QuestionsService';

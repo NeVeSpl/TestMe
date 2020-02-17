@@ -1,5 +1,4 @@
 ﻿import * as React from 'react';
-//import { QuestionsService, UpdateQuestion, ApiError, Answer, Question } from '../../../api';
 import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
 import { ReactComponent as DeleteIco }  from './outline-delete_forever-24px.svg';
 import { ObjectUtils } from '../../../utils';

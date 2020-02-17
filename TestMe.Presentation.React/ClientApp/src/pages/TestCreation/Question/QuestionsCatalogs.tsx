@@ -1,7 +1,6 @@
 ﻿import * as React from 'react';
 import { ArrayUtils } from '../../../utils';
 import { BusyIndicator, Window } from '../../../components';
-//import { QuestionsCatalogsService, CatalogHeader, ApiError } from '../../../api';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '.';
 import { UserService } from '../../../services';
 import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagination } from '../../../autoapi/services/QuestionsCatalogsService';

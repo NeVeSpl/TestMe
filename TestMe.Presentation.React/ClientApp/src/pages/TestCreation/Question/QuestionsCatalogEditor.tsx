@@ -1,5 +1,4 @@
 ﻿import * as React from 'react';
-//import { QuestionsCatalogsService, UpdateCatalog, ApiError, CreateCatalog } from '../../../api';
 import { Window, TextInput, ObjectForm, BusyIndicator, ObjectFormItem } from '../../../components';
 import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
