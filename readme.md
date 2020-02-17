@@ -1,6 +1,6 @@
 ﻿# Sample Modular Monolith application without fluff/hype(*) but with tests
 
-
+Yet another sample .net core application. But this one aims to be a little bit different than the rest. Instead of focusing on showing some fancy libraries and patterns on non-realistic simplified examples, this one focus on delivering a fully working application to production. 
 
 1. [Overview](#Overview)
 2. [Architecture decision record](#ADR)
@@ -26,6 +26,8 @@
 - communication between modules : RabbitMQ or in memory bus
 - enabled non-null reference types 
 - every module in separate transaction scope
+- mapping between c# dtos is done by [MappingGenerator](https://github.com/cezarypiatek/MappingGenerator)
+- typed client for api calls is auto-generated with [Typewriter](https://github.com/frhagn/Typewriter)
 
 
 ![projects_dependencies](docs/TestMe.Architecture.png)
@@ -36,7 +38,6 @@
 
 1) Use async/await or not
 2) Why not to use AutoMapper
-3) 
 
 
 ## <a name="React"></a> 3. Layer : Presentation.React
@@ -155,13 +156,13 @@ not available yet
 
 
 ## <a name="TODO"></a> 12. ToDo
-- setup development environment in docker (postgresql, TICK stack, RabbitMQ)
+- setup development environment in docker (postgresql, TICK stack, RabbitMQ, Elastic stack)
 - automated tests for frontend (maybe Cypress?)
 - use immerjs to create next immutable state instead of home made solution
-- add ELK
 - introduce Architecture decision record (ADR)
 - finish /Tests endpoints
 - deal with poisonous integration events (dead letter queue)
+- add batch publishing of events on RabbitMQ
 
 
 ---
