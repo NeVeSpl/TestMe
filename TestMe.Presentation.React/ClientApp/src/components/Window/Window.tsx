@@ -1,7 +1,7 @@
 ﻿import * as React from 'react';
 import styles from './Window.module.css';
 import { ErrorBoundary } from '../';
-import { ApiError } from '../../api';
+import { ApiError } from '../../autoapi/base';
 import { WindowTemplate } from './WindowTemplate';
 import { StringUtils } from '../../utils';
 

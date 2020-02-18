@@ -1,5 +1,4 @@
 import * as React from 'react';
-//import { TokensService, LoginCredentials } from '../../api';
 import { RouteComponentProps } from 'react-router-dom';
 import { UserService } from '../../services';
 import { TokensService, LoginCredentialsDTO } from '../../autoapi/services/TokensService';

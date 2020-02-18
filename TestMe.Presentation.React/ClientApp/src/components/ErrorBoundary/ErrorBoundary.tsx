@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ApiError, ErrorCode }  from '../../api';
+import { ApiError, ErrorCode } from '../../autoapi/base';
 
 interface ErrorBoundaryProp
 {
