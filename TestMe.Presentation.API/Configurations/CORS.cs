@@ -12,7 +12,7 @@ namespace TestMe.Presentation.API.Configurations
             services.AddCors(options =>
             {
                 options.AddPolicy(PolicyName,
-                    builder => builder.WithOrigins("https://localhost:44362", "https://testme.mw-neves.pl")
+                    builder => builder.WithOrigins("https://localhost:44362", "http://localhost:3000", "https://testme.mw-neves.pl")
                                       .AllowAnyMethod()
                                       .AllowAnyHeader()
                                       .AllowCredentials()
