@@ -1,148 +1,118 @@
 ﻿import * as React from 'react';
-import { Window, TextInput, ObjectForm, BusyIndicator, ObjectFormItem } from '../../../components';
+import { Window, BusyIndicator, TextInput } from '../../../components';
 import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { Formik, FormikProps, FormikHelpers } from 'formik';
 
-class QuestionsCatalogEditorForm
-{    
-    name: ObjectFormItem;
-
-    constructor()
-    {
-        this.name = new ObjectFormItem()
-    }
-}
-interface QuestionsCatalogEditorProps
-{
+interface QuestionsCatalogEditorProps {
     catalogId?: number;
     onCatalogCreated?: (catalogId: number) => void;
     onCatalogUpdated?: (catalogId: number) => void;
     onCancel: () => void;
     windowNestingLevel: number;
 }
-class QuestionsCatalogEditorState
-{  
+class QuestionsCatalogEditorState {
     apiError: ApiError | undefined;
     isBusy: boolean;
     hasValidationErrors: boolean;
-    form: QuestionsCatalogEditorForm;
+    formData: CreateCatalogDTO;
 
-    constructor()
-    {
-        this.isBusy = false;     
+    constructor() {
+        this.isBusy = false;
         this.hasValidationErrors = false;
-        this.form = new QuestionsCatalogEditorForm();
+        this.formData = new CreateCatalogDTO();
     }
 }
 
-
 export default class QuestionsCatalogEditor extends React.Component<QuestionsCatalogEditorProps, QuestionsCatalogEditorState>
 {
-    service: QuestionsCatalogsService = new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy : x }));
+    service: QuestionsCatalogsService = new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
     state = new QuestionsCatalogEditorState();
-    
+    invokeSubmit?: () => {} | null;
 
-    componentDidMount()
-    {
-       this.fetchCatalog(this.props.catalogId);       
+    componentDidMount() {
+        this.fetchCatalog(this.props.catalogId);
     }
-    componentDidUpdate(prevProps: QuestionsCatalogEditorProps, prevState: QuestionsCatalogEditorState, snapshot: any)
-    {
-        if (this.props.catalogId !== prevProps.catalogId)
-        {
+    componentDidUpdate(prevProps: QuestionsCatalogEditorProps, prevState: QuestionsCatalogEditorState, snapshot: any) {
+        if (this.props.catalogId !== prevProps.catalogId) {
             this.fetchCatalog(this.props.catalogId);
         }
     }
 
-    fetchCatalog(catalogId: number | undefined)
-    {
-        if (catalogId !== undefined)
-        {
+    fetchCatalog(catalogId: number | undefined) {
+        if (catalogId !== undefined) {
             this.service.readQuestionsCatalog(catalogId)
-                .then(x =>
-                {
-                    this.setState({ form: ObjectForm.mapToForm(x, new QuestionsCatalogEditorForm()) });
+                .then(x => {
+                    this.setState({ formData: x });
                 });
         }
     }
 
-    handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => 
-    {
-        this.updateAndValidate();
-    }  
-    updateAndValidate = (forceValidation: boolean = false): boolean =>
-    {
-        const formCopy = ObjectForm.applyChangesAndResetErrors(this.state.form);
-        this.validate(formCopy, forceValidation);
-        const hasValidationErrors = ObjectForm.hasValidationErrors(formCopy);
-        this.setState({ form: formCopy, hasValidationErrors: hasValidationErrors });
-        return hasValidationErrors;
-    }
-    validate(data: QuestionsCatalogEditorForm, forceValidation: boolean = false)
-    {
-        if ((data.name.isTouched) || (forceValidation))
-        {
-            if (data.name.value.length < 3)
-            {
-                data.name.error = "Name must be longer than 2 characters";
-            }
-            if (data.name.value.length > 2048)
-            {
-                data.name.error = "Name must be shorter than 2048 characters";
-            }
-        }        
-    }
-    
+    validate(data: CreateCatalogDTO) {
+        const errors: object & { [key: string]: any } = {};
 
-
-    handleSaveChanges = () =>
-    {        
-        if (this.updateAndValidate(true))
-        {           
-            return;
+        if (data.name.length < 3) {
+            errors.name = "Name must be longer than 2 characters";
+        }
+        if (data.name.length > 2048) {
+            errors.name = "Name must be shorter than 2048 characters";
         }
 
+        return errors;
+    }
+
+
+    handleOk = () =>
+    {
+        this.invokeSubmit!();
+    }
+
+    handleSubmit = (values: CreateCatalogDTO, formikHelpers: FormikHelpers<CreateCatalogDTO>) =>
+    {
         if (this.props.catalogId === undefined)
         {
-            this.service.createCatalog(ObjectForm.mapToDTO(this.state.form, new CreateCatalogDTO()))
+            this.service.createCatalog(values)
                 .then(x => 
-                {                  
-                    if (this.props.onCatalogCreated !== undefined)
-                    {
-                        this.props.onCatalogCreated(x);
-                    }
+                {
+                    this.props.onCatalogCreated?.(x);                    
                 });
         }
         else
         {
-            this.service.updateCatalog(this.props.catalogId, ObjectForm.mapToDTO(this.state.form, new UpdateCatalogDTO()))
+            this.service.updateCatalog(this.props.catalogId, values)
                 .then(x =>
-                {                    
-                    if (this.props.onCatalogUpdated !== undefined)
-                    {
-                        this.props.onCatalogUpdated(this.props.catalogId!);
-                    }
+                {      
+                    this.props.onCatalogUpdated?.(this.props.catalogId!);                     
                 });
         }
     }
 
-    render()
-    {
+
+    render() {
         return (
-            <Window level={this.props.windowNestingLevel} title="Catalog editor" onCancel={this.props.onCancel} onOk={this.handleSaveChanges} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy} >
+            <Window level={this.props.windowNestingLevel} title="Catalog editor" onCancel={this.props.onCancel} onOk={this.handleOk} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy} >
                 <BusyIndicator isBusy={this.state.isBusy}>
                     {this.renderForm}
                 </BusyIndicator>
             </Window>
         );
     }
-    renderForm = () =>
-    {
+    renderForm = () => {
         return (
-            <form>
-                <div className="form-group">
-                    <TextInput label="Name" name="name" onInputChange={this.handleInputChange} data={this.state.form.name} />
-                </div>
-            </form>
+            <Formik enableReinitialize={true} onSubmit={this.handleSubmit} validate={this.validate} initialValues={this.state.formData}>
+                {
+                    (formik: FormikProps<CreateCatalogDTO>) =>
+                    {
+                        this.invokeSubmit = formik.submitForm;
+                        return (
+                            <form>
+                                <div className="form-group">
+                                    <TextInput name="name" formik={formik} label="Name" />
+                                </div>
+                            </form>
+                        )
+                    }
+                }
+            </Formik>
         );
     }
 }
