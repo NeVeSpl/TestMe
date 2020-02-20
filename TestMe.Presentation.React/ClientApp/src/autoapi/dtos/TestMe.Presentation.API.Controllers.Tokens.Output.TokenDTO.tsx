@@ -6,6 +6,7 @@ export class TokenDTO
 { 
     token: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

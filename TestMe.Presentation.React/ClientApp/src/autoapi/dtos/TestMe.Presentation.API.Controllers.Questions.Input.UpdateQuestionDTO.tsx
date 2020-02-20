@@ -9,6 +9,7 @@ export class UpdateQuestionDTO
     catalogId: number;
     concurrencyToken: number | null;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

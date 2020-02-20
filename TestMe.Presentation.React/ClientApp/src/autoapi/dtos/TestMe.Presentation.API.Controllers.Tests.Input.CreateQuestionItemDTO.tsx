@@ -6,6 +6,7 @@ export class CreateQuestionItemDTO
 { 
     questionId: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

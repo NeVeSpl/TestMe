@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { MagicFormContext } from './MagicForm';
-import { TextInput } from './TextInput';
+import { TextInput } from '../TextInput/TextInput';
 
 
 interface MagicTextInputProp

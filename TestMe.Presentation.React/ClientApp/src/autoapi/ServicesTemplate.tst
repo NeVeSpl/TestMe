@@ -53,7 +53,7 @@ ${
         }
 
         List<ImportItem> distinct = toImport.GroupBy(x => x.Name).Select(g => g.First()).ToList();     
-        return String.Join("\n", distinct.Select(x => $"import {{ {x.Name} }} from \"{x.From}\";"))  + "\n" +
+        return String.Join("\n", distinct.Select(x => $"//eslint-disable-next-line \n import {{ {x.Name} }} from \"{x.From}\";"))  + "\n" +
         String.Join("\n", distinct.Select(x => $"export * from \"{x.From}\";"));        
     }
 

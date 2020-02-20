@@ -8,6 +8,7 @@ export class CreateUserDTO
     emailAddress: string;
     password: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

@@ -8,6 +8,7 @@ export class QuestionDTO extends QuestionHeaderDTO
     answers: AnswerDTO[];
     concurrencyToken: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

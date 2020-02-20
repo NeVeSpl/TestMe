@@ -6,6 +6,7 @@ export class QuestionItemDTO
 { 
     question: QuestionHeaderDTO;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

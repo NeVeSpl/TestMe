@@ -1,11 +1,14 @@
 ﻿import * as React from 'react';
-import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
-import { ReactComponent as DeleteIco }  from './outline-delete_forever-24px.svg';
-import { ObjectUtils } from '../../../utils';
-import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../autoapi/services/QuestionsService';
+import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../../components';
+import { ReactComponent as DeleteIco }  from '../outline-delete_forever-24px.svg';
+import { ObjectUtils, StateStorage } from '../../../../utils';
+import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../../autoapi/services/QuestionsService';
 
 interface QuestionEditorProps
 {
+    injectedStorage?: StateStorage<QuestionEditorState>;
+    injectedService?: QuestionsService;
+
     catalogId: number;
     questionId?: number;
     onQuestionCreated?: (questionId: number) => void;
@@ -13,31 +16,35 @@ interface QuestionEditorProps
     onCancel: () => void;
     windowNestingLevel: number;
 }
-class QuestionEditorState
+export class QuestionEditorState
 {
     apiError: ApiError | undefined;
     isBusy: boolean;
     formData: UpdateQuestionDTO;
+    loadedQuestionId: number | null;
     validationErrors: MagicDict;
     conflictErrors: MagicDict;
-    hasValidationErrors: boolean;
+    hasValidationErrors: boolean;    
 
     constructor()
     {
         this.isBusy = false;
         this.formData = new UpdateQuestionDTO();
+        this.loadedQuestionId = null;
         this.validationErrors = {};
         this.conflictErrors = {};
         this.hasValidationErrors = false;       
     }
 }
 
-export default class QuestionEditor extends React.Component<QuestionEditorProps, QuestionEditorState>
+export default class QuestionEditor extends React.PureComponent<QuestionEditorProps, QuestionEditorState>
 {
-    service: QuestionsService = new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }), x => this.handleConcurrencyConflict());
-    state = new QuestionEditorState();
+    readonly storage: StateStorage<QuestionEditorState> = this.props.injectedStorage ?? new StateStorage(QuestionEditorState);
+    readonly service: QuestionsService = this.props.injectedService ?? new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }), x => this.handleConcurrencyConflict());
+    readonly state = this.storage?.Load() ?? new QuestionEditorState();
     isFormItemTouched: Set<string> = new Set();
     originalFormData: QuestionDTO | undefined;
+    
 
     componentDidMount()
     {
@@ -48,18 +55,19 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         if (this.props.questionId !== prevProps.questionId)
         {
             this.fetchQuestion(this.props.questionId);
-        }
+        } 
+        this.storage?.Save(this.state);
     }
 
     fetchQuestion(questionId: number | undefined)
     {
-        if (questionId !== undefined)
+        if ((questionId !== undefined) && (questionId !== this.state.loadedQuestionId))
         {
             this.service.readQuestionWithAnswers(questionId)
                 .then(x =>
                 {
-                    this.originalFormData = ObjectUtils.deepClone(x);
-                    this.setState({ formData: { ...x } as unknown as UpdateQuestionDTO });                    
+                    this.originalFormData = ObjectUtils.deepClone(x);                    
+                    this.setState({ formData: { ...x } as unknown as UpdateQuestionDTO, loadedQuestionId: questionId});                    
                 });
         }        
     }
@@ -127,27 +135,25 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
         
         if (this.props.questionId === undefined)
         {
-            this.service.createQuestionWithAnswers(formData)
-                .then(x =>
-                {
-                    if (this.props.onQuestionCreated !== undefined)
-                    {
-                        this.props.onQuestionCreated(x);
-                    }                   
-                });
+            this.service.createQuestionWithAnswers(formData).then(x => {
+                this.storage.Erase();
+                this.props.onQuestionCreated?.(x);
+            });
         }
         else
         {
-            this.service.updateQuestionWithAnswers(this.props.questionId, formData)
-                .then(x =>
-                {                  
-                    if (this.props.onQuestionUpdated !== undefined)
-                    {
-                        this.props.onQuestionUpdated(this.props.questionId!);
-                    }                   
-                });
+            this.service.updateQuestionWithAnswers(this.props.questionId, formData).then(x => {
+                this.storage.Erase();
+                this.props.onQuestionUpdated?.(this.props.questionId!);
+            });
         }
     }
+    handleCancel = () =>
+    {
+        this.storage.Erase();
+        this.props.onCancel();
+    }
+
 
     handleAddAnswer = (event: React.MouseEvent<HTMLElement>) =>
     { 
@@ -173,7 +179,7 @@ export default class QuestionEditor extends React.Component<QuestionEditorProps,
     render()
     {
         return (
-            <Window level={this.props.windowNestingLevel} title="Question editor" onCancel={this.props.onCancel} onOk={this.handleSaveChanges} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy}>                
+            <Window level={this.props.windowNestingLevel} title="Question editor" onCancel={this.handleCancel} onOk={this.handleSaveChanges} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy}>                
                 <BusyIndicator isBusy={this.state.isBusy}>
                     {this.renderForm}
                 </BusyIndicator>

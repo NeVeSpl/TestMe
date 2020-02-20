@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { WindowTemplate } from './WindowTemplate';
+import { WindowTemplate } from '../WindowTemplate';
 
 interface PromptProps
 {

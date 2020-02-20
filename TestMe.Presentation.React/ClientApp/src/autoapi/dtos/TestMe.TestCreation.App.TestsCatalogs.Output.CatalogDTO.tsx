@@ -5,6 +5,7 @@ import { CatalogHeaderDTO } from "../dtos/TestMe.TestCreation.App.TestsCatalogs.
 export class CatalogDTO extends CatalogHeaderDTO
 { 
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

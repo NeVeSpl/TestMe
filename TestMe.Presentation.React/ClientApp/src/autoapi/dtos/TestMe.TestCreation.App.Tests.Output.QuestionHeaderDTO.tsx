@@ -8,6 +8,7 @@ export class QuestionHeaderDTO
     content: string;
     catalogId: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

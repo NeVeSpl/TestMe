@@ -6,6 +6,7 @@ export class QuestionsCatalogDTO extends CatalogDTO
 { 
     questionsCount: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

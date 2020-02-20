@@ -7,6 +7,7 @@ export class UserCredentialsDTO
     id: number;
     userRole: UserRole;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

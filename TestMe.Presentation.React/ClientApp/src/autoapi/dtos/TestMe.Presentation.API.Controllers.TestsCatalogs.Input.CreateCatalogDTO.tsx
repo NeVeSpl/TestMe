@@ -6,6 +6,7 @@ export class CreateCatalogDTO
 { 
     name: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

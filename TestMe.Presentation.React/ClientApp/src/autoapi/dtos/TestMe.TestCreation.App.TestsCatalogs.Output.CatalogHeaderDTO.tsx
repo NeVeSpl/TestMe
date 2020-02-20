@@ -7,6 +7,7 @@ export class CatalogHeaderDTO
     catalogId: number;
     name: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

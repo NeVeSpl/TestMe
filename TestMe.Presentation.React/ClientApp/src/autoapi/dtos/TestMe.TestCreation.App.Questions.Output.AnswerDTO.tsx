@@ -8,6 +8,7 @@ export class AnswerDTO
     content: string;
     isCorrect: boolean;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

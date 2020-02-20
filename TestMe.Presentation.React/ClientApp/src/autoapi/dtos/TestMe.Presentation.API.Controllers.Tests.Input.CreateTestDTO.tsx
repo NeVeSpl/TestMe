@@ -7,6 +7,7 @@ export class CreateTestDTO
     catalogId: number;
     title: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

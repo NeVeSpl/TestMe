@@ -1,12 +1,16 @@
 ﻿import * as React from 'react';
-import { ArrayUtils, StringUtils } from '../../../utils';
-import { BusyIndicator, Window, Prompt } from '../../../components';
-import { Question, QuestionsCatalogEditor, QuestionEditor } from '.';
-import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
-import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { ArrayUtils, StringUtils, StateStorage } from '../../../../utils';
+import { BusyIndicator, Window, Prompt } from '../../../../components';
+import { Question, QuestionsCatalogEditor, QuestionEditor } from '../';
+import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../../autoapi/services/QuestionsService';
+import { QuestionsCatalogsService, CatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
 
 export interface QuestionsCatalogProps 
 {
+    injectedStorage?: StateStorage<QuestionsCatalogState>;
+    injectedQuestionService?: QuestionsService;
+    injectedCatalogService?: QuestionsCatalogsService;
+
     catalogId: number;
     onCatalogDeleted: (catalogId: number) => void; 
     onCatalogUpdated: (catalogId: number) => void;
@@ -14,7 +18,7 @@ export interface QuestionsCatalogProps
     windowNestingLevel: number;
 }
 enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, QuestionsCatalogDeletePrompt }
-export class QuestionCatalogState
+export class QuestionsCatalogState
 {   
     catalog: CatalogDTO;
     questions: QuestionHeaderDTO[];
@@ -29,32 +33,34 @@ export class QuestionCatalogState
     {
         this.catalog = new CatalogDTO();
         this.questions = [];
-        this.catalogsIsBusy = true;
-        this.questionsIsBusy = true;
+        this.catalogsIsBusy = false;
+        this.questionsIsBusy = false;
         this.openedQuestionId = 0;
         this.openedChildWindow = ChildWindows.None;
     }
 }
 
 
-export default class QuestionsCatalog extends React.Component<QuestionsCatalogProps, QuestionCatalogState>
+export default class QuestionsCatalog extends React.Component<QuestionsCatalogProps, QuestionsCatalogState>
 {
-    readonly questionService: QuestionsService = new QuestionsService(x => this.setState({ questionsApiError: x }), x => this.setState({ questionsIsBusy: x }));
-    readonly catalogService: QuestionsCatalogsService = new QuestionsCatalogsService(x => this.setState({ catalogsApiError: x }), x => this.setState({ catalogsIsBusy: x }));
-    readonly state = new QuestionCatalogState();   
+    readonly storage: StateStorage<QuestionsCatalogState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogState);
+    readonly questionService: QuestionsService = this.props.injectedQuestionService ?? new QuestionsService(x => this.setState({ questionsApiError: x }), x => this.setState({ questionsIsBusy: x }));
+    readonly catalogService: QuestionsCatalogsService = this.props.injectedCatalogService ?? new QuestionsCatalogsService(x => this.setState({ catalogsApiError: x }), x => this.setState({ catalogsIsBusy: x }));
+    readonly state = this.storage?.Load() ?? new QuestionsCatalogState();    
 
     componentDidMount()
     {
         this.fetchCatalog(this.props.catalogId);
         this.fetchQuestions(this.props.catalogId);       
     }
-    componentDidUpdate(prevProps: QuestionsCatalogProps, prevState: QuestionCatalogState, snapshot: any)
+    componentDidUpdate(prevProps: QuestionsCatalogProps, prevState: QuestionsCatalogState, snapshot: any)
     {
         if (this.props.catalogId !== prevProps.catalogId)
         {
             this.fetchCatalog(this.props.catalogId);
             this.fetchQuestions(this.props.catalogId);
         }
+        this.storage?.Save(this.state);
     }
 
 

@@ -5,6 +5,7 @@ import { CreateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.Te
 export class UpdateCatalogDTO extends CreateCatalogDTO
 { 
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

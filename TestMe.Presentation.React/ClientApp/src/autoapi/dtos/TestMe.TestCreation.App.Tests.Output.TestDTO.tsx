@@ -7,6 +7,7 @@ export class TestDTO extends TestHeaderDTO
 { 
     questionItems: QuestionItemDTO[];
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

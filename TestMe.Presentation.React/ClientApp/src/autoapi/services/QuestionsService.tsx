@@ -2,13 +2,20 @@
 
 
 import { ApiBaseService } from "../base/index";
-import { OffsetPagedResults } from "../base/OffsetPagedResults";
-import { QuestionHeaderDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO";
-import { OffsetPagination } from "../base/OffsetPagination";
-import { QuestionDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionDTO";
-import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.AnswerDTO";
-import { CreateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
-import { UpdateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
+//eslint-disable-next-line 
+ import { OffsetPagedResults } from "../base/OffsetPagedResults";
+//eslint-disable-next-line 
+ import { QuestionHeaderDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO";
+//eslint-disable-next-line 
+ import { OffsetPagination } from "../base/OffsetPagination";
+//eslint-disable-next-line 
+ import { QuestionDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionDTO";
+//eslint-disable-next-line 
+ import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.AnswerDTO";
+//eslint-disable-next-line 
+ import { CreateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
+//eslint-disable-next-line 
+ import { UpdateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
 export * from "../base/OffsetPagedResults";
 export * from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO";
 export * from "../base/OffsetPagination";

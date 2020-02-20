@@ -7,6 +7,7 @@ export class TestHeaderDTO
     testId: number;
     title: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

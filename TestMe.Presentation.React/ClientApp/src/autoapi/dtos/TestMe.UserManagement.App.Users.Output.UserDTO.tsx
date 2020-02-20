@@ -11,6 +11,7 @@ export class UserDTO
     role: UserRole;
     membershipLevel: MembershipLevel;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

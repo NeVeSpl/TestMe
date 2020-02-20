@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { ArrayUtils } from '../../../utils';
+import { ArrayUtils, StateStorage } from '../../../utils';
 import { BusyIndicator, Window } from '../../../components';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '.';
 import { UserService } from '../../../services';
@@ -7,9 +7,11 @@ import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagination 
 
 interface QuestionsCatalogsProps
 {
+    injectedStorage?: StateStorage<QuestionsCatalogsState>;
+    injectedService?: QuestionsCatalogsService;
 }
 enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
-class QuestionsCatalogsState
+export class QuestionsCatalogsState
 {
     questionsCatalogs: CatalogHeaderDTO[];
     isBusy: boolean;
@@ -20,7 +22,7 @@ class QuestionsCatalogsState
     constructor()
     {      
         this.questionsCatalogs = [];
-        this.isBusy = true;
+        this.isBusy = false;
         this.openedQuestionsCatalogId = 0;
         this.openedChildWindow = ChildWindows.None;
     }
@@ -29,14 +31,19 @@ class QuestionsCatalogsState
 
 export default class QuestionsCatalogs extends React.Component<QuestionsCatalogsProps, QuestionsCatalogsState>
 {
-    readonly service: QuestionsCatalogsService = new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy : x }));
-    readonly state = new QuestionsCatalogsState();    
+    readonly storage: StateStorage<QuestionsCatalogsState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogsState);
+    readonly service: QuestionsCatalogsService = this.props.injectedService ?? new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
+    readonly state = this.storage?.Load() ?? new QuestionsCatalogsState();    
    
 
     componentDidMount()
     {
         this.fetchCatalogs();
-    }  
+    }
+    componentDidUpdate()
+    {
+        this.storage?.Save(this.state);
+    }
 
     fetchCatalogs()
     {

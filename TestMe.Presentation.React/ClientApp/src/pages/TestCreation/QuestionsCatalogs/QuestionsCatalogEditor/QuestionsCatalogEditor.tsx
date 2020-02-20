@@ -1,16 +1,21 @@
 ﻿import * as React from 'react';
-import { Window, BusyIndicator, TextInput } from '../../../components';
-import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { Window, BusyIndicator, FormikTextInput } from '../../../../components';
+import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
+import { StateStorage } from '../../../../utils';
 
-interface QuestionsCatalogEditorProps {
+interface QuestionsCatalogEditorProps
+{
+    injectedStorage?: StateStorage<QuestionsCatalogEditorState>;
+    injectedService?: QuestionsCatalogsService;
+
     catalogId?: number;
     onCatalogCreated?: (catalogId: number) => void;
     onCatalogUpdated?: (catalogId: number) => void;
     onCancel: () => void;
     windowNestingLevel: number;
 }
-class QuestionsCatalogEditorState {
+export class QuestionsCatalogEditorState {
     apiError: ApiError | undefined;
     isBusy: boolean;
     hasValidationErrors: boolean;
@@ -25,17 +30,21 @@ class QuestionsCatalogEditorState {
 
 export default class QuestionsCatalogEditor extends React.Component<QuestionsCatalogEditorProps, QuestionsCatalogEditorState>
 {
-    service: QuestionsCatalogsService = new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
-    state = new QuestionsCatalogEditorState();
+    readonly storage: StateStorage<QuestionsCatalogEditorState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogEditorState);
+    readonly service: QuestionsCatalogsService = this.props.injectedService ?? new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
+    readonly state = this.storage?.Load() ?? new QuestionsCatalogEditorState();
     invokeSubmit?: () => {} | null;
 
     componentDidMount() {
         this.fetchCatalog(this.props.catalogId);
     }
-    componentDidUpdate(prevProps: QuestionsCatalogEditorProps, prevState: QuestionsCatalogEditorState, snapshot: any) {
-        if (this.props.catalogId !== prevProps.catalogId) {
+    componentDidUpdate(prevProps: QuestionsCatalogEditorProps, prevState: QuestionsCatalogEditorState, snapshot: any)
+    {
+        if (this.props.catalogId !== prevProps.catalogId)
+        {
             this.fetchCatalog(this.props.catalogId);
         }
+        this.storage?.Save(this.state);
     }
 
     fetchCatalog(catalogId: number | undefined) {
@@ -71,25 +80,29 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
         if (this.props.catalogId === undefined)
         {
             this.service.createCatalog(values)
-                .then(x => 
-                {
-                    this.props.onCatalogCreated?.(x);                    
+                .then(x => {
+                    this.storage.Erase();
+                    this.props.onCatalogCreated?.(x)
                 });
         }
         else
         {
-            this.service.updateCatalog(this.props.catalogId, values)
-                .then(x =>
-                {      
+            this.service.updateCatalog(this.props.catalogId, values)              
+                .then(x => {      
+                    this.storage.Erase()
                     this.props.onCatalogUpdated?.(this.props.catalogId!);                     
                 });
         }
+    }
+    handleCancel = () => {
+        this.storage.Erase();
+        this.props.onCancel();
     }
 
 
     render() {
         return (
-            <Window level={this.props.windowNestingLevel} title="Catalog editor" onCancel={this.props.onCancel} onOk={this.handleOk} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy} >
+            <Window level={this.props.windowNestingLevel} title="Catalog editor" onCancel={this.handleCancel} onOk={this.handleOk} error={this.state.apiError} isOkEnabled={!this.state.hasValidationErrors && !this.state.isBusy} >
                 <BusyIndicator isBusy={this.state.isBusy}>
                     {this.renderForm}
                 </BusyIndicator>
@@ -106,7 +119,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
                         return (
                             <form>
                                 <div className="form-group">
-                                    <TextInput name="name" formik={formik} label="Name" />
+                                    <FormikTextInput name="name" formik={formik} label="Name" />
                                 </div>
                             </form>
                         )

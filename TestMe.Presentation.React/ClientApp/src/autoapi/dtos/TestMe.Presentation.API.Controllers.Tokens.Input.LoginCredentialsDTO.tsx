@@ -7,6 +7,7 @@ export class LoginCredentialsDTO
     email: string;
     password: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

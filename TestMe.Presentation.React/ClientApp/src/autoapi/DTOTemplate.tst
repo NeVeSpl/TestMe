@@ -120,6 +120,7 @@ export class $Name$TypeParameters $BaseClass[extends $Name$TypeArguments]
 { $Properties[
     $name: $GenPropertyType;]
 
+    //eslint-disable-next-line
     constructor()
     {  
          $HasBaseClass[super();]   $Properties[

@@ -5,6 +5,7 @@ import { CreateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests
 export class UpdateTestDTO extends CreateTestDTO
 { 
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

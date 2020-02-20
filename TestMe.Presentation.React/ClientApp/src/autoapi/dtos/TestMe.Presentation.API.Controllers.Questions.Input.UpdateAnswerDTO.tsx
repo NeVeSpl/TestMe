@@ -6,6 +6,7 @@ export class UpdateAnswerDTO extends CreateAnswerDTO
 { 
     answerId: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

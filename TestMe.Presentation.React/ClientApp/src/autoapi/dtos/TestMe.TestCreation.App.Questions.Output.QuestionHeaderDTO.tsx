@@ -7,6 +7,7 @@ export class QuestionHeaderDTO
     questionId: number;
     content: string;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

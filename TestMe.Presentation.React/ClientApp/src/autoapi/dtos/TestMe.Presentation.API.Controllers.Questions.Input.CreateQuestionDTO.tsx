@@ -8,6 +8,7 @@ export class CreateQuestionDTO
     answers: CreateAnswerDTO[];
     catalogId: number;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

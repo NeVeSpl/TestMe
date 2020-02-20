@@ -2,12 +2,18 @@
 
 
 import { ApiBaseService } from "../base/index";
-import { OffsetPagedResults } from "../base/OffsetPagedResults";
-import { CatalogHeaderDTO } from "../dtos/TestMe.TestCreation.App.TestsCatalogs.Output.CatalogHeaderDTO";
-import { OffsetPagination } from "../base/OffsetPagination";
-import { CatalogDTO } from "../dtos/TestMe.TestCreation.App.TestsCatalogs.Output.CatalogDTO";
-import { CreateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.TestsCatalogs.Input.CreateCatalogDTO";
-import { UpdateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.TestsCatalogs.Input.UpdateCatalogDTO";
+//eslint-disable-next-line 
+ import { OffsetPagedResults } from "../base/OffsetPagedResults";
+//eslint-disable-next-line 
+ import { CatalogHeaderDTO } from "../dtos/TestMe.TestCreation.App.TestsCatalogs.Output.CatalogHeaderDTO";
+//eslint-disable-next-line 
+ import { OffsetPagination } from "../base/OffsetPagination";
+//eslint-disable-next-line 
+ import { CatalogDTO } from "../dtos/TestMe.TestCreation.App.TestsCatalogs.Output.CatalogDTO";
+//eslint-disable-next-line 
+ import { CreateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.TestsCatalogs.Input.CreateCatalogDTO";
+//eslint-disable-next-line 
+ import { UpdateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.TestsCatalogs.Input.UpdateCatalogDTO";
 export * from "../base/OffsetPagedResults";
 export * from "../dtos/TestMe.TestCreation.App.TestsCatalogs.Output.CatalogHeaderDTO";
 export * from "../base/OffsetPagination";

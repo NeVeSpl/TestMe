@@ -5,6 +5,7 @@ import { CreateQuestionItemDTO } from "../dtos/TestMe.Presentation.API.Controlle
 export class UpdateQuestionItemDTO extends CreateQuestionItemDTO
 { 
 
+    //eslint-disable-next-line
     constructor()
     {  
          super();   

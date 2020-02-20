@@ -7,6 +7,7 @@ export class CreateAnswerDTO
     content: string;
     isCorrect: boolean;
 
+    //eslint-disable-next-line
     constructor()
     {  
             

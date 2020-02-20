@@ -2,8 +2,10 @@
 
 
 import { ApiBaseService } from "../base/index";
-import { TokenDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
-import { LoginCredentialsDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
+//eslint-disable-next-line 
+ import { TokenDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
+//eslint-disable-next-line 
+ import { LoginCredentialsDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
 export * from "../base/index";

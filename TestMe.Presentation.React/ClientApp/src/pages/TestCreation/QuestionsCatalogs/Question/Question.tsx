@@ -1,11 +1,15 @@
 import * as React from 'react';
-import { BusyIndicator, Window, Prompt } from '../../../components';
-import { QuestionEditor } from '.';
+import { BusyIndicator, Window, Prompt } from '../../../../components';
+import { QuestionEditor } from '../';
 import style from './Question.module.css';
-import { QuestionDTO, ApiError, QuestionsService } from '../../../autoapi/services/QuestionsService';
+import { QuestionDTO, ApiError, QuestionsService } from '../../../../autoapi/services/QuestionsService';
+import { StateStorage } from '../../../../utils';
 
 interface QuestionProps 
 {
+    injectedStorage?: StateStorage<QuestionState>;
+    injectedService?: QuestionsService;
+
     catalogId: number;
     questionId: number;
     onCancel: () => void;
@@ -15,7 +19,7 @@ interface QuestionProps
 }
 enum ChildWindows { None, QuestionDeletePrompt, QuestionEditor }
 
-class QuestionState
+export class QuestionState
 {
     question: QuestionDTO;
     isBusy: boolean;
@@ -25,7 +29,7 @@ class QuestionState
     constructor()
     {
         this.question = new QuestionDTO();
-        this.isBusy = true;
+        this.isBusy = false;
         this.openedChildWindow = ChildWindows.None;
     }
 }
@@ -33,8 +37,9 @@ class QuestionState
 
 export default class Question extends React.Component<QuestionProps, QuestionState>
 {
-    readonly service: QuestionsService = new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
-    readonly state: QuestionState = new QuestionState();
+    readonly storage: StateStorage<QuestionState> = this.props.injectedStorage ?? new StateStorage(QuestionState);
+    readonly service: QuestionsService = this.props.injectedService ?? new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
+    readonly state: QuestionState = this.storage?.Load() ?? new QuestionState();
 
     componentDidMount()
     {
@@ -46,6 +51,7 @@ export default class Question extends React.Component<QuestionProps, QuestionSta
         {
             this.fetchQuestion(this.props.questionId);           
         }
+        this.storage?.Save(this.state);
     }
 
     fetchQuestion(questionId: number)

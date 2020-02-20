@@ -1,6 +1,6 @@
 import * as React  from 'react';
 import { RouteComponentProps, Route} from 'react-router-dom';
-import { QuestionsCatalogs } from './Question';
+import { QuestionsCatalogs } from './QuestionsCatalogs';
 import { TestsCatalogs  } from './Test';
 
 
