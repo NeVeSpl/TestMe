@@ -157,14 +157,14 @@ not available yet
 
 ## <a name="TODO"></a> 12. ToDo
 - setup development environment in docker (postgresql, TICK stack, RabbitMQ, Elastic stack)
-- automated tests for frontend (maybe Cypress?)
-- use immerjs to create next immutable state instead of home made solution
 - introduce Architecture decision record (ADR)
-- finish /Tests endpoints
-- deal with poisonous integration events (dead letter queue)
-- add batch publishing of events on RabbitMQ
-
+- frontend : automated tests for frontend (maybe Cypress?)
+- frontend : use immerjs to create next immutable state instead of home made solution
+- frontend : add alternative version of autoapi based on react hooks
+- backend : finish /Tests endpoints
+- backend : deal with poisonous integration events (dead letter queue)
+- backend : add batch publishing of events on RabbitMQ
 
 ---
 
-(*) Redux, AutoMapper, Autofac, MediatR, FluentValidation
+(*) AutoMapper, Autofac, MediatR, FluentValidation
