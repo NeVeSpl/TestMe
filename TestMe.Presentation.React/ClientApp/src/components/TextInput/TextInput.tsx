@@ -9,6 +9,7 @@ interface TextInputProp
     placeholder: string;
     validationError: string;   
     conflictError: string;
+    type?: string;
 }
 
 function TextInputInternal(props: TextInputProp)
@@ -26,7 +27,7 @@ function TextInputInternal(props: TextInputProp)
             {props.label &&
                 <label htmlFor={props.path}>{props.label}</label>
             }
-            <input type="text" className={inputClassName} name={props.path} value={props.value} onChange={props.onInputChange} placeholder={props.placeholder} />
+            <input type={props.type ?? "text"} className={inputClassName} name={props.path} value={props.value} onChange={props.onInputChange} placeholder={props.placeholder} />
             {isInvalid &&
                 <div className="invalid-feedback">
                 {props.validationError}

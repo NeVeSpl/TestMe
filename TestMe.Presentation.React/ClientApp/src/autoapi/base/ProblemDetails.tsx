@@ -4,4 +4,5 @@
     status: number;  
     detail: string;    
     traceId: string;
+    errors: object & { [key: string]: string[] }
 }

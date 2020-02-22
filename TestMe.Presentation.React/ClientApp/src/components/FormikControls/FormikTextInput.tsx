@@ -8,6 +8,7 @@ interface TextInputProp
     name: string;  
     formik: FormikProps<any>;
     placeholder?: string;
+    type?: string;
 }
 
 export class FormikTextInput extends React.Component<TextInputProp>
@@ -18,13 +19,14 @@ export class FormikTextInput extends React.Component<TextInputProp>
     {       
         return (          
                 <TextInput
-                    label={this.props.label}
-                    path={this.props.name}
-                    value={this.props.formik.values[this.props.name]}
-                    placeholder={this.props.placeholder || ""}
-                    onInputChange={this.props.formik.handleChange}                
-                    validationError={this.props.formik.errors[this.props.name]?.toString() || ""}
-                    conflictError= ""
+                label={this.props.label}
+                path={this.props.name}
+                value={this.props.formik.values[this.props.name]}
+                placeholder={this.props.placeholder || ""}
+                onInputChange={this.props.formik.handleChange}
+                validationError={this.props.formik.errors[this.props.name]?.toString() || ""}
+                conflictError=""
+                type={this.props.type}
                 />
         );
     }

@@ -6,7 +6,7 @@ export class ApiError extends Error
     readonly errorCode: ErrorCode;
     readonly traceId: string | undefined;
     readonly detail: string | undefined;
-
+    readonly errors: object & { [key: string]: string };
 
     constructor(errorCode: ErrorCode, problem?: ProblemDetails, ...params: any[]) 
     {       
@@ -18,6 +18,8 @@ export class ApiError extends Error
             Error.captureStackTrace(this, ApiError);
         }
 
+        this.errors = {};
+
         this.errorCode = errorCode;
         if (problem !== undefined)
         {
@@ -28,6 +30,19 @@ export class ApiError extends Error
             {
                 this.detail = "Someone has done changes before you. The conflict was automatically resolved. Please review changes and redo operation.";
             }
+
+            if (problem.errors !== undefined)
+            {
+                for (const key in problem.errors)
+                {
+                    this.errors[this.camalize(key)] = problem.errors[key][0];
+                }
+            }
         }
+    }
+
+    camalize(str : string)
+    {
+        return str.charAt(0).toLowerCase() + str.slice(1);
     }
 }

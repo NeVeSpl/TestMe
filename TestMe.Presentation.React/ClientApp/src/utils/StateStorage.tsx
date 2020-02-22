@@ -8,24 +8,45 @@
     }
 
 
-    Load() : T | null
+    Load(): T | null
     {
-        const serializedObject = localStorage.getItem(this.keyName);
-        if (serializedObject != null)
+        try
         {
-            const object = JSON.parse(serializedObject);
-            return object;
+            const serializedObject = localStorage.getItem(this.keyName);
+            if (serializedObject != null)
+            {
+                const object = JSON.parse(serializedObject);
+                return object;
+            }
+        }
+        finally
+        {
+
         }
         return new this.typeConstructor();
     }
     Save(object: T)
     {
-        const serializedObject = JSON.stringify(object);        
-        localStorage.setItem(this.keyName, serializedObject);
+        try
+        {
+            const serializedObject = JSON.stringify(object);
+            localStorage.setItem(this.keyName, serializedObject);
+        }
+        finally
+        {
+
+        }
     }
     Erase()
     {
-        localStorage.removeItem(this.keyName);
+        try
+        {
+            localStorage.removeItem(this.keyName);
+        }
+        finally
+        {
+
+        }
     }
 
 
