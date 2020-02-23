@@ -27,7 +27,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 - enabled non-null reference types 
 - every module in separate transaction scope
 - mapping between c# dtos is done by [MappingGenerator](https://github.com/cezarypiatek/MappingGenerator)
-- typed client for api calls is auto-generated with [Typewriter](https://github.com/frhagn/Typewriter)
+- typed api client for api calls is auto-generated with [Typewriter](https://github.com/frhagn/Typewriter)
 
 
 ![projects_dependencies](docs/TestMe.Architecture.png)
@@ -43,8 +43,10 @@ Yet another sample .net core application. But this one aims to be a little bit d
 ## <a name="React"></a> 3. Layer : Presentation.React
 - with restrictive Content Security Policy set(no inline css or js, no eval)
 - CSS Modules
+- persisted component state in localstorage
+- props dependency injection used to be able to display stateful components in [Storybook](https://github.com/storybookjs/storybook)
 
-
+![projects_dependencies](docs/Presentation.React.png)
 
 ## <a name="API"></a> 4. Layer : Presentation.API
 - integration tests for happy paths backed on sqllite in memory with the possibility to switch to postgresql if needed for debuging
@@ -59,7 +61,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 | /Tests/                   | Endpoint that allows editing only aggregate root from Test aggregate (Test + QuestionItem)  |
 | /Tests/{testId}/questions/|  Endpoint that allows editing  QuestionItem entity from Test aggregate (Test + QuestionItem) as a sub-resource |
 | /Tokens/                  |   |
-| /Metrics/lineprotocol/    | A special endpoint available only from localhost that returns metrics : <br/>- CPU usage,<br/>- RAM usage,<br/>- no. GC collections,<br/>- GC heaps sizes,<br/>- GC pause time,<br/>- GC background time,<br/>- ThreadpoolThreadCount,<br/>- ThreadpoolQueueLength,<br/>- ExceptionCount,<br/>- MonitorLockContentionCount<br/> in a format that can be directly pulled by Telegraf to InfluxDB |
+| /Metrics/lineprotocol/    | A special endpoint available only from localhost that returns following metrics : <br/>- CPU usage,<br/>- RAM usage,<br/>- no. GC collections,<br/>- GC heaps sizes,<br/>- GC pause time,<br/>- GC background time,<br/>- ThreadpoolThreadCount,<br/>- ThreadpoolQueueLength,<br/>- ExceptionCount,<br/>- MonitorLockContentionCount<br/> in a format that can be directly pulled by Telegraf to InfluxDB |
 | /Users/                   |
 
 #### Load testing results
@@ -167,4 +169,4 @@ not available yet
 
 ---
 
-(*) AutoMapper, Autofac, MediatR, FluentValidation
+(*) AutoMapper, Autofac, MediatR, FluentValidation 
