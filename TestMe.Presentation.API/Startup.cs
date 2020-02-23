@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,9 @@ namespace TestMe.Presentation.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var config = new StartupConfig();
+            Configuration.Bind("StartupConfiguration", config);
+
             services.AddTestCreationPersistence(Configuration.GetConnectionString("TestCreationDbContext"));
             services.AddTestCreationApplicationServices();
             services.AddTestCreationInfrastructureServices();
@@ -55,8 +59,17 @@ namespace TestMe.Presentation.API
             services.AddHostedService<PostManService>();
 
             services.Configure<RabbitMQEventBus.Config>(Configuration.GetSection("RabbitMQ"));
-            services.AddSingleton<IEventBus, RabbitMQEventBus>();
-            //services.AddSingleton<IEventBus, InMemoryEventBus>();
+            switch (config.EventBus)
+            {
+                case StartupConfig.EventBusType.InMemory:
+                    services.AddSingleton<IEventBus, InMemoryEventBus>();
+                    break;
+                case StartupConfig.EventBusType.RabbitMQ:
+                    services.AddSingleton<IEventBus, RabbitMQEventBus>();
+                    break;
+                default:
+                    throw new NotImplementedException();
+            } 
 
             services.AddHttpContextAccessor();
             services.AddPresentationAPIServices();
@@ -67,10 +80,11 @@ namespace TestMe.Presentation.API
 
             //app.UseSerilogRequestLogging();
             app.UseRequestLogger();
+            app.UseOpenAPI();
 
             if (env.IsDevelopment())
             {
-                app.UseOpenAPI();
+                
                 //app.UseDeveloperExceptionPage();
                 //app.UseDatabaseErrorPage();
                 app.UseExceptionHandler("/Error");
@@ -97,6 +111,14 @@ namespace TestMe.Presentation.API
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });          
+        }
+
+        private class StartupConfig
+        {
+            public enum EventBusType { InMemory, RabbitMQ }
+
+            public EventBusType EventBus { get; set; } 
+            
         }
     }
 }
