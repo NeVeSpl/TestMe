@@ -1,10 +1,10 @@
 ﻿export class StateStorage<T>
 {
-    keyName: string;
+    private keyName: string
 
-    constructor(private typeConstructor: new () => T)
+    constructor(private typeConstructor: new () => T, keyName?: string)
     {
-        this.keyName = typeConstructor.name;
+        this.keyName = keyName ?? typeConstructor.name;
     }
 
 
@@ -19,9 +19,9 @@
                 return object;
             }
         }
-        finally
+        catch (err)
         {
-
+            console.error(err.message);
         }
         return new this.typeConstructor();
     }
@@ -32,9 +32,9 @@
             const serializedObject = JSON.stringify(object);
             localStorage.setItem(this.keyName, serializedObject);
         }
-        finally
+        catch (err)
         {
-
+            console.error(err.message);
         }
     }
     Erase()
@@ -43,9 +43,9 @@
         {
             localStorage.removeItem(this.keyName);
         }
-        finally
+        catch (err)
         {
-
+            console.error(err.message);
         }
     }
 

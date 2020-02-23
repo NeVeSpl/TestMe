@@ -43,7 +43,7 @@ export class QuestionsCatalogState
 
 export default class QuestionsCatalog extends React.Component<QuestionsCatalogProps, QuestionsCatalogState>
 {
-    readonly storage: StateStorage<QuestionsCatalogState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogState);
+    readonly storage: StateStorage<QuestionsCatalogState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogState, "QuestionsCatalogState");
     readonly questionService: QuestionsService = this.props.injectedQuestionService ?? new QuestionsService(x => this.setState({ questionsApiError: x }), x => this.setState({ questionsIsBusy: x }));
     readonly catalogService: QuestionsCatalogsService = this.props.injectedCatalogService ?? new QuestionsCatalogsService(x => this.setState({ catalogsApiError: x }), x => this.setState({ catalogsIsBusy: x }));
     readonly state = this.storage?.Load() ?? new QuestionsCatalogState();    
