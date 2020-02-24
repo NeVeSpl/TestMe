@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { LandingPage } from './LandingPage';
 
 export default {
-    title: 'LandingPage',
+    title: 'LandingPage/LandingPage',
     component: LandingPage,
 };
 

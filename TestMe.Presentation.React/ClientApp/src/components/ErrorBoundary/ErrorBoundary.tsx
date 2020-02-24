@@ -31,9 +31,16 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProp, ErrorBound
     }
     static getDerivedStateFromProps(props: ErrorBoundaryProp, state: ErrorBoundaryState): ErrorBoundaryState | null
     {
-        if ((props.error !== undefined) && (props.error !== state.error))
+        if (props.error !== state.error)
         {
-            return { error: props.error, isClosed : false } as ErrorBoundaryState;
+            if (props.error !== undefined)
+            {
+                return { error: props.error, isClosed: false } as ErrorBoundaryState;
+            }
+            else
+            {
+                return { error: null, isClosed: true } as ErrorBoundaryState;
+            }
         }
         return null;
     }

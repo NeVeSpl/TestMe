@@ -3,11 +3,11 @@ import { RouteComponentProps } from 'react-router-dom';
 import { UserService } from '../../services';
 import { TokensService, LoginCredentialsDTO, ApiError } from '../../autoapi/services/TokensService';
 import styles from './LandingPage.module.css';
-import './LandingPage.css';
 import { CreateUserDTO, UsersService } from '../../autoapi/services/UsersService';
-import { Formik, FormikProps, FormikHelpers } from 'formik';
-import { FormikTextInput, ErrorBoundary } from '../../components';
-import { CSSTransition, SwitchTransition } from 'react-transition-group';
+import { FormikHelpers } from 'formik';
+import { ErrorBoundary } from '../../components';
+import { Signin } from './Signin/Signin';
+import { Signup } from './Signup/Signup';
 
 
 export class LandingPageState
@@ -15,7 +15,7 @@ export class LandingPageState
     createUserApiError: ApiError | undefined;
     createUserIsBusy: boolean;
     createUserForm: CreateUserDTO;
-    userCreated: boolean;
+    userWasCreated: boolean;
     loginCredentialsApiError: ApiError | undefined;
     loginCredentialsIsBusy: boolean;
     loginCredentialsForm: LoginCredentialsDTO;
@@ -24,15 +24,13 @@ export class LandingPageState
     {
         this.createUserIsBusy = false;
         this.createUserForm = new CreateUserDTO();
-        this.userCreated = false;
+        this.userWasCreated = false;
         this.loginCredentialsIsBusy = false;
         this.loginCredentialsForm = new LoginCredentialsDTO();
         this.loginCredentialsForm.email = "";
         this.loginCredentialsForm.password = "";
     }
 }
-
-
 
 export class LandingPage extends React.Component<RouteComponentProps, LandingPageState>
 {
@@ -64,22 +62,25 @@ export class LandingPage extends React.Component<RouteComponentProps, LandingPag
 
     handleSignup = (values: CreateUserDTO, formikHelpers: FormikHelpers<CreateUserDTO>) =>
     {
+        this.setState({ createUserForm: values});
         this.usersService.createUser(values)
             .then(x =>
             {
-                this.setState({ userCreated: true });
+                this.setState({ userWasCreated: true });
             })
             .catch(e =>
             {
-                const apiError = e as ApiError;
-                formikHelpers.setErrors(apiError.errors);
+                
             })
             .finally(() => formikHelpers.setSubmitting(false));
     }
     validateSignup = (data: CreateUserDTO) =>
-    {
-        this.setState({ loginCredentialsForm: { email: data.emailAddress, password: data.password } });
-        //return this.state.createUserApiError?.errors;
+    {        
+        //if (data.emailAddress)  todo: add debouncing
+        //{
+        //    return this.usersService.isEmailAddressTaken(data.emailAddress)
+        //        .then(x => x ? { "emailAddress": "User with given email already exists." } : {});
+        //}          
     }
     handleApiError = (error: ApiError | undefined) =>
     {
@@ -92,105 +93,37 @@ export class LandingPage extends React.Component<RouteComponentProps, LandingPag
         return (
             <>
                 <div className="card-deck">
-
                     <div className="card ">
                         <div className={`card-header ${styles.card}`}>
                             Log in
                         </div>
                         <div className="card-body">
                             <ErrorBoundary error={this.state.loginCredentialsApiError}>
-                                <Formik enableReinitialize={true} onSubmit={this.handleLogin} validate={this.validateLogin} initialValues={this.state.loginCredentialsForm}>
-                                    {
-                                        (formik: FormikProps<LoginCredentialsDTO>) =>
-                                        {
-                                            return (
-                                                <form onSubmit={formik.handleSubmit}>
-                                                    <div className="form-group">
-                                                        <FormikTextInput type="email" name="email" formik={formik} label="Email address" />
-
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <FormikTextInput type="password" name="password" formik={formik} label="Password" />
-                                                    </div>
-                                                    <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Submit</button>
-                                                </form>
-                                            )
-                                        }
-                                    }
-                                </Formik>
+                                <Signin onSubmit={this.handleLogin} onValidate={this.validateLogin} initialValues={this.state.loginCredentialsForm} />
+                                <br/>
                             </ErrorBoundary>
                         </div>
                     </div>
-
-
 
                     <div className="card">
                         <div className={`card-header ${styles.card}`}>
                             Sign up
                         </div>
                         <div className="card-body">
-                            <SwitchTransition mode="out-in">
-                                <CSSTransition key={this.state.userCreated ? "bar" : "foo"} timeout={300} unmountOnExit mountOnEnter classNames="my-node">
-                                    <ErrorBoundary error={this.state.createUserApiError}>
-                                        {this.state.userCreated ? this.renderUserCreated() : this.renderSignUpForm()}
-                                    </ErrorBoundary>
-                                </CSSTransition>
-                            </SwitchTransition>
-
-
-                            
+                            <ErrorBoundary error={this.state.createUserApiError}>
+                                <Signup
+                                    onSubmit={this.handleSignup}
+                                    onValidate={this.validateSignup}
+                                    initialValues={this.state.createUserForm}
+                                    userWasCreated={this.state.userWasCreated}
+                                    apiError={this.state.createUserApiError}
+                                />
+                                <br />
+                            </ErrorBoundary>
                         </div>
                     </div>
-
-
                 </div>
-
-
             </>
         );
-    }
-
-    renderSignUpForm()
-    {
-        return (
-            <Formik enableReinitialize={true} onSubmit={this.handleSignup} validate={this.validateSignup} initialValues={this.state.createUserForm}>
-                {
-                    (formik: FormikProps<CreateUserDTO>) =>
-                    {
-                        return (
-                            <form onSubmit={formik.handleSubmit} autoComplete="off">
-                                <div className="form-group">
-                                    <FormikTextInput type="text" name="name" formik={formik} label="Name" />
-                                </div>
-                                <div className="form-group">
-                                    <FormikTextInput type="email" name="emailAddress" formik={formik} label="Email address" />
-
-                                </div>
-                                <div className="form-group">
-                                    <FormikTextInput type="password" name="password" formik={formik} label="Password" />
-                                </div>
-
-                                <button type="submit" className="btn btn-primary" disabled={formik.isSubmitting}>Submit</button>
-                            </form>
-                        )
-                    }
-                }
-            </Formik>
-        );
-    }
-
-    renderUserCreated()
-    {
-        return (
-            <>
-                <div className="alert alert-success" role="alert">
-                    <h4 className="alert-heading">Well done!</h4>
-                    <p>Your account has been created successfully, now you can log in.</p>
-                    <hr/>
-                     <p className="mb-0">&lt;--------------------------------------------------</p>
-                </div>
-             
-            </>
-        );
-    }
+    }    
 }
