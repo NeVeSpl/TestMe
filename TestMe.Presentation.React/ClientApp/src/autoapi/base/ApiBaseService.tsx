@@ -17,28 +17,91 @@ export class ApiBaseService
     }
 
 
-    public async MakeRequest<T>(method: string, url: string, payload: any | undefined = null): Promise<T>
+    public async MakeRequestWithResult<T>(httpMethod: string, url: string, payload: any | undefined = null): Promise<T>
     {
-        this.InvokeCallbacks(undefined, true);       
-        const requestInit: RequestInit = this.PrepareRequest(method, payload);
-        let response: Response;
+        return ApiBaseService.MakeRequestWithResult<T>(httpMethod, url, payload, this.setLoading, this.setError, this.onConflictError, undefined, true);
+    }
+    public async MakeRequest(httpMethod: string, url: string, payload: any | undefined = null): Promise<void>
+    {
+        return ApiBaseService.MakeRequestWithResult<void>(httpMethod, url, payload, this.setLoading, this.setError, this.onConflictError, undefined, false);
+    }
+
+
+    public static async MakeRequestWithResult<T>(httpMethod: string,
+        url: string,
+        payload?: any,
+        setIsLoading?: (isLoading: boolean) => void,
+        setError?: (error: ApiError | undefined) => void,
+        setConflictError?: (error: ApiError | undefined) => void,
+        setData?: (data: T) => void,
+        parseContent: boolean = true
+    ): Promise<T>        
+    {
+        setError?.(undefined);
+        setIsLoading?.(true);
+        const requestInit: RequestInit = ApiBaseService.PrepareRequest(httpMethod, payload);
 
         try
         {
-            response = await fetch(`${ApiBaseService.API_URL}/${url}`, requestInit);    
-            //await new Promise(resolve => setTimeout(resolve, 500));
+            let response: Response;
+            try
+            {
+                response = await fetch(`${ApiBaseService.API_URL}/${url}`, requestInit);                
+            }
+            catch (e)
+            {
+                const error = new ApiError(ErrorCode.NetworkError);
+                throw error;                
+            }
+
+            if (!response.ok)
+            {
+                let problemDetails;
+                if (response.headers.has("Content-Type"))
+                {
+                    const jsonBody = await response.json();
+                    console.warn(jsonBody);
+                    problemDetails = jsonBody as ProblemDetails;
+                }
+
+                const error = new ApiError(response.status, problemDetails);
+                throw error;
+            }
+
+            if (parseContent)
+            {
+                if (response.headers.has("Content-Type"))
+                {
+                    const payload: T = await response.json().then(x => x as T);
+                    setData?.(payload);
+                    return payload;
+                }
+                else
+                {
+                    const error = new ApiError(ErrorCode.NoContentWhenContentWasExpected);
+                    throw error;
+                }
+            }
+          
+            return {} as T;
         }
         catch (e)
         {
-            const error = new ApiError(ErrorCode.NetworkError);
-            this.InvokeCallbacks(error, false);
-            throw error;            
+            const error = e as ApiError;
+            setError?.(error);
+            if (error.errorCode === ErrorCode.Conflict)
+            {
+                setConflictError?.(error);
+            }
+            throw error;
         }
-
-        return this.ParseResponse<T>(response);
+        finally
+        {
+            setIsLoading?.(false);
+        }
     }
 
-    private PrepareRequest(httpMethod: string, payload: any | undefined = null): RequestInit
+    public static PrepareRequest(httpMethod: string, payload: any | undefined = null): RequestInit
     {
         const token = localStorage.getItem("token");
 
@@ -66,52 +129,4 @@ export class ApiBaseService
 
         return requestInit;
     }
-
-    private async ParseResponse<T>(response: Response): Promise<T>
-    {
-        if (!response.ok)
-        {
-            let problemDetails;
-            if (response.headers.has("Content-Type"))
-            {
-                const jsonBody = await response.json();
-                console.warn(jsonBody);
-                problemDetails = jsonBody as ProblemDetails;                
-            }   
-
-            const error = new ApiError(response.status, problemDetails);
-            this.InvokeCallbacks(error, false);
-            throw error;         
-        }
-
-        if (response.headers.has("Content-Type"))
-        {
-            const payload: T = await response.json().then(x => x as T);
-            this.InvokeCallbacks(undefined, false);
-            return payload;
-        }
-
-        this.InvokeCallbacks(undefined, false);
-        return {} as T;
-    }
-
-    private InvokeCallbacks(error: ApiError | undefined, isLoading: boolean)
-    {
-        if ((this.setError !== undefined) && (this.setError !== null))
-        {
-            this.setError(error);
-        }
-        if ((this.setLoading !== undefined) && (this.setLoading !== null))
-        {
-            this.setLoading(isLoading);
-        }
-        if ((this.onConflictError !== undefined)
-            && (this.onConflictError !== null)
-            && (error !== undefined)
-            && (error.errorCode === ErrorCode.Conflict)
-        )
-        {
-            this.onConflictError(error);
-        }
-    }    
 }

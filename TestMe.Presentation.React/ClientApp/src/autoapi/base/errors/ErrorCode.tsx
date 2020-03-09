@@ -7,6 +7,7 @@
     DomainException = 422,   
     InternalServerError = 500,
     NetworkError = 600,
+    NoContentWhenContentWasExpected = 700
 }
 
 export default ErrorCode;

@@ -18,6 +18,7 @@ ${
     {
         public string Name { get; set; }
         public string From { get; set; }
+        public bool ToImport { get; set;}
 
         public ImportItem(Type type)
         {
@@ -25,11 +26,13 @@ ${
             if (type.IsEnum)
             {
                 From = $"../enums/{type.Namespace}.{Name}";
+                ToImport = true;
                 return;
             }
             if (Name.EndsWith("DTO"))
             {
                 From = $"../dtos/{type.Namespace}.{Name}";
+                ToImport = true;
                 return;
             }
             From = $"../base/{Name}";
@@ -52,7 +55,7 @@ ${
            }
         }
 
-        List<ImportItem> distinct = toImport.GroupBy(x => x.Name).Select(g => g.First()).ToList();     
+        List<ImportItem> distinct = toImport.Where(x => x.ToImport).GroupBy(x => x.Name).Select(g => g.First()).ToList();     
         return String.Join("\n", distinct.Select(x => $"//eslint-disable-next-line \n import {{ {x.Name} }} from \"{x.From}\";"))  + "\n" +
         String.Join("\n", distinct.Select(x => $"export * from \"{x.From}\";"));        
     }
@@ -88,6 +91,46 @@ ${
          if (m.Type.IsGeneric)
          {
              return $"<{m.Type.TypeArguments.FirstOrDefault()}>";
+         }
+         return String.Empty;
+    }
+    string GenDefaultData(Method m)
+    {
+         if (m.Type.IsGeneric)
+         {
+            
+             var type = m.Type.TypeArguments.FirstOrDefault();
+             string defaultValue = $"new {type.Name}()"; 
+             if (type.name == "number")
+             {
+                defaultValue = "0";
+             }
+             if (type.name == "boolean")
+             {
+                defaultValue = "false";
+             }
+             if (type.IsEnum)
+             {
+                defaultValue = "0";
+             }
+             if (type.IsEnumerable)
+             {
+                defaultValue = "[]";
+             }
+             if (type.IsGeneric)
+             {
+                defaultValue = $"{{}} as {type.Name}"; 
+             }
+             
+             return $" {defaultValue}, ";
+         }
+         return String.Empty;
+    }
+    string GenWithResponse(Method m)
+    {
+         if (m.Type.IsGeneric)
+         {
+             return "WithResult";
          }
          return String.Empty;
     }
@@ -147,7 +190,8 @@ ${
     }
 }
 $Classes(TestMe.Presentation.API.Controllers.*Controller)[
-import { ApiBaseService } from "../base/index";
+//eslint-disable-next-line
+import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
 $GenImport
 export * from "../base/index";
 
@@ -155,7 +199,14 @@ export class $GenServiceName extends ApiBaseService
 {
     $Methods[$name($Parameters($ParametersFilter)[$name: $Type][, ]) $GenPromiseMe
     {
-        return this.MakeRequest$GenMethodReturn("$HttpMethod", `$Url$GenFromRoute`, $GenPayloadParameterName);
+        return this.MakeRequest$GenWithResponse$GenMethodReturn("$HttpMethod", `$Url$GenFromRoute`, $GenPayloadParameterName);
     }
     ]       
-}]
+}
+
+$Methods[export function useAPI$Name($Parameters($ParametersFilter)[$name: $Type][, ], deps?: ReadonlyArray<unknown>) : IUseRequest$GenWithResponse$GenMethodReturn
+{
+    return useRequest$GenWithResponse$GenMethodReturn("$HttpMethod", `$Url$GenFromRoute`, $GenPayloadParameterName,$GenDefaultData deps);
+}
+]
+]
