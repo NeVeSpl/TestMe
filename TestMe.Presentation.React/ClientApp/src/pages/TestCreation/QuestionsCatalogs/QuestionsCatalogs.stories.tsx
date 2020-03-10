@@ -17,7 +17,7 @@ export default {
 
 
 
-export const Default = () =>
+export const LocalState = () =>
 {
     var result =
         {
@@ -45,7 +45,7 @@ export const Default = () =>
 };
 
 
-export const Redux = () =>
+export const ReduxState = () =>
 {
     var result =
         {

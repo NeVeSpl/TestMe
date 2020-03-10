@@ -1,8 +1,7 @@
-﻿import * as React from 'react';
-import { UserService } from '../../../services';
+﻿import { UserService } from '../../../services';
 import { ApiError, CatalogHeaderDTO, QuestionsCatalogsService } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Thunk } from '../../../redux.base';
-import { Action, AnyAction  } from 'redux'
+import { Action } from 'redux'
 import { ErrorOccured, FetchingData } from '../../../autoapi/ReduxApiFactory';
 
 
@@ -26,7 +25,7 @@ export class QuestionsCatalogsState
     }
 }
 
-export function questionsCatalogsReducer(state = new QuestionsCatalogsState(), action: AnyAction): QuestionsCatalogsState
+export function questionsCatalogsReducer(state = new QuestionsCatalogsState(), action: Action): QuestionsCatalogsState
 {
     switch (action.type)
     {
@@ -104,5 +103,5 @@ export class CloseWindow
 {
     static Type = 'CloseWindow'; 
 
-    constructor(public type = CloseWindow.Type) { }
+    constructor(public window: ChildWindows, public type = CloseWindow.Type) { }
 }

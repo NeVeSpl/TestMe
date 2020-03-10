@@ -1,21 +1,22 @@
-﻿import { combineReducers, Action, AnyAction } from 'redux'
-import { ThunkAction } from 'redux-thunk'
-import { createStore, applyMiddleware, Middleware, MiddlewareAPI, Dispatch} from 'redux'
-import thunk from 'redux-thunk';
-import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs'
-import { ReduxApiFactory } from './autoapi/ReduxApiFactory';
+﻿import { combineReducers, Action, createStore, applyMiddleware, Middleware, MiddlewareAPI, Dispatch } from 'redux'
+import thunk, { ThunkAction } from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension';
+import { ReduxApiFactory } from './autoapi/ReduxApiFactory';
 import { ObjectUtils, StateStorage } from './utils/'
+import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs'
+import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs';
 
 
 const rootReducer = combineReducers({
-    questionsCatalogs: questionsCatalogsReducer,    
+    questionsCatalogs: questionsCatalogsReducer, 
+    questionsCatalogEditor: questionsCatalogEditorReducer
 })
 
 //export type RootState = ReturnType<typeof rootReducer>
 export interface RootState
 {
-    questionsCatalogs: QuestionsCatalogsState
+    questionsCatalogs: QuestionsCatalogsState,
+    questionsCatalogEditor: QuestionsCatalogEditorState
 }
 
 
@@ -29,7 +30,7 @@ export type Thunk<ReturnType = void> = ThunkAction<
 
 function classToPOJOReduxMiddleware()
 {
-    const loggerMiddleware: Middleware = ( api: MiddlewareAPI) => (next: Dispatch) => action =>
+    const middleware: Middleware = ( api: MiddlewareAPI) => (next: Dispatch) => action =>
     {
         if ((typeof action !== 'function') && (!ObjectUtils.isPlainObject(action)))
         {
@@ -39,7 +40,7 @@ function classToPOJOReduxMiddleware()
         return  next(action);
     }
 
-    return loggerMiddleware;
+    return middleware;
 }
 
 

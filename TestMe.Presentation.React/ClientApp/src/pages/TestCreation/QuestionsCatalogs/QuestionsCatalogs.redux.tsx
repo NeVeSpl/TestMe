@@ -6,7 +6,8 @@ import { BusyIndicator, Window } from '../../../components';
 import { ChildWindows, fetchCatalogs, ShowQuestionsCatalog, ShowQuestionsCatalogEditor, CloseWindow } from './QuestionsCatalogs.reducer';
 import { useEffect } from 'react';
 import { preventDefault } from '../../../utils/ReactUtils';
-import { QuestionsCatalog, QuestionsCatalogEditor } from '.';
+import { QuestionsCatalog } from '.';
+import { QuestionsCatalogEditor } from './QuestionsCatalogEditor/QuestionsCatalogEditor.redux';
 
 interface QuestionCatalogsProps extends RouteProps
 {
@@ -42,18 +43,13 @@ export function QuestionsCatalogs(props: QuestionCatalogsProps)
                                 <QuestionsCatalog
                                     windowNestingLevel={1}
                                     catalogId={openedQuestionsCatalogId}
-                                    onCancel={() => dispatch(new CloseWindow())}
-                                    onCatalogDeleted={() => { dispatch(new CloseWindow()); dispatch(fetchCatalogs()) }}
+                                    onCancel={() => dispatch(new CloseWindow(ChildWindows.QuestionsCatalog))}
+                                    onCatalogDeleted={() => { dispatch(new CloseWindow(ChildWindows.QuestionsCatalog)); dispatch(fetchCatalogs()) }}
                                     onCatalogUpdated={() => dispatch(fetchCatalogs())}
                                 />
                             );
                         case ChildWindows.QuestionsCatalogEditor:
-                            return (
-                                <QuestionsCatalogEditor
-                                    windowNestingLevel={1}
-                                    onCancel={() => dispatch(new CloseWindow())}
-                                    onCatalogCreated={() => { dispatch(new CloseWindow()); dispatch(fetchCatalogs()) }} />
-                            );
+                            return <QuestionsCatalogEditor windowNestingLevel={1}/>                            
                     }
                  })()
             }

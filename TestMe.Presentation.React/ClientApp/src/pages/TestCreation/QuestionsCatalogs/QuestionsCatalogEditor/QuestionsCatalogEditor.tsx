@@ -35,7 +35,8 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
     readonly state = this.storage?.Load() ?? new QuestionsCatalogEditorState();
     invokeSubmit?: () => {} | null;
 
-    componentDidMount() {
+    componentDidMount()
+    {
         this.fetchCatalog(this.props.catalogId);
     }
     componentDidUpdate(prevProps: QuestionsCatalogEditorProps, prevState: QuestionsCatalogEditorState, snapshot: any)
@@ -56,7 +57,8 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
         }
     }
 
-    validate(data: CreateCatalogDTO) {
+    validate = (data: CreateCatalogDTO) =>
+    {
         const errors: object & { [key: string]: any } = {};
 
         if (data.name.length < 3) {
@@ -65,6 +67,8 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
         if (data.name.length > 2048) {
             errors.name = "Name must be shorter than 2048 characters";
         }
+
+        this.setState({ hasValidationErrors: Object.keys(errors).length !== 0 });
 
         return errors;
     }
@@ -115,7 +119,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
                 {
                     (formik: FormikProps<CreateCatalogDTO>) =>
                     {
-                        this.invokeSubmit = formik.submitForm;
+                        this.invokeSubmit = formik.submitForm;                        
                         return (
                             <form>
                                 <div className="form-group">
