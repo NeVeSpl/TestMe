@@ -8,8 +8,8 @@ export class ReduxApiFactory
     CreateQuestionsCatalogsService(dispatch: ThunkDispatch<RootState, ReduxApiFactory, AnyAction>): QuestionsCatalogsService
     {
         return new QuestionsCatalogsService(
-            (x) => dispatch({ type: ErrorOccured, where: "QuestionsCatalogsService", apiError: x} as ErrorOccured),
-            (x) => dispatch({ type: FetchingData, where: "QuestionsCatalogsService", isBusy: x } as FetchingData),
+            (x) => dispatch(new ErrorOccured(QuestionsCatalogsService.Type, x)),
+            (x) => dispatch(new FetchingData(QuestionsCatalogsService.Type, x)),
             undefined
         );
     }
@@ -17,21 +17,16 @@ export class ReduxApiFactory
 }
 
 
-export const ErrorOccured = 'ErrorOccured';
-export const FetchingData = 'FetchingData';
-
-
-
-export interface ErrorOccured
+export class ErrorOccured
 {   
-    type: typeof ErrorOccured;
-    where: string;
-    apiError?: ApiError;    
+    static Type = "ErrorOccured"; 
+
+    constructor(public where: string, public apiError?: ApiError, public type = ErrorOccured.Type) { }
 }
 
-export interface FetchingData
+export class FetchingData
 {   
-    type: typeof FetchingData;
-    where: string;
-    isBusy: boolean;    
+    static Type = "FetchingData";
+
+    constructor(public where: string, public isBusy: boolean, public type = FetchingData.Type) { }
 }

@@ -197,6 +197,8 @@ export * from "../base/index";
 
 export class $GenServiceName extends ApiBaseService
 {
+    static Type = "$GenServiceName";
+
     $Methods[$name($Parameters($ParametersFilter)[$name: $Type][, ]) $GenPromiseMe
     {
         return this.MakeRequest$GenWithResponse$GenMethodReturn("$HttpMethod", `$Url$GenFromRoute`, $GenPayloadParameterName);

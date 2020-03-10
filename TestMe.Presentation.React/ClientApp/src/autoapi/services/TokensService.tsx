@@ -13,6 +13,8 @@ export * from "../base/index";
 
 export class TokensService extends ApiBaseService
 {
+    static Type = "TokensService";
+
     createToken(loginCredentials: LoginCredentialsDTO) : Promise<TokenDTO>
     {
         return this.MakeRequestWithResult<TokenDTO>("post", `Tokens`, loginCredentials);

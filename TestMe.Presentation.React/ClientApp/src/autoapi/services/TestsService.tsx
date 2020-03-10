@@ -31,6 +31,8 @@ export * from "../base/index";
 
 export class TestsService extends ApiBaseService
 {
+    static Type = "TestsService";
+
     readTestHeaders(catalogId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<TestHeaderDTO>>
     {
         return this.MakeRequestWithResult<OffsetPagedResults<TestHeaderDTO>>("get", `Tests/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);

@@ -13,6 +13,8 @@ export * from "../base/index";
 
 export class UsersService extends ApiBaseService
 {
+    static Type = "UsersService";
+
     createUser(createUser: CreateUserDTO) : Promise<number>
     {
         return this.MakeRequestWithResult<number>("post", `Users`, createUser);

@@ -22,6 +22,8 @@ export * from "../base/index";
 
 export class QuestionsService extends ApiBaseService
 {
+    static Type = "QuestionsService";
+
     readQuestionHeaders(catalogId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<QuestionHeaderDTO>>
     {
         return this.MakeRequestWithResult<OffsetPagedResults<QuestionHeaderDTO>>("get", `Questions/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);

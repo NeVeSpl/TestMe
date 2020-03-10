@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { UserService } from '../../../services';
-import { ApiError, CatalogHeaderDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { ApiError, CatalogHeaderDTO, QuestionsCatalogsService } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Thunk } from '../../../redux.base';
 import { Action, AnyAction  } from 'redux'
 import { ErrorOccured, FetchingData } from '../../../autoapi/ReduxApiFactory';
@@ -8,10 +8,6 @@ import { ErrorOccured, FetchingData } from '../../../autoapi/ReduxApiFactory';
 
 export enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
 
-export const ShowQuestionsCatalog = 'ShowQuestionsCatalog';
-export const QuestionsCatalogsFetched = 'QuestionsCatalogsFetched';
-export const ShowQuestionsCatalogEditor = 'ShowQuestionsCatalogEditor';
-export const CloseWindow = 'CloseWindow';
 
 export class QuestionsCatalogsState
 {
@@ -34,32 +30,32 @@ export function questionsCatalogsReducer(state = new QuestionsCatalogsState(), a
 {
     switch (action.type)
     {
-        case ErrorOccured:
+        case ErrorOccured.Type:
             const errorOccured = action as ErrorOccured;
-            if (errorOccured.where == "QuestionsCatalogsService")
+            if (errorOccured.where == QuestionsCatalogsService.Type)
             {
                 state = { ...state, apiError: errorOccured.apiError };
             }
             break;
-        case FetchingData:
+        case FetchingData.Type:
             const fetchingData = action as FetchingData;
-            if (fetchingData.where == "QuestionsCatalogsService")
+            if (fetchingData.where == QuestionsCatalogsService.Type)
             {
                 state = { ...state, isBusy: fetchingData.isBusy };
             }
             break;
-        case QuestionsCatalogsFetched:
+        case QuestionsCatalogsFetched.Type:
             const questionsCatalogsFetched = action as QuestionsCatalogsFetched;
             state = { ...state, questionsCatalogs: questionsCatalogsFetched.questionsCatalogs };
             break;
-        case ShowQuestionsCatalogEditor:
+        case ShowQuestionsCatalogEditor.Type:
             state = { ...state, openedChildWindow: ChildWindows.QuestionsCatalogEditor };
             break;
-        case ShowQuestionsCatalog:
+        case ShowQuestionsCatalog.Type:
             const showQuestionsCatalog = action as ShowQuestionsCatalog;
             state = { ...state, openedChildWindow: ChildWindows.QuestionsCatalog, openedQuestionsCatalogId: showQuestionsCatalog.catalogId };
             break;
-        case CloseWindow:
+        case CloseWindow.Type:
             state = { ...state, openedChildWindow: ChildWindows.None };
             break;
     }
@@ -77,29 +73,36 @@ export function fetchCatalogs(): Thunk<void>
     {
         const service = api.CreateQuestionsCatalogsService(dispatch);
         service.readQuestionsCatalogHeaders(UserService.getUserID(), { limit: 10, offset: 0 })
-            .then(x => dispatch({ type: QuestionsCatalogsFetched, questionsCatalogs: x.result } as QuestionsCatalogsFetched));
+            .then(x => dispatch(new QuestionsCatalogsFetched( x.result)));
     };
 }
 
 
 
-export interface ShowQuestionsCatalog
+export class ShowQuestionsCatalog
 {
-    type: typeof ShowQuestionsCatalog;   
-    catalogId: number;
+    static Type = 'ShowQuestionsCatalog';    
+
+    constructor(public catalogId: number, public type = ShowQuestionsCatalog.Type) { }
 }
 
-export interface QuestionsCatalogsFetched
+export class QuestionsCatalogsFetched
 {
-    type: typeof QuestionsCatalogsFetched;   
-    questionsCatalogs: CatalogHeaderDTO[];
+    static Type = 'QuestionsCatalogsFetched'; 
+
+    constructor(public questionsCatalogs: CatalogHeaderDTO[], public type = QuestionsCatalogsFetched.Type) { }
 }
 
-export interface ShowQuestionsCatalogEditor
+export class ShowQuestionsCatalogEditor
 {
-    type: typeof ShowQuestionsCatalogEditor;   
+    static Type = 'ShowQuestionsCatalogEditor';   
+
+    constructor(public type = ShowQuestionsCatalogEditor.Type) { }
 }
-export interface CloseWindow
+
+export class CloseWindow
 {
-    type: typeof CloseWindow;
+    static Type = 'CloseWindow'; 
+
+    constructor(public type = CloseWindow.Type) { }
 }

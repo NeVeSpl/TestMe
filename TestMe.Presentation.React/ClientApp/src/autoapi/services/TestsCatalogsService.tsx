@@ -19,6 +19,8 @@ export * from "../base/index";
 
 export class TestsCatalogsService extends ApiBaseService
 {
+    static Type = "TestsCatalogsService";
+
     readCatalogHeaders(ownerId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<CatalogHeaderDTO>>
     {
         return this.MakeRequestWithResult<OffsetPagedResults<CatalogHeaderDTO>>("get", `TestsCatalogs/headers?ownerId=${ownerId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);
