@@ -30,7 +30,7 @@ export class QuestionsCatalogEditorState {
 
 export default class QuestionsCatalogEditor extends React.Component<QuestionsCatalogEditorProps, QuestionsCatalogEditorState>
 {
-    readonly storage: StateStorage<QuestionsCatalogEditorState> = this.props.injectedStorage ?? new StateStorage(QuestionsCatalogEditorState, "QuestionsCatalogEditorState");
+    readonly storage: StateStorage<QuestionsCatalogEditorState> = this.props.injectedStorage ?? new StateStorage<QuestionsCatalogEditorState>("QuestionsCatalogEditorState");
     readonly service: QuestionsCatalogsService = this.props.injectedService ?? new QuestionsCatalogsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
     readonly state = this.storage?.Load() ?? new QuestionsCatalogEditorState();
     invokeSubmit?: () => {} | null;

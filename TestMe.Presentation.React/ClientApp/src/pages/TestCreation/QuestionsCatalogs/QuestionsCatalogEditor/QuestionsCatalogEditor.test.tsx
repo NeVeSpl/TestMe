@@ -5,6 +5,6 @@ import { StateStorage } from '../../../../utils/StateStorage';
 
 test('renders QuestionsCatalogEditor', () =>
 {
-    const storage = StateStorage.CreateMock(QuestionsCatalogEditorState);
+    const storage = StateStorage.CreateMock<QuestionsCatalogEditorState>();
     const result = render(<QuestionsCatalogEditor injectedStorage={storage} />);   
 });

@@ -42,7 +42,7 @@ export const Default = () => {
     const service = new QuestionsService();
     service.readQuestionWithAnswers = (x) => Promise.resolve(questionDTO);
 
-    const storage = StateStorage.CreateMock(QuestionEditorState);
+    const storage = StateStorage.CreateMock<QuestionEditorState>();
    
 
     return (

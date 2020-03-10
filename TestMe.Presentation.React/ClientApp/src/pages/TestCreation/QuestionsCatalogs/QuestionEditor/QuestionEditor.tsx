@@ -39,7 +39,7 @@ export class QuestionEditorState
 
 export default class QuestionEditor extends React.PureComponent<QuestionEditorProps, QuestionEditorState>
 {
-    readonly storage: StateStorage<QuestionEditorState> = this.props.injectedStorage ?? new StateStorage(QuestionEditorState, "QuestionEditorState");
+    readonly storage: StateStorage<QuestionEditorState> = this.props.injectedStorage ?? new StateStorage<QuestionEditorState>("QuestionEditorState");
     readonly service: QuestionsService = this.props.injectedService ?? new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }), x => this.handleConcurrencyConflict());
     readonly state = this.storage?.Load() ?? new QuestionEditorState();
     isFormItemTouched: Set<string> = new Set();

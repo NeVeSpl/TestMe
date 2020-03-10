@@ -5,6 +5,6 @@ import { StateStorage } from '../../../../utils/StateStorage';
 
 test('renders Question', () =>
 {
-    const storage = StateStorage.CreateMock(QuestionState);
+    const storage = StateStorage.CreateMock<QuestionState>();
     const result = render(<Question injectedStorage={storage} />);   
 });

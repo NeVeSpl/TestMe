@@ -5,7 +5,7 @@ import thunk from 'redux-thunk';
 import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs'
 import { ReduxApiFactory } from './autoapi/ReduxApiFactory';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { ObjectUtils } from './utils/'
+import { ObjectUtils, StateStorage } from './utils/'
 
 
 const rootReducer = combineReducers({
@@ -29,7 +29,7 @@ export type Thunk<ReturnType = void> = ThunkAction<
 
 function classToPOJOReduxMiddleware()
 {
-    const middleware: Middleware = ( api: MiddlewareAPI) => (next: Dispatch) => action =>
+    const loggerMiddleware: Middleware = ( api: MiddlewareAPI) => (next: Dispatch) => action =>
     {
         if ((typeof action !== 'function') && (!ObjectUtils.isPlainObject(action)))
         {
@@ -39,11 +39,16 @@ function classToPOJOReduxMiddleware()
         return  next(action);
     }
 
-    return middleware;
+    return loggerMiddleware;
 }
 
 
-export function configureStore()
-{
-    return createStore(rootReducer, undefined, composeWithDevTools(applyMiddleware(classToPOJOReduxMiddleware(), thunk.withExtraArgument(new ReduxApiFactory))));
+
+export function configureStore(reduxStateStorage: StateStorage<RootState>, reduxApiFactory : ReduxApiFactory)
+{  
+    const reduxState = reduxStateStorage.Load();
+    const store = createStore(rootReducer, reduxState ?? undefined, composeWithDevTools(applyMiddleware(classToPOJOReduxMiddleware(), thunk.withExtraArgument(reduxApiFactory))));
+
+    store.subscribe(() => reduxStateStorage.Save(store.getState()));
+    return store;
 }

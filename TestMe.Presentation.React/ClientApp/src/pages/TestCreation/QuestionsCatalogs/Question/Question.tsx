@@ -37,7 +37,7 @@ export class QuestionState
 
 export default class Question extends React.Component<QuestionProps, QuestionState>
 {
-    readonly storage: StateStorage<QuestionState> = this.props.injectedStorage ?? new StateStorage(QuestionState, "QuestionState");
+    readonly storage: StateStorage<QuestionState> = this.props.injectedStorage ?? new StateStorage<QuestionState>("QuestionState");
     readonly service: QuestionsService = this.props.injectedService ?? new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }));
     readonly state: QuestionState = this.storage?.Load() ?? new QuestionState();
 

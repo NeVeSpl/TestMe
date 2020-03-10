@@ -39,7 +39,7 @@ export const Default = () => {
     const catalogService = new QuestionsCatalogsService();
     catalogService.readQuestionsCatalog = (x) => Promise.resolve(catalogServiceResult);
 
-    const storage = StateStorage.CreateMock(QuestionsCatalogEditorState);
+    const storage = StateStorage.CreateMock<QuestionsCatalogEditorState>();
    
 
     return (

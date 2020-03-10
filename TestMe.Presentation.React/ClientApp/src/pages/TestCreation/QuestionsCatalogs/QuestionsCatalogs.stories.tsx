@@ -4,6 +4,7 @@ import QuestionsCatalogs, { QuestionsCatalogsState }  from './QuestionsCatalogs'
 import { QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagedResults } from '../../../autoapi/services/QuestionsCatalogsService';
 import { StateStorage } from '../../../utils';
 
+
 export default {
     title: 'QuestionsCatalogs',
     component: QuestionsCatalogs,
@@ -32,7 +33,7 @@ export const Default = () =>
 
     const service = new QuestionsCatalogsService();
     service.readQuestionsCatalogHeaders = (x, y) => Promise.resolve(result);
-    const storage = StateStorage.CreateMock(QuestionsCatalogsState);
+    const storage = StateStorage.CreateMock<QuestionsCatalogsState>();
 
     return (
         <QuestionsCatalogs injectedService={service} injectedStorage={storage} />

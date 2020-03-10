@@ -2,9 +2,9 @@
 {
     private keyName: string
 
-    constructor(private typeConstructor: new () => T, keyName?: string)
+    constructor(keyName: string)
     {
-        this.keyName = keyName ?? typeConstructor.name;
+        this.keyName = keyName;
     }
 
 
@@ -23,7 +23,7 @@
         {
             console.error(err.message);
         }
-        return new this.typeConstructor();
+        return null;
     }
     Save(object: T)
     {
@@ -50,9 +50,9 @@
     }
 
 
-    static CreateMock<T>(typeConstructor: new () => T): StateStorage<T>
+    static CreateMock<T>(): StateStorage<T>
     {
-        const storage = new StateStorage(typeConstructor);
+        const storage = new StateStorage<T>("Mock");
         storage.Load = () => null;
         storage.Save = () => null;
         storage.Erase = () => null;
