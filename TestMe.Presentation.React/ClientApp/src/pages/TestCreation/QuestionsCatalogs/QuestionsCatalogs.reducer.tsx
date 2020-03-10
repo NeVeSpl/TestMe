@@ -71,7 +71,7 @@ export function fetchCatalogs(): Thunk<void>
 {
     return async (dispatch, getState, api) =>
     {
-        const service = api.CreateQuestionsCatalogsService(dispatch);
+        const service = api.CreateService(QuestionsCatalogsService, dispatch);
         service.readQuestionsCatalogHeaders(UserService.getUserID(), { limit: 10, offset: 0 })
             .then(x => dispatch(new QuestionsCatalogsFetched( x.result)));
     };

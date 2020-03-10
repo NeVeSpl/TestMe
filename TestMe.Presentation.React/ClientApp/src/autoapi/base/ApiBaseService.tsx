@@ -1,4 +1,5 @@
 ﻿import { ApiError, ErrorCode, ProblemDetails } from ".";
+import { UserService } from "../../services";
 
 
 export class ApiBaseService 
@@ -103,7 +104,7 @@ export class ApiBaseService
 
     public static PrepareRequest(httpMethod: string, payload: any | undefined = null): RequestInit
     {
-        const token = localStorage.getItem("token");
+        const token = UserService.getUserToken();
 
         let initWithPayload = {};
         let initHeadersWithPayload = {};

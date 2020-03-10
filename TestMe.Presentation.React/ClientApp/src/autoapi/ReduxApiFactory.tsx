@@ -3,17 +3,33 @@ import { ThunkDispatch } from "redux-thunk";
 import { RootState } from "../redux.base";
 import { AnyAction } from 'redux';
 
+type serviceConstructorType<T> = new (setError?: (error: ApiError | undefined) => void, setLoading?: (isLoading: boolean) => void, onConflictError?: (error: ApiError | undefined) => void) => T;
+
 export class ReduxApiFactory
 {
-    CreateQuestionsCatalogsService(dispatch: ThunkDispatch<RootState, ReduxApiFactory, AnyAction>): QuestionsCatalogsService
+    mocks = new Map<string, any>();
+
+    CreateService<T>(typeConstructor: serviceConstructorType<T>, dispatch: ThunkDispatch<RootState, ReduxApiFactory, AnyAction>): T
     {
-        return new QuestionsCatalogsService(
-            (x) => dispatch(new ErrorOccured(QuestionsCatalogsService.Type, x)),
-            (x) => dispatch(new FetchingData(QuestionsCatalogsService.Type, x)),
+        const type = (typeConstructor as any).Type;        
+
+        if (this.mocks.has(type))
+        { 
+            return this.mocks.get(type) as T;
+        }
+
+        return new typeConstructor(
+            (x) => dispatch(new ErrorOccured(type, x)),
+            (x) => dispatch(new FetchingData(type, x)),
             undefined
         );
     }
 
+
+    AddMock(type: string, mock : any)
+    { 
+        this.mocks.set(type, mock);
+    }
 }
 
 
