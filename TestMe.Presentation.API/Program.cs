@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
+using Serilog.Sinks.Elasticsearch;
 using TestMe.TestCreation.Persistence;
 using TestMe.UserManagement.Persistence.Extensions;
 
@@ -13,7 +15,10 @@ namespace TestMe.Presentation.API
     internal sealed class Program
     {
         public static int Main(string[] args)
-        {           
+        {
+            // https://devblogs.microsoft.com/aspnet/improvements-in-net-core-3-0-for-troubleshooting-and-monitoring-distributed-apps/
+            Activity.DefaultIdFormat = ActivityIdFormat.W3C;
+
             var currentDirectory = Directory.GetCurrentDirectory();
             IConfiguration configuration = CreateConfiguration(currentDirectory);
             Log.Logger = CreateSerilogger(configuration, currentDirectory);
@@ -87,9 +92,14 @@ namespace TestMe.Presentation.API
                 .WriteTo.File
                 (
                     path: Path.Combine(path, @".log"),
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {RequestId} {SourceContext} {EventId} {Message:lj}{NewLine}{Exception}",                   
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {RequestId} {SourceContext} {EventId} {Message:lj}{NewLine}{Exception}{Scope}",                   
                     rollingInterval: RollingInterval.Day
-                )
+                ).WriteTo.Elasticsearch(new ElasticsearchSinkOptions(new Uri("http://localhost:9200"))
+                {
+                    AutoRegisterTemplate = true,
+                    AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
+                    IndexFormat= "presentation-api-{0:yyyy.MM.dd}"
+                })
                 .CreateLogger();
         }
     }

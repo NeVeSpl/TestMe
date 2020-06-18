@@ -93,7 +93,7 @@ namespace TestMe.Infrastructure.EventBus.RabbitMQ
                 try
                 {
                     var body = eventArgs.Body;
-                    var message = Encoding.UTF8.GetString(body);
+                    var message = Encoding.UTF8.GetString(body.Span);
                     var routingKey = eventArgs.RoutingKey;
 
                     Event @event = JsonSerializer.Deserialize<Event>(message);

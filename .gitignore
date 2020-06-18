@@ -231,3 +231,5 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 TestMe.Presentation.API/appsettings.Production.json
+TestMe.Presentation.API/.config/
+TestMe.Presentation.React/.config/

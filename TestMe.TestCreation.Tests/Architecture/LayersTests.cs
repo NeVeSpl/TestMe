@@ -55,8 +55,7 @@ namespace TestMe.TestCreation.Tests.Architecture
                              .That()
                              .ResideInNamespace("TestMe.TestCreation.App")
                              .ShouldNot()
-                             .HaveDependencyOnAny(
-                                "TestMe.TestCreation.Infrastructure",
+                             .HaveDependencyOnAny(                               
                                 "TestMe.BuildingBlocks.Domain",                               
                                 "TestMe.BuildingBlocks.Persistence"                            
                              )

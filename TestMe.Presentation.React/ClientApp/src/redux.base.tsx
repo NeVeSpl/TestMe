@@ -47,8 +47,8 @@ function classToPOJOReduxMiddleware()
 
 export function configureStore(reduxStateStorage: StateStorage<RootState>, reduxApiFactory : ReduxApiFactory)
 {  
-    const reduxState = reduxStateStorage.Load();
-    const store = createStore(rootReducer, reduxState ?? undefined, composeWithDevTools(applyMiddleware(classToPOJOReduxMiddleware(), thunk.withExtraArgument(reduxApiFactory))));
+    const reduxState = reduxStateStorage.Load() ?? undefined;
+    const store = createStore(rootReducer, reduxState, composeWithDevTools(applyMiddleware(classToPOJOReduxMiddleware(), thunk.withExtraArgument(reduxApiFactory))));
 
     store.subscribe(() => reduxStateStorage.Save(store.getState()));
     return store;
