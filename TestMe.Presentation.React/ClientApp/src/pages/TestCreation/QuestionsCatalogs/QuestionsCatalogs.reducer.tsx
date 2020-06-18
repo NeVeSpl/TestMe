@@ -3,6 +3,9 @@ import { ApiError, CatalogHeaderDTO, QuestionsCatalogsService } from '../../../a
 import { Thunk } from '../../../redux.base';
 import { Action } from 'redux'
 import { ErrorOccured, FetchingData } from '../../../autoapi/ReduxApiFactory';
+import { CloseQuestionsCatalogEditorWindow, QuestionsCatalogCreated, QuestionsCatalogUpdated } from './QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
+import { CloseQuestionsCatalogWindow, QuestionsCatalogDeleted } from './QuestionsCatalog/QuestionsCatalog.reducer';
+import { ArrayUtils } from '../../../utils';
 
 
 export enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
@@ -50,21 +53,35 @@ export function questionsCatalogsReducer(state = new QuestionsCatalogsState(), a
         case ShowQuestionsCatalogEditor.Type:
             state = { ...state, openedChildWindow: ChildWindows.QuestionsCatalogEditor };
             break;
+        case CloseQuestionsCatalogEditorWindow.Type:
+            if (state.openedChildWindow == ChildWindows.QuestionsCatalogEditor)
+            {
+                state = { ...state, openedChildWindow: ChildWindows.None };
+            }
+            break;
         case ShowQuestionsCatalog.Type:
             const showQuestionsCatalog = action as ShowQuestionsCatalog;
             state = { ...state, openedChildWindow: ChildWindows.QuestionsCatalog, openedQuestionsCatalogId: showQuestionsCatalog.catalogId };
             break;
-        case CloseWindow.Type:
+        case CloseQuestionsCatalogWindow.Type:
             state = { ...state, openedChildWindow: ChildWindows.None };
             break;
+        case QuestionsCatalogCreated.Type:
+            const questionsCatalogCreated = action as QuestionsCatalogCreated;
+            state = { ...state, questionsCatalogs: [...state.questionsCatalogs, questionsCatalogCreated.catalog], openedChildWindow: ChildWindows.None };       
+            break;
+        case QuestionsCatalogUpdated.Type:
+            const questionsCatalogUpdated = action as QuestionsCatalogUpdated;
+            state = { ...state, questionsCatalogs: ArrayUtils.ReplaceFirst(state.questionsCatalogs, x => x.catalogId === questionsCatalogUpdated.catalog.catalogId, questionsCatalogUpdated.catalog) };
+            break;
+        case QuestionsCatalogDeleted.Type:
+            const questionsCatalogDeleted = action as QuestionsCatalogDeleted;         
+            state = { ...state, questionsCatalogs: state.questionsCatalogs.filter(x => x.catalogId !== questionsCatalogDeleted.catalogId), openedChildWindow: ChildWindows.None };       
+            break;
+
     }
     return state;
 }
-
-
-
-
-
 
 export function fetchCatalogs(): Thunk<void>
 {
@@ -75,7 +92,6 @@ export function fetchCatalogs(): Thunk<void>
             .then(x => dispatch(new QuestionsCatalogsFetched( x.result)));
     };
 }
-
 
 
 export class ShowQuestionsCatalog
@@ -97,11 +113,4 @@ export class ShowQuestionsCatalogEditor
     static Type = 'ShowQuestionsCatalogEditor';   
 
     constructor(public type = ShowQuestionsCatalogEditor.Type) { }
-}
-
-export class CloseWindow
-{
-    static Type = 'CloseWindow'; 
-
-    constructor(public window: ChildWindows, public type = CloseWindow.Type) { }
 }

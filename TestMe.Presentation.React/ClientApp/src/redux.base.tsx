@@ -3,20 +3,24 @@ import thunk, { ThunkAction } from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ReduxApiFactory } from './autoapi/ReduxApiFactory';
 import { ObjectUtils, StateStorage } from './utils/'
-import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs'
-import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs';
+import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogs.reducer'
+import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
+import { questionsCatalogReducer, QuestionsCatalogState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalog/QuestionsCatalog.reducer';
+
 
 
 const rootReducer = combineReducers({
     questionsCatalogs: questionsCatalogsReducer, 
-    questionsCatalogEditor: questionsCatalogEditorReducer
+    questionsCatalogEditor: questionsCatalogEditorReducer,
+    questionsCatalog: questionsCatalogReducer
 })
 
 //export type RootState = ReturnType<typeof rootReducer>
 export interface RootState
 {
     questionsCatalogs: QuestionsCatalogsState,
-    questionsCatalogEditor: QuestionsCatalogEditorState
+    questionsCatalogEditor: QuestionsCatalogEditorState,
+    questionsCatalog: QuestionsCatalogState,
 }
 
 
@@ -27,6 +31,11 @@ export type Thunk<ReturnType = void> = ThunkAction<
     Action<string>
     >
 
+export type ThunkDispatch = {
+    <TAction>(action: TAction):
+        TAction extends (...args: any[]) => infer TResult ? TResult :
+        TAction,
+};
 
 function classToPOJOReduxMiddleware()
 {

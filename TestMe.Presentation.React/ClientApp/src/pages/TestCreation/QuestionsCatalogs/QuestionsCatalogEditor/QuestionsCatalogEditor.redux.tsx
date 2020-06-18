@@ -4,9 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
 import { RootState } from '../../../../redux.base';
 import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
-import { fetchCatalog } from '..';
-import { submitCatalog } from './QuestionsCatalogEditor.reducer';
-import { CloseWindow, ChildWindows } from '../QuestionsCatalogs.reducer';
+import { fetchCatalog, submitCatalog, CloseQuestionsCatalogEditorWindow } from './QuestionsCatalogEditor.reducer';
+
 
 interface QuestionsCatalogEditorProps
 {   
@@ -42,7 +41,7 @@ export function QuestionsCatalogEditor(props: QuestionsCatalogEditorProps)
     const dispatch = useDispatch();
     React.useEffect(() => { dispatch(fetchCatalog(props.catalogId)) }, [props.catalogId]);
     const handleSubmit = (values: CreateCatalogDTO) => { dispatch(submitCatalog(props.catalogId, values)); };
-    const handleCancel = () => { dispatch(new CloseWindow(ChildWindows.QuestionsCatalogEditor)) };
+    const handleCancel = () => { dispatch(new CloseQuestionsCatalogEditorWindow()) };
     const [hasValidationErrors, setValidationErrors] = React.useState(false);
 
     return (

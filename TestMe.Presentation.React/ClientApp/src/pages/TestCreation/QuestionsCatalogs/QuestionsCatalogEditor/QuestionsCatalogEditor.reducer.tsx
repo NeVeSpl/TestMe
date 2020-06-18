@@ -1,9 +1,9 @@
 ﻿import { UserService } from '../../../../services';
-import { ApiError, CatalogHeaderDTO, QuestionsCatalogsService, CreateCatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
+import { ApiError, CatalogHeaderDTO, QuestionsCatalogsService, CreateCatalogDTO, CatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
 import { Thunk } from '../../../../redux.base';
 import { Action } from 'redux'
 import { ErrorOccured, FetchingData } from '../../../../autoapi/ReduxApiFactory';
-import { CloseWindow, fetchCatalogs, ChildWindows } from '..';
+
 
 
 export class QuestionsCatalogEditorState
@@ -42,13 +42,11 @@ export function questionsCatalogEditorReducer(state = new QuestionsCatalogEditor
             const questionsCatalogFetched = action as QuestionsCatalogFetched;
             state = { ...state, formData: questionsCatalogFetched.questionsCatalog };
             break;       
-        case CloseWindow.Type:
-            const closeWindow = action as CloseWindow;
-            if (closeWindow.window === ChildWindows.QuestionsCatalogEditor)
-            {
-                return new QuestionsCatalogEditorState();
-            }
-            break;
+        case CloseQuestionsCatalogEditorWindow.Type:   
+        case QuestionsCatalogUpdated.Type:
+        case QuestionsCatalogCreated.Type:
+                return new QuestionsCatalogEditorState();            
+          
     }
     return state;
 }
@@ -78,13 +76,12 @@ export function submitCatalog(catalogId: number | undefined, data: CreateCatalog
         if (catalogId === undefined)
         {
             service.createCatalog(data)
-                .then(x => dispatch(new CloseWindow(ChildWindows.QuestionsCatalogEditor)))
-                .then(x => dispatch(fetchCatalogs()));
+                   .then(x => service.readQuestionsCatalog(x).then(x => dispatch(new QuestionsCatalogCreated(x))));
         }
         else
         {
             service.updateCatalog(catalogId, data)
-                .then(x => dispatch(new QuestionsCatalogUpdated(catalogId!)));
+                   .then(x => service.readQuestionsCatalog(catalogId).then(x => dispatch(new QuestionsCatalogUpdated(x))));
         }
     };
 }
@@ -92,7 +89,7 @@ export function submitCatalog(catalogId: number | undefined, data: CreateCatalog
 
 export class QuestionsCatalogFetched
 {
-    static Type = 'QuestionsCatalogFetched';
+    static Type = 'QuestionsCatalogFetchedForEdit';
 
     constructor(public questionsCatalog: CreateCatalogDTO, public type = QuestionsCatalogFetched.Type) { }
 }
@@ -102,12 +99,19 @@ export class QuestionsCatalogUpdated
 {
     static Type = 'QuestionsCatalogUpdated';
 
-    constructor(public catalogId: number, public type = QuestionsCatalogUpdated.Type) { }
+    constructor(public catalog: CatalogDTO, public type = QuestionsCatalogUpdated.Type) { }
 }
 
 export class QuestionsCatalogCreated
 {
     static Type = 'QuestionsCatalogCreated';
 
-    constructor(public catalogId: number, public type = QuestionsCatalogCreated.Type) { }
+    constructor(public catalog: CatalogDTO, public type = QuestionsCatalogCreated.Type) { }
+}
+
+export class CloseQuestionsCatalogEditorWindow
+{
+    static Type = 'CloseQuestionsCatalogEditorWindow';
+
+    constructor(public type = CloseQuestionsCatalogEditorWindow.Type) { }
 }
