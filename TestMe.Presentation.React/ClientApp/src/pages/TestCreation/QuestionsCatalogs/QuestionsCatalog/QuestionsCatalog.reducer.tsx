@@ -5,7 +5,7 @@ import { QuestionsCatalogsService, CatalogDTO, ApiError } from '../../../../auto
 import { ErrorOccured, FetchingData } from '../../../../autoapi/ReduxApiFactory';
 import { CloseQuestionsCatalogEditorWindow, QuestionsCatalogUpdated } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
 import { QuestionDeleted, CloseQuestionWindow } from '../Question/Question.reducer';
-import { QuestionUpdated, QuestionCreated } from '../QuestionEditor/QuestionEditor.reducer';
+import { QuestionUpdated, QuestionCreated, CloseQuestionEditorWindow } from '../QuestionEditor/QuestionEditor.reducer';
 import { ArrayUtils } from '../../../../utils';
 
 export enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, QuestionsCatalogDeletePrompt }
@@ -105,6 +105,12 @@ export function questionsCatalogReducer(state = new QuestionsCatalogState(), act
         case QuestionDeleted.Type:
             const questionDeleted = action as QuestionDeleted;
             state = { ...state, questions: state.questions.filter(x => x.questionId !== questionDeleted.questionId), openedChildWindow: ChildWindows.None };
+            break;
+        case CloseQuestionEditorWindow.Type:
+            if (state.openedChildWindow === ChildWindows.QuestionEditor)
+            {
+                state = { ...state, openedChildWindow: ChildWindows.None };
+            }
             break;
 
     }

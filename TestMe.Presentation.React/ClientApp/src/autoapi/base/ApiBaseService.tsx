@@ -1,4 +1,4 @@
-﻿import { ApiError, ErrorCode, ProblemDetails } from ".";
+﻿import { ApiError, ErrorCode, ConflictError, ProblemDetails } from ".";
 import { UserService } from "../../services";
 
 
@@ -64,8 +64,16 @@ export class ApiBaseService
                     console.warn(jsonBody);
                     problemDetails = jsonBody as ProblemDetails;
                 }
-
-                const error = new ApiError(response.status, problemDetails);
+                let error;
+                switch (response.status)
+                {
+                    case ErrorCode.Conflict:
+                        error = new ConflictError(response.status, problemDetails as any);
+                        break;
+                    default:
+                        error = new ApiError(response.status, problemDetails);
+                        break;
+                }
                 throw error;
             }
 

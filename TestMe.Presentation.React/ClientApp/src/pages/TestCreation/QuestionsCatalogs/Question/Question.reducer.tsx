@@ -2,7 +2,7 @@ import { Thunk } from '../../../../redux.base';
 import { Action } from 'redux';
 import { QuestionDTO, ApiError, QuestionsService } from '../../../../autoapi/services/QuestionsService';
 import { ErrorOccured, FetchingData } from '../../../../autoapi/ReduxApiFactory';
-import { QuestionUpdated } from '../QuestionEditor/QuestionEditor.reducer';
+import { QuestionUpdated, CloseQuestionEditorWindow } from '../QuestionEditor/QuestionEditor.reducer';
 
 
 export enum ChildWindows { None, QuestionDeletePrompt, QuestionEditor }
@@ -57,6 +57,9 @@ export function questionReducer(state = new QuestionState(), action: Action): Qu
         case QuestionUpdated.Type:
             const questionUpdated = action as QuestionUpdated;
             state = { ...state, question: questionUpdated.question, openedChildWindow: ChildWindows.None };
+            break;
+        case CloseQuestionEditorWindow.Type:
+            state = { ...state, openedChildWindow: ChildWindows.None };
             break;
     }
     return state;

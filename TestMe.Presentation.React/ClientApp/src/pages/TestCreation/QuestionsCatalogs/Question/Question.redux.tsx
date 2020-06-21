@@ -7,7 +7,7 @@ import { RootState } from '../../../../redux.base';
 import style from './Question.module.css';
 import { preventDefault } from '../../../../utils/ReactUtils';
 import { useEffect } from 'react';
-import { QuestionEditor } from '..';
+import { QuestionEditor } from '../QuestionEditor/QuestionEditor.redux';
 
 interface QuestionProps 
 {
@@ -67,8 +67,7 @@ export function Question(props: QuestionProps)
                                 windowNestingLevel={props.windowNestingLevel + 1}
                                 catalogId={props.catalogId}
                                 questionId={props.questionId}
-                                onCancel={() => dispatch(new CloseWindow(ChildWindows.QuestionEditor))}
-                                onQuestionUpdated={() => { }}
+                               
                             />
                         );
                 }

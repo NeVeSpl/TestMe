@@ -21,7 +21,7 @@ export class ReduxApiFactory
         return new typeConstructor(
             (x) => dispatch(new ErrorOccured(type, x)),
             (x) => dispatch(new FetchingData(type, x)),
-            undefined
+            (x) => dispatch(new ConflictError(type, x))
         );
     }
 
@@ -45,4 +45,11 @@ export class FetchingData
     static Type = "FetchingData";
 
     constructor(public where: string, public isBusy: boolean, public type = FetchingData.Type) { }
+}
+
+export class ConflictError
+{
+    static Type = "ConflictError";
+
+    constructor(public where: string, public apiError?: ApiError, public type = ConflictError.Type) { }
 }

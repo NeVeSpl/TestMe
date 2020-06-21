@@ -21,15 +21,16 @@ export class ApiError extends Error
         this.errors = {};
 
         this.errorCode = errorCode;
+
+        if (this.errorCode === ErrorCode.Conflict)
+        {
+            this.detail = "Someone has done changes before you. The conflict was automatically resolved. Please review changes and redo operation.";
+        }
+
         if (problem !== undefined)
         {
             this.traceId = problem!.traceId;
-            this.detail = problem!.detail;
-
-            if (this.errorCode === ErrorCode.Conflict)
-            {
-                this.detail = "Someone has done changes before you. The conflict was automatically resolved. Please review changes and redo operation.";
-            }
+            this.detail = problem!.detail;            
 
             if (problem.errors !== undefined)
             {
@@ -44,5 +45,16 @@ export class ApiError extends Error
     camalize(str : string)
     {
         return str.charAt(0).toLowerCase() + str.slice(1);
+    }
+}
+
+export class ConflictError extends ApiError
+{
+    readonly body: object;
+
+    constructor(errorCode: ErrorCode, body: object, ...params: any[]) 
+    {
+        super(errorCode, undefined, params);
+        this.body = body;
     }
 }

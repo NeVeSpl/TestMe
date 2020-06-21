@@ -6,5 +6,7 @@ export * from './Window/Prompt/Prompt';
 export * from './MagicForm/MagicTextInput';
 export * from './MagicForm/MagicForm';
 export * from './MagicForm/MagicDict';
+export * from './MagicForm/MagicFormState';
+export * from './MagicForm/MagicFormReducer';
 export * from './FormikControls/FormikTextInput';
 export * from './AuthenticatedRoute/AuthenticatedRoute'

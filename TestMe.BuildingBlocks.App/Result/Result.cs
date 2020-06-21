@@ -60,19 +60,7 @@ namespace TestMe.BuildingBlocks.App
         public static implicit operator bool(Result<T> result)
         {
             return result.Status == ResultStatus.Ok;
-        }
-        //public static implicit operator Result(Result<T> result)
-        //{
-        //    return Result.Create(result.Status, result.GetError());           
-        //}
-        //public static implicit operator T(Result<T> result)
-        //{
-        //    return result.Value;
-        //}
-        //public static implicit operator Result<T>(T value)
-        //{
-        //    return new Result<T>(ResultStatus.Ok, value);
-        //}
+        }       
     }
 
     internal class ErrorResult<T> : Result<T>
@@ -153,6 +141,10 @@ namespace TestMe.BuildingBlocks.App
         public static Result Conflict()
         {
             return ConflictResult;
+        }
+        public static Result<T> Conflict<T>(T value)
+        {
+            return new Result<T>(ResultStatus.Conflict, value);
         }
 
         internal static Result Create(ResultStatus status, string error)

@@ -2,8 +2,12 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import QuestionEditor, { QuestionEditorState } from './QuestionEditor';
+import {QuestionEditor as QuestionEditorRedux} from './QuestionEditor.redux';
 import { QuestionsService, QuestionDTO } from '../../../../autoapi/services/QuestionsService';
 import { StateStorage } from '../../../../utils';
+import { Provider } from 'react-redux';
+import { configureStore, RootState } from '../../../../redux.base';
+import { ReduxApiFactory } from '../../../../autoapi/ReduxApiFactory';
 
 
 export default {
@@ -24,7 +28,7 @@ export const mockData = {
     windowNestingLevel: 0,
 };
 
-export const Default = () => {
+export const LocalState = () => {
 
 
     const questionDTO =
@@ -53,4 +57,37 @@ export const Default = () => {
             injectedService={service}
             injectedStorage={storage} />
     )
+};
+
+
+export const ReduxState = () =>
+{
+    const questionDTO =
+        {
+            content: "How are you today?",
+            answers:
+                [
+                    { content: "Gooooood" },
+                    { content: "Very gooood" },
+                    { content: "Just fine", isCorrect: true }
+                ]
+        } as QuestionDTO;
+
+
+    const service = new QuestionsService();
+    service.readQuestionWithAnswers = (x) => Promise.resolve(questionDTO);
+
+    const api = new ReduxApiFactory();
+    api.AddMock(QuestionsService.Type, service);
+
+    const store = configureStore(StateStorage.CreateMock<RootState>(), api);
+
+    return (
+        <Provider store={store}>
+            <QuestionEditorRedux
+                {...mockData}
+                {...({} as RouteComponentProps)}
+            />
+        </Provider>
+    );
 };

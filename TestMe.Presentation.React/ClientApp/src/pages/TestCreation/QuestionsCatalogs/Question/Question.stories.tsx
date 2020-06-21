@@ -28,7 +28,7 @@ export const mockData = {
     windowNestingLevel: 0,
 };
 
-export const Default = () => {
+export const LocalState = () => {
 
 
     const questionDTO =

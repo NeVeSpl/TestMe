@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { QuestionsCatalogEditor } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.redux';
 import { Question } from '../Question/Question.redux';
-import { QuestionEditor } from '../';
+import { QuestionEditor } from '../QuestionEditor/QuestionEditor.redux';
 import { fetchCatalog, fetchQuestions, ChildWindows, OpenChildWindow, CloseWindow, ShowQuestion, deleteCatalog, CloseQuestionsCatalogWindow } from './QuestionsCatalog.reducer';
 import { RootState, ThunkDispatch } from '../../../../redux.base';
 import { BusyIndicator, Window, Prompt } from '../../../../components';
@@ -80,13 +80,6 @@ export function QuestionsCatalog(props: QuestionsCatalogProps)
                             <QuestionEditor
                                 windowNestingLevel={props.windowNestingLevel + 1}
                                 catalogId={props.catalogId}
-                                onCancel={() => dispatch(new CloseWindow(ChildWindows.QuestionEditor))}
-                                onQuestionCreated={() =>
-                                {
-                                    dispatch(new CloseWindow(ChildWindows.QuestionEditor));
-                                    dispatch(fetchQuestions(props.catalogId));
-                                }
-                                }
                             />
                         );
                 }

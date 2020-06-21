@@ -7,6 +7,7 @@ import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCr
 import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
 import { questionsCatalogReducer, QuestionsCatalogState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalog/QuestionsCatalog.reducer';
 import { questionReducer, QuestionState} from './pages/TestCreation/QuestionsCatalogs/Question/Question.reducer';
+import { questionsEditorReducer, QuestionEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionEditor/QuestionEditor.reducer';
 
 
 
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     questionsCatalogs: questionsCatalogsReducer, 
     questionsCatalogEditor: questionsCatalogEditorReducer,
     questionsCatalog: questionsCatalogReducer,
-    question: questionReducer
+    question: questionReducer,
+    questionEditor: questionsEditorReducer
 })
 
 //export type RootState = ReturnType<typeof rootReducer>
@@ -24,6 +26,7 @@ export interface RootState
     questionsCatalogEditor: QuestionsCatalogEditorState,
     questionsCatalog: QuestionsCatalogState,
     question: QuestionState,
+    questionEditor: QuestionEditorState
 }
 
 
@@ -31,7 +34,7 @@ export type Thunk<ReturnType = void> = ThunkAction<
     ReturnType,
     RootState,
     ReduxApiFactory,
-    Action<string>
+    Action<string> | Action<symbol>
     >
 
 export type ThunkDispatch = {

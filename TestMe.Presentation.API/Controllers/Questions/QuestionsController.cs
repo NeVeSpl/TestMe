@@ -72,6 +72,13 @@ namespace TestMe.Presentation.API.Controllers.Questions
         public ActionResult UpdateQuestionWithAnswers(long questionId, UpdateQuestionDTO updateQuestion)
         {         
             var result = Execute(service.UpdateQuestionWithAnswers, updateQuestion.CreateCommand(questionId));
+
+            if (result.Status == ResultStatus.Conflict)
+            {
+                var newQuestionVersion = service.ReadQuestionWithAnswers(UserId, questionId);
+                return Conflict(newQuestionVersion.Value);
+            }
+
             return ActionResult(result);
         }
       
