@@ -6,13 +6,15 @@ import { ObjectUtils, StateStorage } from './utils/'
 import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogs.reducer'
 import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
 import { questionsCatalogReducer, QuestionsCatalogState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalog/QuestionsCatalog.reducer';
+import { questionReducer, QuestionState} from './pages/TestCreation/QuestionsCatalogs/Question/Question.reducer';
 
 
 
 const rootReducer = combineReducers({
     questionsCatalogs: questionsCatalogsReducer, 
     questionsCatalogEditor: questionsCatalogEditorReducer,
-    questionsCatalog: questionsCatalogReducer
+    questionsCatalog: questionsCatalogReducer,
+    question: questionReducer
 })
 
 //export type RootState = ReturnType<typeof rootReducer>
@@ -21,6 +23,7 @@ export interface RootState
     questionsCatalogs: QuestionsCatalogsState,
     questionsCatalogEditor: QuestionsCatalogEditorState,
     questionsCatalog: QuestionsCatalogState,
+    question: QuestionState,
 }
 
 

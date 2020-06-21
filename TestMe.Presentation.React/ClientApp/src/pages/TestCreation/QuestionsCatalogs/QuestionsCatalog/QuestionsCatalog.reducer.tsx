@@ -4,7 +4,9 @@ import { QuestionsService, QuestionHeaderDTO } from '../../../../autoapi/service
 import { QuestionsCatalogsService, CatalogDTO, ApiError } from '../../../../autoapi/services/QuestionsCatalogsService';
 import { ErrorOccured, FetchingData } from '../../../../autoapi/ReduxApiFactory';
 import { CloseQuestionsCatalogEditorWindow, QuestionsCatalogUpdated } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
-
+import { QuestionDeleted, CloseQuestionWindow } from '../Question/Question.reducer';
+import { QuestionUpdated, QuestionCreated } from '../QuestionEditor/QuestionEditor.reducer';
+import { ArrayUtils } from '../../../../utils';
 
 export enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, QuestionsCatalogDeletePrompt }
 
@@ -73,6 +75,7 @@ export function questionsCatalogReducer(state = new QuestionsCatalogState(), act
             state = { ...state, openedChildWindow: ChildWindows.Question, openedQuestionId: showQuestion.questionId };
             break;
         case CloseWindow.Type:
+        case CloseQuestionWindow.Type:
             state = { ...state, openedChildWindow: ChildWindows.None };
             break;
         case CloseQuestionsCatalogEditorWindow.Type:
@@ -90,6 +93,18 @@ export function questionsCatalogReducer(state = new QuestionsCatalogState(), act
         case QuestionsCatalogUpdated.Type:
             const questionsCatalogUpdated = action as QuestionsCatalogUpdated;
             state = { ...state, catalog: questionsCatalogUpdated.catalog, openedChildWindow: ChildWindows.None };
+            break;
+        case QuestionCreated.Type:
+            const questionCreated = action as QuestionCreated;
+            state = { ...state, questions: [...state.questions, questionCreated.question], openedChildWindow: ChildWindows.None };
+            break;
+        case QuestionUpdated.Type:
+            const questionUpdated = action as QuestionUpdated;
+            state = { ...state, questions: ArrayUtils.ReplaceFirst(state.questions, x => x.questionId === questionUpdated.question.questionId, questionUpdated.question) };
+            break;
+        case QuestionDeleted.Type:
+            const questionDeleted = action as QuestionDeleted;
+            state = { ...state, questions: state.questions.filter(x => x.questionId !== questionDeleted.questionId), openedChildWindow: ChildWindows.None };
             break;
 
     }

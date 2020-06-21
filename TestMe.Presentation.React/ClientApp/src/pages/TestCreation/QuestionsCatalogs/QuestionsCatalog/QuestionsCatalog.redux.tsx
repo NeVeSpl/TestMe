@@ -3,7 +3,8 @@ import { RouteProps } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { QuestionsCatalogEditor } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.redux';
-import { Question, QuestionEditor } from '../';
+import { Question } from '../Question/Question.redux';
+import { QuestionEditor } from '../';
 import { fetchCatalog, fetchQuestions, ChildWindows, OpenChildWindow, CloseWindow, ShowQuestion, deleteCatalog, CloseQuestionsCatalogWindow } from './QuestionsCatalog.reducer';
 import { RootState, ThunkDispatch } from '../../../../redux.base';
 import { BusyIndicator, Window, Prompt } from '../../../../components';
@@ -65,19 +66,6 @@ export function QuestionsCatalog(props: QuestionsCatalogProps)
                                 windowNestingLevel={props.windowNestingLevel + 1}
                                 catalogId={props.catalogId}
                                 questionId={openedQuestionId}
-                                onCancel={() => dispatch(new CloseWindow(ChildWindows.Question))}
-                                onQuestionUpdated={() =>
-                                {
-                                    dispatch(new CloseWindow(ChildWindows.QuestionEditor));
-                                    dispatch(fetchQuestions(props.catalogId));
-                                }
-                                }
-                                onQuestionDeleted={() =>
-                                {
-                                    dispatch(new CloseWindow(ChildWindows.QuestionEditor));
-                                    dispatch(fetchQuestions(props.catalogId));
-                                }
-                                }
                             />
                         );
                     case ChildWindows.QuestionsCatalogEditor:
