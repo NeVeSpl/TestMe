@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { BusyIndicator, Window, Prompt } from '../../../../components';
+import { BusyIndicator, Window, Prompt } from '../../../components';
 import { QuestionEditor } from '../';
 import style from './Question.module.css';
-import { QuestionDTO, ApiError, QuestionsService } from '../../../../autoapi/services/QuestionsService';
-import { StateStorage } from '../../../../utils';
+import { QuestionDTO, ApiError, QuestionsService } from '../../../autoapi/services/QuestionsService';
+import { StateStorage } from '../../../utils';
 
 interface QuestionProps 
 {

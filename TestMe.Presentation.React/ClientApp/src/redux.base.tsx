@@ -3,25 +3,30 @@ import thunk, { ThunkAction } from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { ReduxApiFactory } from './autoapi/ReduxApiFactory';
 import { ObjectUtils, StateStorage } from './utils/'
-import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogs.reducer'
-import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
-import { questionsCatalogReducer, QuestionsCatalogState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalog/QuestionsCatalog.reducer';
-import { questionReducer, QuestionState} from './pages/TestCreation/QuestionsCatalogs/Question/Question.reducer';
-import { questionsEditorReducer, QuestionEditorState } from './pages/TestCreation/QuestionsCatalogs/QuestionEditor/QuestionEditor.reducer';
+import { testCreationPageReducer, TestCreationPageState } from './pages/TestCreation/TestCreationPage.reducer';
+import { questionsCatalogsReducer, QuestionsCatalogsState } from './pages/TestCreation/QuestionsCatalogs/QuestionsCatalogs.reducer';
+import { questionsCatalogEditorReducer, QuestionsCatalogEditorState } from './pages/TestCreation/QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
+import { questionsCatalogReducer, QuestionsCatalogState } from './pages/TestCreation/QuestionsCatalog/QuestionsCatalog.reducer';
+import { questionReducer, QuestionState} from './pages/TestCreation/Question/Question.reducer';
+import { questionsEditorReducer, QuestionEditorState } from './pages/TestCreation/QuestionEditor/QuestionEditor.reducer';
 
 
 
-const rootReducer = combineReducers({
-    questionsCatalogs: questionsCatalogsReducer, 
-    questionsCatalogEditor: questionsCatalogEditorReducer,
-    questionsCatalog: questionsCatalogReducer,
-    question: questionReducer,
-    questionEditor: questionsEditorReducer
-})
+const rootReducer = combineReducers(
+    {
+        testCreationPage : testCreationPageReducer,
+        questionsCatalogs: questionsCatalogsReducer, 
+        questionsCatalogEditor: questionsCatalogEditorReducer,
+        questionsCatalog: questionsCatalogReducer,
+        question: questionReducer,
+        questionEditor: questionsEditorReducer
+    }
+)
 
 //export type RootState = ReturnType<typeof rootReducer>
 export interface RootState
 {
+    testCreationPage: TestCreationPageState,
     questionsCatalogs: QuestionsCatalogsState,
     questionsCatalogEditor: QuestionsCatalogEditorState,
     questionsCatalog: QuestionsCatalogState,

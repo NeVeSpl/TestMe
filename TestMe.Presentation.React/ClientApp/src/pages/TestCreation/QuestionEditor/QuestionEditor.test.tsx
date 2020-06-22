@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 import QuestionEditor, { QuestionEditorState } from './QuestionEditor';
-import { StateStorage } from '../../../../utils/StateStorage';
+import { StateStorage } from '../../../utils/StateStorage';
 
 test('renders QuestionEditor', () =>
 {

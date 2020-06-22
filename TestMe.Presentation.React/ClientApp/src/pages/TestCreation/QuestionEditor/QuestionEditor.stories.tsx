@@ -3,11 +3,12 @@ import { RouteComponentProps } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import QuestionEditor, { QuestionEditorState } from './QuestionEditor';
 import {QuestionEditor as QuestionEditorRedux} from './QuestionEditor.redux';
-import { QuestionsService, QuestionDTO } from '../../../../autoapi/services/QuestionsService';
-import { StateStorage } from '../../../../utils';
+import { QuestionsService, QuestionDTO } from '../../../autoapi/services/QuestionsService';
+import { StateStorage } from '../../../utils';
 import { Provider } from 'react-redux';
-import { configureStore, RootState } from '../../../../redux.base';
-import { ReduxApiFactory } from '../../../../autoapi/ReduxApiFactory';
+import { configureStore, RootState } from '../../../redux.base';
+import { ReduxApiFactory } from '../../../autoapi/ReduxApiFactory';
+import { ShowQuestionEditor } from './QuestionEditor.reducer';
 
 
 export default {
@@ -81,6 +82,7 @@ export const ReduxState = () =>
     api.AddMock(QuestionsService.Type, service);
 
     const store = configureStore(StateStorage.CreateMock<RootState>(), api);
+    store.dispatch(new ShowQuestionEditor(1, 1));
 
     return (
         <Provider store={store}>

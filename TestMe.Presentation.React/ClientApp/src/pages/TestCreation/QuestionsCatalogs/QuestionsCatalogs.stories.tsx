@@ -69,6 +69,8 @@ export const ReduxState = () =>
     api.AddMock(QuestionsCatalogsService.Type,  service);
     const store = configureStore(StateStorage.CreateMock<RootState>(), api);
 
+   
+
     return (
         <Provider store={store}>
             <QuestionsCatalogsRedux />

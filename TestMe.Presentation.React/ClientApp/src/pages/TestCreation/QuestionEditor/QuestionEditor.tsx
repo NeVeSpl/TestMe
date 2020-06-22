@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
-import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../../components';
+import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
 import { ReactComponent as DeleteIco }  from '../outline-delete_forever-24px.svg';
-import { ObjectUtils, StateStorage } from '../../../../utils';
-import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../../autoapi/services/QuestionsService';
+import { ObjectUtils, StateStorage } from '../../../utils';
+import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../autoapi/services/QuestionsService';
 
 interface QuestionEditorProps
 {

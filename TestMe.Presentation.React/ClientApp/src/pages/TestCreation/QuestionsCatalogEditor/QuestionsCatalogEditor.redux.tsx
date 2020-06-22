@@ -1,15 +1,14 @@
 ﻿import * as React from 'react';
-import { Window, BusyIndicator, FormikTextInput } from '../../../../components';
+import { Window, BusyIndicator, FormikTextInput } from '../../../components';
 import { useSelector, useDispatch } from 'react-redux';
-import { Formik, FormikProps, FormikHelpers } from 'formik';
-import { RootState } from '../../../../redux.base';
-import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
+import { Formik, FormikProps } from 'formik';
+import { RootState } from '../../../redux.base';
+import { CreateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { fetchCatalog, submitCatalog, CloseQuestionsCatalogEditorWindow } from './QuestionsCatalogEditor.reducer';
 
 
 interface QuestionsCatalogEditorProps
-{   
-    catalogId?: number;     
+{  
     windowNestingLevel: number;
 }
 
@@ -39,16 +38,17 @@ export function QuestionsCatalogEditor(props: QuestionsCatalogEditorProps)
     let invokeSubmit : (() => { } | null) | null = null;
     const state = useSelector((state: RootState) => state.questionsCatalogEditor);   
     const dispatch = useDispatch();
-    React.useEffect(() => { dispatch(fetchCatalog(props.catalogId)) }, [props.catalogId]);
-    const handleSubmit = (values: CreateCatalogDTO) => { dispatch(submitCatalog(props.catalogId, values)); };
+    React.useEffect(() => { dispatch(fetchCatalog(state.catalogId)) }, [state.catalogId]);
+    const handleSubmit = (values: CreateCatalogDTO) => { dispatch(submitCatalog(state.catalogId, values)); };
     const handleCancel = () => { dispatch(new CloseQuestionsCatalogEditorWindow()) };
     const [hasValidationErrors, setValidationErrors] = React.useState(false);
 
     return (
-        <Window level={props.windowNestingLevel} title="Catalog editor" onCancel={handleCancel} onOk={ ()=>invokeSubmit!()} error={state.apiError} isOkEnabled={!hasValidationErrors && !state.isBusy} >
-            <BusyIndicator isBusy={state.isBusy}>
+        !state.isVisible ? null :
+        <Window level={props.windowNestingLevel} title="Catalog editor" onCancel={handleCancel} onOk={ ()=>invokeSubmit!()} error={state.apiServiceState.apiError} isOkEnabled={!hasValidationErrors && !state.apiServiceState.isBusy} >
+            <BusyIndicator isBusy={state.apiServiceState.isBusy}>
                 {() =>                
-                    <Formik enableReinitialize={true} onSubmit={handleSubmit} validate={validate(setValidationErrors)} initialValues={state.formData}>
+                    <Formik enableReinitialize={true} onSubmit={handleSubmit} validate={validate(setValidationErrors)} initialValues={state.form}>
                         {
                             (formik: FormikProps<CreateCatalogDTO>) =>
                             {
@@ -69,4 +69,3 @@ export function QuestionsCatalogEditor(props: QuestionsCatalogEditorProps)
         </Window>
     );
 }
-

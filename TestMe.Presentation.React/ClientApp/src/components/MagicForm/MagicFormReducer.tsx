@@ -20,7 +20,7 @@ export function magicFormReducer<T>(state :  MagicFormState<T>, action: Action):
 
 export class InputHasChanged
 {
-    static Type = Symbol('InputHasChanged');
+    static Type = 'InputHasChanged';
 
     constructor(public event: React.ChangeEvent<HTMLInputElement>, public formId : string, public type = InputHasChanged.Type) { }
 }

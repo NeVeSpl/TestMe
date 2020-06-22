@@ -1,50 +1,47 @@
-import { Thunk } from '../../../../redux.base';
+import { Thunk } from '../../../redux.base';
 import { Action } from 'redux';
-import { QuestionDTO, UpdateQuestionDTO, ApiError, QuestionsService, AnswerDTO, ConflictError as ConflictApiError } from '../../../../autoapi/services/QuestionsService';
-import { MagicDict, MagicFormState, InputHasChanged, magicFormReducer, MagicForm } from '../../../../components';
-import { ErrorOccured, FetchingData, ConflictError } from '../../../../autoapi/ReduxApiFactory';
-
-
+import { QuestionDTO, UpdateQuestionDTO, QuestionsService, AnswerDTO, ConflictError as ConflictApiError } from '../../../autoapi/services/QuestionsService';
+import { MagicDict, MagicFormState, InputHasChanged, magicFormReducer, MagicForm } from '../../../components';
+import { FetchingErrorOccured, FetchingConflictErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
 
 export class QuestionEditorState
 {
-    apiError: ApiError | undefined;
-    isBusy: boolean;
+    isVisible: boolean;
+    catalogId?: number;
+    questionId?: number;  
+    apiServiceState: ApiServiceState;   
     form: MagicFormState<UpdateQuestionDTO>;
-    questionBeforeEdit?: UpdateQuestionDTO;
-    loadedQuestionId: number | null;
-   
-    
+    questionBeforeEdit?: UpdateQuestionDTO; 
+
 
     constructor()
     {
-        this.isBusy = false;
+        this.isVisible = false;
+        this.apiServiceState = new ApiServiceState();
         this.form = new MagicFormState<UpdateQuestionDTO>(UpdateQuestionDTO);
-        this.loadedQuestionId = null;
-      
     }
 }
+
+const ReducerId = "QuestionsEditor";
 
 export function questionsEditorReducer(state = new QuestionEditorState(), action: Action): QuestionEditorState
 {
     switch (action.type)
     {
-        case ErrorOccured.Type:
-            const errorOccured = action as ErrorOccured;
-            if (errorOccured.where == QuestionsService.Type)
-            {
-                state = { ...state, apiError: errorOccured.apiError };
-            }
+        case ShowQuestionEditor.Type:
+            const showQuestionEditor = action as ShowQuestionEditor;
+            state = { ...state, isVisible: true, catalogId: showQuestionEditor.catalogId, questionId: showQuestionEditor.questionId };
             break;
-        case FetchingData.Type:
-            const fetchingData = action as FetchingData;
-            if (fetchingData.where == QuestionsService.Type)
-            {
-                state = { ...state, isBusy: fetchingData.isBusy };
-            }
+        case CloseQuestionEditorWindow.Type:        
+            state = new QuestionEditorState();
             break;
-        case ConflictError.Type:
-            const conflictError = action as ConflictError;
+        case FetchingErrorOccured.Type:
+        case FetchingStarted.Type:
+        case FetchingEnded.Type:
+            state = { ...state, apiServiceState: apiServiceStateReducer(state.apiServiceState, action, ReducerId, QuestionsService.Type) };
+            break; 
+        case FetchingConflictErrorOccured.Type:
+            const conflictError = action as FetchingConflictErrorOccured;
             const conflictApiError = conflictError.apiError as ConflictApiError;
 
             const userFormData = state.form.data;
@@ -61,8 +58,7 @@ export function questionsEditorReducer(state = new QuestionEditorState(), action
             const questionFetched = action as QuestionFetched;
             state = { ...state, questionBeforeEdit: questionFetched.question as any as UpdateQuestionDTO };
             state.form = { ...state.form };
-            state.form.data =  questionFetched.question as any as UpdateQuestionDTO ;
-
+            state.form.data =  questionFetched.question as any as UpdateQuestionDTO;
             break;
         case InputHasChanged.Type:
             const inputHasChanged = action as InputHasChanged;
@@ -77,11 +73,7 @@ export function questionsEditorReducer(state = new QuestionEditorState(), action
             const formValidated = action as FormValidated;
             state = {...state, form: {... formValidated.form}};
             break;
-        case CloseQuestionEditorWindow.Type:
-        case QuestionCreated.Type:
-        case QuestionUpdated.Type:
-            state = new QuestionEditorState();
-            break;
+      
         case AddAnswer.Type:      
             state = { ...state };
             state.form = { ...state.form };
@@ -135,6 +127,19 @@ function isFormValid(form: MagicFormState<UpdateQuestionDTO>, forceValidation: b
     return !hasValidationErrors;
 } 
 
+export class ShowQuestionEditor
+{
+    static Type = 'QuestionEditor.ShowQuestionEditor';
+
+    constructor(public catalogId: number, public questionId? : number, public type = ShowQuestionEditor.Type) { }
+}
+export class CloseQuestionEditorWindow
+{
+    static Type = 'QuestionEditor.CloseQuestionEditorWindow';
+
+    constructor(public type = CloseQuestionEditorWindow.Type) { }
+}
+
 
 export function fetchQuestion(questionId: number | undefined): Thunk<void>
 {
@@ -142,70 +147,24 @@ export function fetchQuestion(questionId: number | undefined): Thunk<void>
     {
         if (questionId !== undefined)
         {
-            const service = api.CreateService(QuestionsService, dispatch);
+            const service = api.CreateService(QuestionsService, dispatch, ReducerId);
             service.readQuestionWithAnswers(questionId)
-                .then(x => dispatch(new QuestionFetched(x)));
+                   .then(x => dispatch(new QuestionFetched(x)));
         }
     };
 }
-
 export class QuestionFetched
 {
-    static Type = 'QuestionFetched';
+    static Type = 'QuestionEditor.QuestionFetched';
 
     constructor(public question: QuestionDTO, public type = QuestionFetched.Type) { }
 }
-
-
-export class QuestionUpdated
-{
-    static Type = 'QuestionUpdated';
-
-    constructor(public question: QuestionDTO, public type = QuestionUpdated.Type) { }
-}
-
-export class QuestionCreated
-{
-    static Type = Symbol('QuestionCreated');
-
-    constructor(public question: QuestionDTO, public type = QuestionCreated.Type) { }
-}
-
-
-export class CloseQuestionEditorWindow
-{
-    static Type = 'CloseQuestionEditorWindow';
-
-    constructor(public type = CloseQuestionEditorWindow.Type) { }
-}
-
-export class AddAnswer
-{
-    static Type = 'AddAnswer';
-
-    constructor(public type = AddAnswer.Type) { }
-}
-
-export class DeleteAnswer
-{
-    static Type = 'DeleteAnswer';
-
-    constructor(public answerIndex:number, public type = AddAnswer.Type) { }
-}
-
-export class FormValidated
-{
-    static Type = 'FormValidated';
-
-    constructor(public form: MagicFormState<UpdateQuestionDTO>, public type = FormValidated.Type) { }
-}
-
 
 export function saveChanges(questionId: number | undefined, data: UpdateQuestionDTO, catalogId: number): Thunk<void>
 {
     return async (dispatch, getState, api) =>
     {
-        const service = api.CreateService(QuestionsService, dispatch);
+        const service = api.CreateService(QuestionsService, dispatch, ReducerId);
 
         const form = getState().questionEditor.form;
         if (isFormValid(form, true))
@@ -214,20 +173,54 @@ export function saveChanges(questionId: number | undefined, data: UpdateQuestion
             if (questionId === undefined)
             {
                 service.createQuestionWithAnswers(questionDTO)
-                    .then(x => service.readQuestionWithAnswers(x).then(x => dispatch(new QuestionCreated(x))));
+                       .then(x => service.readQuestionWithAnswers(x)
+                       .then(x => dispatch(new QuestionCreated(x))))
+                       .then(x => dispatch(new CloseQuestionEditorWindow()));
             }
             else
             {
                 service.updateQuestionWithAnswers(questionId, questionDTO)
-                    .then(x => service.readQuestionWithAnswers(questionId).then(x => dispatch(new QuestionUpdated(x))));
+                       .then(x => service.readQuestionWithAnswers(questionId)
+                       .then(x => dispatch(new QuestionUpdated(x))))
+                       .then(x => dispatch(new CloseQuestionEditorWindow()));
             }
 
-        } else
+        }
+        else
         {
             dispatch(new FormValidated(form));
-        }       
+        }
     };
 }
 
+export class QuestionUpdated
+{
+    static Type = 'QuestionEditor.QuestionUpdated';
 
+    constructor(public question: QuestionDTO, public type = QuestionUpdated.Type) { }
+}
+export class QuestionCreated
+{
+    static Type = 'QuestionEditor.QuestionCreated';
 
+    constructor(public question: QuestionDTO, public type = QuestionCreated.Type) { }
+}
+export class FormValidated
+{
+    static Type = 'QuestionEditor.FormValidated';
+
+    constructor(public form: MagicFormState<UpdateQuestionDTO>, public type = FormValidated.Type) { }
+}
+
+export class AddAnswer
+{
+    static Type = 'QuestionEditor.AddAnswer';
+
+    constructor(public type = AddAnswer.Type) { }
+}
+export class DeleteAnswer
+{
+    static Type = 'QuestionEditor.DeleteAnswer';
+
+    constructor(public answerIndex: number, public type = DeleteAnswer.Type) { }
+}

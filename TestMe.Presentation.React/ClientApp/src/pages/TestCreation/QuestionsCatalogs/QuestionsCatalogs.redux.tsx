@@ -3,11 +3,11 @@ import { RouteProps } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../../redux.base';
 import { BusyIndicator, Window } from '../../../components';
-import { ChildWindows, fetchCatalogs, ShowQuestionsCatalog, ShowQuestionsCatalogEditor } from './QuestionsCatalogs.reducer';
+import { fetchCatalogs } from './QuestionsCatalogs.reducer';
 import { useEffect } from 'react';
 import { preventDefault } from '../../../utils/ReactUtils';
-import { QuestionsCatalog } from './QuestionsCatalog/QuestionsCatalog.redux';
-import { QuestionsCatalogEditor } from './QuestionsCatalogEditor/QuestionsCatalogEditor.redux';
+import { ShowQuestionsCatalog } from '../QuestionsCatalog/QuestionsCatalog.reducer';
+import { ShowQuestionsCatalogEditor } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
 
 interface QuestionCatalogsProps extends RouteProps
 {
@@ -16,14 +16,14 @@ interface QuestionCatalogsProps extends RouteProps
 
 export function QuestionsCatalogs(props: QuestionCatalogsProps)
 {
-    const { apiError, isBusy, openedChildWindow, questionsCatalogs, openedQuestionsCatalogId } = useSelector((state: RootState) => state.questionsCatalogs);  
+    const { apiServiceState, openedChildWindowCounter, questionsCatalogs } = useSelector((state: RootState) => state.questionsCatalogs);  
     const dispatch = useDispatch()
     useEffect(() => { dispatch(fetchCatalogs()) }, []);   
 
     return (
         <>
-            <Window title="Catalogs of questions" error={apiError} isEnabled={openedChildWindow === ChildWindows.None} >
-                <BusyIndicator isBusy={isBusy}>
+            <Window title="Catalogs of questions" error={apiServiceState.apiError} isEnabled={openedChildWindowCounter === 0} >
+                <BusyIndicator isBusy={apiServiceState.isBusy}>
                     {() => 
                         <div className="list-group">
                             {questionsCatalogs.sort((a, b) => a.name.localeCompare(b.name)).map(x =>
@@ -33,23 +33,7 @@ export function QuestionsCatalogs(props: QuestionCatalogsProps)
                         </div>
                     }
                 </BusyIndicator>
-            </Window>
-            {(() =>
-                {
-                switch (openedChildWindow)
-                    {
-                        case ChildWindows.QuestionsCatalog:
-                            return (
-                                <QuestionsCatalog
-                                    windowNestingLevel={1}
-                                    catalogId={openedQuestionsCatalogId}
-                                />
-                            );
-                        case ChildWindows.QuestionsCatalogEditor:
-                            return <QuestionsCatalogEditor windowNestingLevel={1}/>                            
-                    }
-                 })()
-            }
+            </Window>           
         </>
     );
 }

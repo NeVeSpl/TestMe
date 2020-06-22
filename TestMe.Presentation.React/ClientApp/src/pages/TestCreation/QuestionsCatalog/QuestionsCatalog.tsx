@@ -1,9 +1,9 @@
 ﻿import * as React from 'react';
-import { ArrayUtils, StringUtils, StateStorage } from '../../../../utils';
-import { BusyIndicator, Window, Prompt } from '../../../../components';
+import { ArrayUtils, StringUtils, StateStorage } from '../../../utils';
+import { BusyIndicator, Window, Prompt } from '../../../components';
 import { Question, QuestionsCatalogEditor, QuestionEditor } from '../';
-import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../../autoapi/services/QuestionsService';
-import { QuestionsCatalogsService, CatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
+import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 export interface QuestionsCatalogProps 
 {

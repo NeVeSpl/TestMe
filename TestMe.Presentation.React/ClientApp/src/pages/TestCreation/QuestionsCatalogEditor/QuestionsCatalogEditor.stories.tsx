@@ -3,12 +3,13 @@ import { RouteComponentProps } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import QuestionsCatalogEditor, { QuestionsCatalogEditorState } from './QuestionsCatalogEditor';
 import { QuestionsCatalogEditor as QuestionsCatalogEditorRedux } from './QuestionsCatalogEditor.redux';
-import { QuestionsService, QuestionDTO, OffsetPagedResults, QuestionHeaderDTO } from '../../../../autoapi/services/QuestionsService';
-import { StateStorage } from '../../../../utils';
-import { QuestionsCatalogsService, QuestionsCatalogDTO } from '../../../../autoapi/services/QuestionsCatalogsService';
-import { ReduxApiFactory } from '../../../../autoapi/ReduxApiFactory';
-import { RootState, configureStore } from '../../../../redux.base';
+import { QuestionsService, QuestionDTO, OffsetPagedResults, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
+import { StateStorage } from '../../../utils';
+import { QuestionsCatalogsService, QuestionsCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { ReduxApiFactory } from '../../../autoapi/ReduxApiFactory';
+import { RootState, configureStore } from '../../../redux.base';
 import { Provider } from 'react-redux';
+import { ShowQuestionsCatalogEditor } from './QuestionsCatalogEditor.reducer';
 
 
 export default {
@@ -65,6 +66,8 @@ export const ReduxState = () =>
     const api = new ReduxApiFactory();
     api.AddMock(QuestionsCatalogsService.Type, catalogService);
     const store = configureStore(StateStorage.CreateMock<RootState>(), api);
+    store.dispatch(new ShowQuestionsCatalogEditor(1));
+
 
     return (
         <Provider store={store}>
