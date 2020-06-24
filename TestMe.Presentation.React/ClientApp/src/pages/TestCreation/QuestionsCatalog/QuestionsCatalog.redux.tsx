@@ -21,7 +21,9 @@ export function QuestionsCatalog(props: QuestionsCatalogProps)
 {
     const { catalog, questions, catalogsApiServiceState, questionsApiServiceState, catalogId, isVisible, openedChildWindowCounter, isDeletePromptVisible } = useSelector((state: RootState) => state.questionsCatalog);  
     const dispatch = useDispatch<ThunkDispatch>()
-    useEffect(() => { dispatch(fetchCatalog(catalogId)) }, [catalogId]);   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => { dispatch(fetchCatalog(catalogId)) }, [catalogId]);  
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { dispatch(fetchQuestions(catalogId)) }, [catalogId]);   
     const handleCancel = () => { dispatch(new CloseQuestionsCatalogWindow()) };
 

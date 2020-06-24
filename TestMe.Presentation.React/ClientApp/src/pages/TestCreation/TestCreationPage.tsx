@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RouteComponentProps, Route } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { QuestionsCatalogs } from './';
 import { QuestionsCatalogs as QuestionsCatalogsRedux } from './QuestionsCatalogs/QuestionsCatalogs.redux';
 import { QuestionsCatalog as QuestionsCatalogRedux } from './QuestionsCatalog/QuestionsCatalog.redux';

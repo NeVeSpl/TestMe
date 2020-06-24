@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchQuestion, CloseQuestionEditorWindow, AddAnswer, DeleteAnswer, saveChanges } from './QuestionEditor.reducer';
-import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
+import { Window, MagicForm, BusyIndicator, MagicTextInput } from '../../../components';
 import { RootState } from '../../../redux.base';
 import { ReactComponent as DeleteIco } from '../outline-delete_forever-24px.svg';
 import { InputHasChanged } from '../../../components/MagicForm/MagicFormReducer';
@@ -18,6 +18,7 @@ export function QuestionEditor(props: QuestionEditorProps)
     const { form, apiServiceState, questionId, isVisible, catalogId } = useSelector((state: RootState) => state.questionEditor);
 
     const dispatch = useDispatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { dispatch(fetchQuestion(questionId)) }, [questionId]);   
 
     const handleCancel = () => { dispatch(new CloseQuestionEditorWindow()) };  

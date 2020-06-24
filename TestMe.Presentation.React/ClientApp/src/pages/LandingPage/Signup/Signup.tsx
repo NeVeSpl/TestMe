@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { Formik, FormikProps, FormikHelpers, FormikErrors } from 'formik';
+import { Formik, FormikProps, FormikHelpers } from 'formik';
 import { FormikTextInput } from '../../../components';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import './../LandingPage.css';

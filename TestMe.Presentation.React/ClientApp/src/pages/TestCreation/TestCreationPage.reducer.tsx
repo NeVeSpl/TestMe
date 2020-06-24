@@ -1,4 +1,3 @@
-import { Thunk } from '../../redux.base';
 import { Action } from 'redux';
 import { ShowQuestionsCatalogs } from './QuestionsCatalogs/QuestionsCatalogs.reducer';
 import { ShowQuestionsCatalog, CloseQuestionsCatalogWindow } from './QuestionsCatalog/QuestionsCatalog.reducer';

@@ -38,6 +38,7 @@ export function QuestionsCatalogEditor(props: QuestionsCatalogEditorProps)
     let invokeSubmit : (() => { } | null) | null = null;
     const state = useSelector((state: RootState) => state.questionsCatalogEditor);   
     const dispatch = useDispatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => { dispatch(fetchCatalog(state.catalogId)) }, [state.catalogId]);
     const handleSubmit = (values: CreateCatalogDTO) => { dispatch(submitCatalog(state.catalogId, values)); };
     const handleCancel = () => { dispatch(new CloseQuestionsCatalogEditorWindow()) };

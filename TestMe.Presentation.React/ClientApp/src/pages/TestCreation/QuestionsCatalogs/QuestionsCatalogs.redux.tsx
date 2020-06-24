@@ -18,6 +18,7 @@ export function QuestionsCatalogs(props: QuestionCatalogsProps)
 {
     const { apiServiceState, openedChildWindowCounter, questionsCatalogs } = useSelector((state: RootState) => state.questionsCatalogs);  
     const dispatch = useDispatch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { dispatch(fetchCatalogs()) }, []);   
 
     return (

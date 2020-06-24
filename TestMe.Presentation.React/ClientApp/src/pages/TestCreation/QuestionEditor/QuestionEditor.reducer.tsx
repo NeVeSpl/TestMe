@@ -71,7 +71,7 @@ export function questionsEditorReducer(state = new QuestionEditorState(), action
             break;
         case FormValidated.Type:
             const formValidated = action as FormValidated;
-            state = {...state, form: {... formValidated.form}};
+            state = {...state, form: { ...formValidated.form }};
             break;
       
         case AddAnswer.Type:      

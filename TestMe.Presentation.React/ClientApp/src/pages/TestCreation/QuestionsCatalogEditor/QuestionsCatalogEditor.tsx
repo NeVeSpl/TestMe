@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { Window, BusyIndicator, FormikTextInput } from '../../../components';
-import { QuestionsCatalogsService, ApiError, CreateCatalogDTO, UpdateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { QuestionsCatalogsService, ApiError, CreateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
 import { StateStorage } from '../../../utils';
 

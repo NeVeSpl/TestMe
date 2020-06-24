@@ -17,6 +17,7 @@ export function Question(props: QuestionProps)
 {
     const { apiServiceState, openedChildWindowCounter, isDeletePromptVisible, question, questionId, catalogId, isVisible } = useSelector((state: RootState) => state.question);
     const dispatch = useDispatch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => { dispatch(fetchQuestion(questionId)) }, [questionId]);   
     const handleCancel = () => { dispatch(new CloseQuestionWindow()) };
 

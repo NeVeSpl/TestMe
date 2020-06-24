@@ -3,7 +3,7 @@ import { ArrayUtils, StateStorage } from '../../../utils';
 import { BusyIndicator, Window } from '../../../components';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '../';
 import { UserService } from '../../../services';
-import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagination } from '../../../autoapi/services/QuestionsCatalogsService';
+import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 interface QuestionsCatalogsProps
 {
