@@ -3,7 +3,7 @@ import { ThunkDispatch } from "redux-thunk";
 import { RootState } from "../redux.base";
 import { AnyAction, Action } from 'redux';
 
-type serviceConstructorType<T> = new (setError?: (error: ApiError | undefined) => void, setLoading?: (isLoading: boolean) => void, onConflictError?: (error: ApiError | undefined) => void) => T;
+type serviceConstructorType<T> = new (setError?: (error: ApiError | undefined, url: string) => void, setLoading?: (isLoading: boolean, url: string) => void, onConflictError?: (error: ApiError | undefined, url: string) => void) => T;
 
 export class ReduxApiFactory
 {
@@ -19,15 +19,15 @@ export class ReduxApiFactory
         }
 
         return new typeConstructor(
-            (x) =>
+            (x, url) =>
             {
                 if (x !== undefined)
                 {
-                    dispatch(new FetchingErrorOccured(type, invocationOrgin, x))
+                    dispatch(new FetchingErrorOccured(type, invocationOrgin, url, x))
                 }
             },
-            (x) => dispatch(x === true ? new FetchingStarted(type, invocationOrgin) : new FetchingEnded(type, invocationOrgin)),
-            (x) => dispatch(new FetchingConflictErrorOccured(type, invocationOrgin, x))
+            (x, url) => dispatch(x === true ? new FetchingStarted(type, invocationOrgin, url) : new FetchingEnded(type, invocationOrgin, url)),
+            (x, url) => dispatch(new FetchingConflictErrorOccured(type, invocationOrgin, url, x))
         );
     }
 
@@ -38,29 +38,46 @@ export class ReduxApiFactory
     }
 }
 
-export class FetchingStarted
+class ApiEvent
+{
+    constructor(public apiServiceName: string, public invocationOrgin: string, public targetUrl : string) { }
+}
+
+export class FetchingStarted extends ApiEvent
 {
     static Type = "FetchingStarted";
 
-    constructor(public apiServiceName: string, public invocationOrgin: string, public type = FetchingStarted.Type) { }
+    constructor(apiServiceName: string, invocationOrgin: string, targetUrl : string, public type = FetchingStarted.Type)
+    {
+        super(apiServiceName, invocationOrgin, targetUrl);
+    }
 }
-export class FetchingEnded
+export class FetchingEnded extends ApiEvent
 {
     static Type = "FetchingEnded";
 
-    constructor(public apiServiceName: string, public invocationOrgin: string, public type = FetchingEnded.Type) { }
+    constructor(apiServiceName: string, invocationOrgin: string, targetUrl: string, public type = FetchingEnded.Type)
+    {
+        super(apiServiceName, invocationOrgin, targetUrl);
+    }
 }
-export class FetchingErrorOccured
+export class FetchingErrorOccured extends ApiEvent
 {   
     static Type = "FetchingErrorOccured"; 
 
-    constructor(public apiServiceName: string, public invocationOrgin: string, public apiError?: ApiError, public type = FetchingErrorOccured.Type) { }
+    constructor(apiServiceName: string, invocationOrgin: string, targetUrl: string, public apiError?: ApiError, public type = FetchingErrorOccured.Type)
+    {
+        super(apiServiceName, invocationOrgin, targetUrl);
+    }
 }
-export class FetchingConflictErrorOccured
+export class FetchingConflictErrorOccured extends ApiEvent
 {
     static Type = "FetchingConflictErrorOccured";
 
-    constructor(public apiServiceName: string, public invocationOrgin: string, public apiError?: ApiError, public type = FetchingConflictErrorOccured.Type) { }
+    constructor(apiServiceName: string, invocationOrgin: string, targetUrl: string, public apiError?: ApiError, public type = FetchingConflictErrorOccured.Type)
+    {
+        super(apiServiceName, invocationOrgin, targetUrl);
+    }
 }
 
 

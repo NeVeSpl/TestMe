@@ -6,11 +6,11 @@ export class ApiBaseService
 {
     static readonly API_URL = process.env.REACT_APP_API_URL;
 
-    setError?: (error: ApiError | undefined) => void;
-    setLoading?: (isLoading: boolean) => void;
-    onConflictError?: (error: ApiError | undefined) => void;
+    setError?: (error: ApiError | undefined, url: string) => void;
+    setLoading?: (isLoading: boolean, url: string) => void;
+    onConflictError?: (error: ApiError | undefined, url: string) => void;
 
-    constructor(setError?: (error: ApiError | undefined) => void, setLoading?: (isLoading: boolean) => void, onConflictError?: (error: ApiError | undefined) => void)
+    constructor(setError?: (error: ApiError | undefined, url: string) => void, setLoading?: (isLoading: boolean, url: string) => void, onConflictError?: (error: ApiError | undefined, url: string) => void)
     {
         this.setError = setError;
         this.setLoading = setLoading;
@@ -31,15 +31,16 @@ export class ApiBaseService
     public static async MakeRequestWithResult<T>(httpMethod: string,
         url: string,
         payload?: any,
-        setIsLoading?: (isLoading: boolean) => void,
-        setError?: (error: ApiError | undefined) => void,
-        setConflictError?: (error: ApiError | undefined) => void,
+        setIsLoading?: (isLoading: boolean, url: string) => void,
+        setError?: (error: ApiError | undefined, url : string) => void,
+        setConflictError?: (error: ApiError | undefined, url: string) => void,
         setData?: (data: T) => void,
         parseContent: boolean = true
     ): Promise<T>        
     {
-        setError?.(undefined);
-        setIsLoading?.(true);
+        const fullUrl = `${ApiBaseService.API_URL}/${url}`;
+        setError?.(undefined, fullUrl);
+        setIsLoading?.(true, fullUrl);
         const requestInit: RequestInit = ApiBaseService.PrepareRequest(httpMethod, payload);
 
         try
@@ -47,7 +48,7 @@ export class ApiBaseService
             let response: Response;
             try
             {
-                response = await fetch(`${ApiBaseService.API_URL}/${url}`, requestInit);                
+                response = await fetch(fullUrl, requestInit);                
             }
             catch (e)
             {
@@ -97,16 +98,16 @@ export class ApiBaseService
         catch (e)
         {
             const error = e as ApiError;
-            setError?.(error);
+            setError?.(error, fullUrl);
             if (error.errorCode === ErrorCode.Conflict)
             {
-                setConflictError?.(error);
+                setConflictError?.(error, fullUrl);
             }
             throw error;
         }
         finally
         {
-            setIsLoading?.(false);
+            setIsLoading?.(false, fullUrl);
         }
     }
 
