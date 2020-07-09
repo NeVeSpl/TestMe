@@ -57,10 +57,10 @@ export function questionReducer(state = new QuestionState(), action: Action): Qu
             state = { ...state, isDeletePromptVisible: false };
             break;     
         case ShowQuestionEditor.Type:
-            state = { ...state, openedChildWindowCounter: ++state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter + 1 };
             break;      
         case CloseQuestionEditorWindow.Type:
-            state = { ...state, openedChildWindowCounter: --state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter - 1 };
             break;       
     }
     return state;

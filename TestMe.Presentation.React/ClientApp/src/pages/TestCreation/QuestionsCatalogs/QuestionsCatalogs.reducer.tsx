@@ -38,11 +38,11 @@ export function questionsCatalogsReducer(state = new QuestionsCatalogsState(), a
             break;
         case ShowQuestionsCatalogEditor.Type:
         case ShowQuestionsCatalog.Type:
-            state = { ...state, openedChildWindowCounter: ++state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter + 1 };
             break;
         case CloseQuestionsCatalogEditorWindow.Type:
         case CloseQuestionsCatalogWindow.Type:
-            state = { ...state, openedChildWindowCounter: --state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter - 1 };
             break;
         case QuestionsCatalogCreated.Type:
             const questionsCatalogCreated = action as QuestionsCatalogCreated;

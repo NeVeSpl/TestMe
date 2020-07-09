@@ -60,12 +60,12 @@ export function questionsCatalogReducer(state = new QuestionsCatalogState(), act
         case ShowQuestion.Type:
         case ShowQuestionEditor.Type:
         case ShowQuestionsCatalogEditor.Type:
-            state = { ...state, openedChildWindowCounter: ++state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter + 1 };
             break;
         case CloseQuestionWindow.Type:
         case CloseQuestionEditorWindow.Type:
         case CloseQuestionsCatalogEditorWindow.Type:
-            state = { ...state, openedChildWindowCounter: --state.openedChildWindowCounter };
+            state = { ...state, openedChildWindowCounter: state.openedChildWindowCounter - 1 };
             break;
         case CloseQuestionsCatalogWindow.Type:       
             state = new QuestionsCatalogState();
