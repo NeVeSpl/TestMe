@@ -1,0 +1,72 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:12-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+       - postgresData:/var/lib/postgresql/data
+       - ./deploy/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
+       - ./deploy/postgres/0-install-extensions.sh:/docker-entrypoint-initdb.d/0-install-extensions.sh    
+       - ./deploy/postgres/1-create-testmedb.sql:/docker-entrypoint-initdb.d/1-create-testmedb.sql       
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    deploy:
+      resources:
+        limits:      
+          memory: 2048M
+    networks:
+      - testMeN
+
+  rabbitmq:
+    image: rabbitmq:3.8-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - testMeN
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearchData:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - testMeN
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.0
+    restart: unless-stopped
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    volumes:
+      - kibanaData:/usr/share/kibana/data
+    networks:
+      - testMeN
+   
+
+volumes:
+  postgresData:
+  elasticsearchData:
+  kibanaData:
+   
+
+networks:
+  testMeN:
+    name: testMeN
