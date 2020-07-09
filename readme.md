@@ -1,23 +1,44 @@
 ﻿# Sample Modular Monolith application without fluff/hype(*) but with tests
 
-Yet another sample .net core application. But this one aims to be a little bit different than the rest. Instead of focusing on showing some fancy libraries and patterns on non-realistic simplified examples, this one focus on delivering a fully working application to production. 
+Yet another sample .net core application. But this one aims to be a little bit different than the rest. Instead of focusing on showing some fancy libraries and patterns on non-realistic simplified examples, this one focus on delivering a fully working application with high quality. 
 
-1. [Overview](#Overview)
-2. [Architecture decision record](#ADR)
-3. [Layer : Presentation.React](#React)
-4. [Layer : Presentation.API](#API)
-5. [Module comparison](#ModuleComparison)
-6. [Communication between modules](#CommunicationBetweenModules)
-7. [Module : UserManagement](#UserManagement)
-8. [Module : TestCreation](#TestCreation)
-9. [Module : TestConducting](#TestConducting)
-10. [Module : TestResults](#TestResults)
-11. [Working demo](#DEMO)
-12. [ToDo](#TODO)
+1. [How to run](#HowToRun)
+2. [Overview](#Overview)
+3. [Architecture decision record](#ADR)
+4. [Layer : Presentation.React](#React)
+5. [Layer : Presentation.API](#API)
+6. [Module comparison](#ModuleComparison)
+7. [Communication between modules](#CommunicationBetweenModules)
+8. [Module : UserManagement](#UserManagement)
+9. [Module : TestCreation](#TestCreation)
+10. [Module : TestConducting](#TestConducting)
+11. [Module : TestResults](#TestResults)
+12. [Working demo](#DEMO)
+13. [ToDo](#TODO)
 
+## <a name="Overview"></a> 1. How to run
 
+- external dependencies (postgres, rabbitmq, elasticsearch, kibana)
+``docker-compose up``
+- backend
+``green arrow in VS``
+- frontend
+``cd TestMe.Presentation.React/ClientApp/ && npm start``
 
-## <a name="Overview"></a> 1. Overview
+| component | run | endpoint
+|---- | ----| --- 
+| .net core | from VS | https://localhost:44357
+| swagger   | from VS |  https://localhost:44357/swagger
+| postgres      | docker-compose up | n/a
+| rabbitmq      | docker-compose up | http://localhost:15672/ 
+| elasticsearch | docker-compose up | n/a
+| kibana        | docker-compose up | http://localhost:5601 
+| influxdb | n/a | n/a 
+| react | npm start | http://localhost:3000/
+| jest | npm test | n/a
+| storybook | npm run storybook | http://localhost:9009
+
+## <a name="Overview"></a> 2. Overview
 
 - top architecture: modular monolith aka vertical slice architecture
 - backend: asp.net core, entity framework core, postgresql
@@ -25,7 +46,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 - frontend: react + typescript
 - communication between modules : RabbitMQ or in memory bus
 - enabled non-null reference types 
-- every module in separate transaction scope
+- every module in separate transaction scope, eventual consistency between modules
 - mapping between c# dtos is done by [MappingGenerator](https://github.com/cezarypiatek/MappingGenerator)
 - typed api client for api calls is auto-generated with [Typewriter](https://github.com/frhagn/Typewriter)
 
@@ -34,21 +55,26 @@ Yet another sample .net core application. But this one aims to be a little bit d
 
 
 
-## <a name="ADR"></a> 2. Architecture decision record
+## <a name="ADR"></a> 3. Architecture decision record
 
 1) Use async/await or not
 2) Why not to use AutoMapper
 
 
-## <a name="React"></a> 3. Layer : Presentation.React
-- with restrictive Content Security Policy set(no inline css or js, no eval)
-- CSS Modules
-- persisted component state in localstorage
+## <a name="React"></a> 4. Layer : Presentation.React
+- with restrictive Content Security Policy set (no inline css or js, no eval)
+- CSS Modules (scoping css per component)
+- every page implemented in two ways: 
+    - class-components with local state 
+    - functionals-components with redux and hooks
+- component state persisted in localstorage
 - props dependency injection used to be able to display stateful components in [Storybook](https://github.com/storybookjs/storybook)
+- files grouped by features/routes and not by file type 
+- TypeScript all the way 
 
 ![projects_dependencies](docs/Presentation.React.png)
 
-## <a name="API"></a> 4. Layer : Presentation.API
+## <a name="API"></a> 5. Layer : Presentation.API
 - integration tests for happy paths backed on sqllite in memory with the possibility to switch to postgresql if needed for debuging
 
 #### Endpoints
@@ -93,7 +119,7 @@ Async - Req/s                       |   |  |  |  |
 
 
 
-## <a name="ModuleComparison"></a> 5. Module comparison
+## <a name="ModuleComparison"></a> 6. Module comparison
 
 Description                 | UserManagement                      | TestCreation
 ----------------------------|-------------------------------------|--------------
@@ -103,13 +129,13 @@ data access layer           | Entity Framework                    | Repository +
 exceptional situations      | DomainException                     | Result + DomainException
 pagination                  | cursor based                        | offset based
 
-## <a name="CommunicationBetweenModules"></a> 6. Communication between modules
+## <a name="CommunicationBetweenModules"></a> 7. Communication between modules
 - reliable communication between modules without using a distributed transaction
 - two available implementations, RabbitMQ based for production use and in memory for tests  
 
 ![projects_dependencies](docs/CommunicationBetweenModules.png)
 
-## <a name="UserManagement"></a> 7. Module : UserManagement
+## <a name="UserManagement"></a> 8. Module : UserManagement
 - domain model: anemic
 - architecture : layers + transaction script
 - data driven unit tests and architectural tests
@@ -122,7 +148,7 @@ pagination                  | cursor based                        | offset based
 
 
 
-## <a name="TestCreation"></a> 8. Module : TestCreation
+## <a name="TestCreation"></a> 9. Module : TestCreation
 - domain model: rich
 - architecture : clean architecture + minimal CQRS
 - data driven unit tests and architectural tests
@@ -138,31 +164,30 @@ pagination                  | cursor based                        | offset based
 
 
 
-## <a name="TestConducting"></a> 9. Module : TestConducting
+## <a name="TestConducting"></a> 10. Module : TestConducting
 not available yet
 
 
 
 
-## <a name="TestResults"></a> 10. Module : TestResults
+## <a name="TestResults"></a> 11. Module : TestResults
 not available yet
 
 
 
 
 
-## <a name="DEMO"></a> 11. Working demo
+## <a name="DEMO"></a> 12. Working demo
 ![projects_dependencies](docs/TestMe.ResolveOptimisticConcurrencyConflict.gif)
 
 
 
 
-## <a name="TODO"></a> 12. ToDo
+## <a name="TODO"></a> 13. ToDo
 - setup development environment in docker (postgresql, TICK stack, RabbitMQ, Elastic stack)
 - introduce Architecture decision record (ADR)
 - frontend : automated tests for frontend (maybe Cypress?)
 - frontend : use immerjs to create next immutable state instead of home made solution
-- frontend : add alternative version of autoapi based on react hooks
 - backend : finish /Tests endpoints
 - backend : deal with poisonous integration events (dead letter queue)
 - backend : add batch publishing of events on RabbitMQ
