@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 import { ArrayUtils, StringUtils, StateStorage } from '../../../utils';
-import { BusyIndicator, Window, Prompt } from '../../../components';
+import { BusyIndicator, Window, Prompt, Pagination } from '../../../components';
 import { Question, QuestionsCatalogEditor, QuestionEditor } from '../';
 import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
 import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
@@ -28,6 +28,8 @@ export class QuestionsCatalogState
     questionsIsBusy: boolean;
     openedQuestionId: number;
     openedChildWindow: ChildWindows;
+    canShiftRight: boolean;
+    currentPage: number;
 
     constructor()
     {
@@ -37,9 +39,12 @@ export class QuestionsCatalogState
         this.questionsIsBusy = false;
         this.openedQuestionId = 0;
         this.openedChildWindow = ChildWindows.None;
+        this.canShiftRight = false;
+        this.currentPage = 1;
     }
 }
 
+const ItemsPerPage = 5;
 
 export default class QuestionsCatalog extends React.Component<QuestionsCatalogProps, QuestionsCatalogState>
 {
@@ -51,14 +56,14 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     componentDidMount()
     {
         this.fetchCatalog(this.props.catalogId);
-        this.fetchQuestions(this.props.catalogId);       
+        this.fetchQuestions(this.props.catalogId, this.state.currentPage);       
     }
     componentDidUpdate(prevProps: QuestionsCatalogProps, prevState: QuestionsCatalogState, snapshot: any)
     {
         if (this.props.catalogId !== prevProps.catalogId)
         {
             this.fetchCatalog(this.props.catalogId);
-            this.fetchQuestions(this.props.catalogId);
+            this.fetchQuestions(this.props.catalogId, this.state.currentPage);
         }
         this.storage?.Save(this.state);
     }
@@ -68,9 +73,9 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     {        
         this.catalogService.readQuestionsCatalog(catalogId).then(x => this.setState({ catalog: x}));
     }
-    fetchQuestions(catalogId: number)
+    fetchQuestions(catalogId: number, page: number)
     {
-        this.questionService.readQuestionHeaders(catalogId, { limit : 10, offset : 0 }).then(x => this.setState({ questions: x.result }));        
+        this.questionService.readQuestionHeaders(catalogId, { limit: ItemsPerPage, offset: (page - 1) * ItemsPerPage }).then(x => this.setState({ questions: x.result, canShiftRight: x.isThereMore }));        
     }  
     async fetchQuestion(questionId: number)
     {
@@ -110,8 +115,7 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     handleQuestionCreated = async (createdQuestionId: number) =>
     {
         this.setOpenedChildWindow(null, ChildWindows.None);
-        const createdQuestion = await this.fetchQuestion(createdQuestionId);
-        this.setState({ questions: [...this.state.questions, createdQuestion] });        
+        this.fetchQuestions(this.props.catalogId, this.state.currentPage);       
     }
     handleQuestionUpdated = async (updatedQuestionId: number) =>
     {      
@@ -121,8 +125,13 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     handleQuestionDeleted = (questionId: number) => 
     {       
         this.setOpenedChildWindow(null, ChildWindows.None);
-        this.setState({ questions: this.state.questions.filter(x => x.questionId !== questionId) });        
+        this.fetchQuestions(this.props.catalogId, this.state.currentPage);               
     }  
+    handleShift = (newPage: number) =>
+    {
+        this.setState({ currentPage: newPage });
+        this.fetchQuestions(this.props.catalogId, newPage);       
+    }
        
     render()
     {
@@ -144,15 +153,22 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
     renderQuestionsHeaders = () =>
     {
         return (
-            <div className="list-group">
-                {this.state.questions.sort((a, b) => a.content.localeCompare(b.content))
-                    .map(x => <a
-                        className="list-group-item list-group-item-action"
-                        href="#"
-                        key={x.questionId}
-                        onClick={(e) => this.showQuestion(e, x.questionId)}>{StringUtils.Truncate40(x.content)}</a>)}
-                <button type="button" className="list-group-item list-group-item-action list-group-item-primary text-center" onClick={(e) => this.setOpenedChildWindow(e, ChildWindows.QuestionEditor)}>Add new question</button>
-            </div>
+            <>
+                <div className="list-group">
+                {this.state.questions
+                     .map(x => <a
+                         className="list-group-item list-group-item-action"
+                         href="#"
+                         key={x.questionId}
+                         onClick={(e) => this.showQuestion(e, x.questionId)}>{StringUtils.Truncate40(x.content)}</a>)}
+                </div>
+                <div className="d-flex justify-content-center mt-3">
+                    <Pagination canShiftRight={this.state.canShiftRight} onShiftRight={this.handleShift} onShiftLeft={this.handleShift} />
+                </div>
+                <div className="mt-3">                   
+                    <button className="btn btn-outline-primary" onClick={(e) => this.setOpenedChildWindow(e, ChildWindows.QuestionEditor)}>Add question</button>
+                </div>
+            </>
         );
     }
     renderChildWindow = () =>

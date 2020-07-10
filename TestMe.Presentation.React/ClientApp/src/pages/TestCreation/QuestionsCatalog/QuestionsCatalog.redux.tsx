@@ -36,15 +36,19 @@ export function QuestionsCatalog(props: QuestionsCatalogProps)
                 </div>
                 <BusyIndicator isBusy={questionsApiServiceState.isBusy || catalogsApiServiceState.isBusy}>
                     {() =>
-                        <div className="list-group">
-                            {questions.sort((a, b) => a.content.localeCompare(b.content))
-                                .map(x => <a
-                                    className="list-group-item list-group-item-action"
-                                    href="#"
-                                    key={x.questionId}
-                                    onClick={preventDefault(() => dispatch(new ShowQuestion(catalogId!, x.questionId)))}> { StringUtils.Truncate40(x.content) }</a>)}
-                            <button type="button" className="list-group-item list-group-item-action list-group-item-primary text-center" onClick={preventDefault(() => dispatch(new ShowQuestionEditor(catalogId!)))}>Add new question</button>
-                        </div>
+                        <>
+                            <div className="list-group">
+                                {questions.sort((a, b) => a.content.localeCompare(b.content))
+                                    .map(x => <a
+                                        className="list-group-item list-group-item-action"
+                                        href="#"
+                                        key={x.questionId}
+                                        onClick={preventDefault(() => dispatch(new ShowQuestion(catalogId!, x.questionId)))}> { StringUtils.Truncate40(x.content) }</a>)}
+                                              </div>
+                            <div className="mt-3">       
+                                <button type="button" className="btn btn-outline-primary" onClick={preventDefault(() => dispatch(new ShowQuestionEditor(catalogId!)))}>Add question</button>
+                            </div>
+                        </>
                     }
                 </BusyIndicator>
             </Window>

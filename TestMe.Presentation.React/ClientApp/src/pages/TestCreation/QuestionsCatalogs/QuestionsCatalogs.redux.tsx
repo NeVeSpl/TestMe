@@ -26,12 +26,17 @@ export function QuestionsCatalogs(props: QuestionCatalogsProps)
             <Window title="Catalogs of questions" error={apiServiceState.apiError} isEnabled={openedChildWindowCounter === 0} >
                 <BusyIndicator isBusy={apiServiceState.isBusy}>
                     {() => 
-                        <div className="list-group">
-                            {questionsCatalogs.sort((a, b) => a.name.localeCompare(b.name)).map(x =>
-                                <a className="list-group-item list-group-item-action" href="#" key={x.catalogId} onClick={preventDefault(() => dispatch(new ShowQuestionsCatalog(x.catalogId)))}>{x.name}</a>
-                            )}
-                            <button className="list-group-item list-group-item-action list-group-item-primary text-center" onClick={preventDefault(() => dispatch(new ShowQuestionsCatalogEditor()))}>Add new catalog</button>
-                        </div>
+                        <>
+                            <div className="list-group">
+                                {questionsCatalogs.sort((a, b) => a.name.localeCompare(b.name)).map(x =>
+                                    <a className="list-group-item list-group-item-action" href="#" key={x.catalogId} onClick={preventDefault(() => dispatch(new ShowQuestionsCatalog(x.catalogId)))}>{x.name}</a>
+                                )}
+                               
+                            </div>
+                            <div className="mt-3">                               
+                                <button className="btn btn-outline-primary" onClick={preventDefault(() => dispatch(new ShowQuestionsCatalogEditor()))}>Add catalog</button>
+                            </div>
+                        </>
                     }
                 </BusyIndicator>
             </Window>           

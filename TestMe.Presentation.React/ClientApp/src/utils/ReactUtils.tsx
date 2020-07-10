@@ -1,6 +1,6 @@
 ﻿import * as React from 'react';
 
-export function preventDefault(action: () => {})
+export function preventDefault(action: () => any)
 {
     return (event: React.MouseEvent<HTMLElement> | null) =>
     {

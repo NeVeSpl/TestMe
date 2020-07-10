@@ -3,6 +3,7 @@ export * from './Layout/Layout';
 export * from './BusyIndicator/BusyIndicator';
 export * from './Window/Window';
 export * from './Window/Prompt/Prompt';
+export * from './Pagination/Pagination';
 export * from './MagicForm/MagicTextInput';
 export * from './MagicForm/MagicForm';
 export * from './MagicForm/MagicDict';
