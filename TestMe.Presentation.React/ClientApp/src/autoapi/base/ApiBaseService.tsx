@@ -82,9 +82,9 @@ export class ApiBaseService
             {
                 if (response.headers.has("Content-Type"))
                 {
-                    const payload: T = await response.json().then(x => x as T);
-                    setData?.(payload);
-                    return payload;
+                    const responsePayload: T = await response.json().then(x => x as T);
+                    setData?.(responsePayload);
+                    return responsePayload;
                 }
                 else
                 {
