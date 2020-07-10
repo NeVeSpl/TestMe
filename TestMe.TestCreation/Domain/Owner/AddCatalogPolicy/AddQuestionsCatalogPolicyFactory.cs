@@ -11,9 +11,9 @@ namespace TestMe.TestCreation.Domain
         { 
             int maxNumberOfQuestionsCatalogs = membershipLevel switch
             {
-                MembershipLevel.Regular => 5,
-                MembershipLevel.Silver => 8,
-                MembershipLevel.Gold => 13,
+                MembershipLevel.Regular => 15,
+                MembershipLevel.Silver => 18,
+                MembershipLevel.Gold => 23,
                 _ => throw new NotImplementedException(),
             };
             return new AddQuestionsCatalogPolicy(maxNumberOfQuestionsCatalogs);
