@@ -1,6 +1,6 @@
 ﻿import { Thunk } from '../../../redux.base';
 import { Action } from 'redux';
-import { QuestionsService, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionsService, QuestionOnListDTO } from '../../../autoapi/services/QuestionsService';
 import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { FetchingErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
 import { CloseQuestionsCatalogEditorWindow, QuestionsCatalogUpdated, ShowQuestionsCatalogEditor } from '../QuestionsCatalogEditor/QuestionsCatalogEditor.reducer';
@@ -14,7 +14,7 @@ export class QuestionsCatalogState
     isVisible: boolean;
     catalogId?: number;    
     catalog: CatalogDTO;
-    questions: QuestionHeaderDTO[];
+    questions: QuestionOnListDTO[];
     catalogsApiServiceState: ApiServiceState;   
     questionsApiServiceState: ApiServiceState;  
     openedChildWindowCounter: number;
@@ -134,7 +134,7 @@ export function fetchQuestions(catalogId?: number): Thunk<void>
         if (catalogId !== undefined)
         {
             const service = api.CreateService(QuestionsService, dispatch, ReducerId);
-            service.readQuestionHeaders(catalogId, { limit: 10, offset: 0 }).then(x => dispatch(new QuestionsFetched(x.result)));
+            service.readQuestions(catalogId, { limit: 10, offset: 0 }).then(x => dispatch(new QuestionsFetched(x.result)));
         }
     };
 }
@@ -142,7 +142,7 @@ export class QuestionsFetched
 {
     static Type = 'QuestionsCatalog.QuestionsFetched';
 
-    constructor(public questions: QuestionHeaderDTO[], public type = QuestionsFetched.Type) { }
+    constructor(public questions: QuestionOnListDTO[], public type = QuestionsFetched.Type) { }
 }
 
 export function deleteCatalog(catalogId: number): Thunk<void>

@@ -3,6 +3,7 @@ import { Window, BusyIndicator, FormikTextInput } from '../../../components';
 import { QuestionsCatalogsService, ApiError, CreateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Formik, FormikProps, FormikHelpers } from 'formik';
 import { StateStorage } from '../../../utils';
+import { UserService } from '../../../services/UserService';
 
 interface QuestionsCatalogEditorProps
 {
@@ -52,7 +53,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
         if (catalogId !== undefined) {
             this.service.readQuestionsCatalog(catalogId)
                 .then(x => {
-                    this.setState({ formData: x });
+                    this.setState({ formData: x as {} as CreateCatalogDTO });
                 });
         }
     }
@@ -81,6 +82,7 @@ export default class QuestionsCatalogEditor extends React.Component<QuestionsCat
 
     handleSubmit = (values: CreateCatalogDTO, formikHelpers: FormikHelpers<CreateCatalogDTO>) =>
     {
+        values.ownerId = UserService.getUserID();
         if (this.props.catalogId === undefined)
         {
             this.service.createCatalog(values)

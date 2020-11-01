@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using TestMe.TestCreation.App.Questions.Input;
+using TestMe.TestCreation.App.RequestHandlers.Questions.CreateQuestion;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.Questions.Input
@@ -15,9 +15,9 @@ namespace TestMe.Presentation.API.Controllers.Questions.Input
         [Required]
         public long? CatalogId { get; set; }
 
-        public CreateQuestion CreateCommand()
+        public CreateQuestionWithAnswersCommand CreateCommand()
         {
-            return new CreateQuestion()
+            return new CreateQuestionWithAnswersCommand()
             {
                 Content = Content,
                 Answers = Answers.ConvertAll(thisAnswer => thisAnswer.CreateAnswer()),

@@ -1,4 +1,6 @@
-﻿namespace TestMe.TestCreation.Domain
+﻿using System.Threading.Tasks;
+
+namespace TestMe.TestCreation.Domain
 {
     internal interface ITestCreationUoW
     {
@@ -8,6 +10,6 @@
         ITestRepository Tests { get; }
         IOwnerRepository Owners { get; }
 
-        void Save();
+        Task Save();
     }
 }

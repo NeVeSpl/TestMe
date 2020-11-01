@@ -27,7 +27,7 @@ namespace TestMe.Presentation.API
             {
                 Log.Information("Start web host");
 
-                /* Everything what is done here it is only applied to application that runs outside of automatic tests   
+                /* Everything what is done here it is only applied to application that runs outside of automated tests   
                  * it is why UseSerilog() is invoked here instead within CreateHostBuilder()
                  * it is why Migrate...() is invoked here instead within Startup.Configure()
                  * we do not want to invoke them when we are testing app

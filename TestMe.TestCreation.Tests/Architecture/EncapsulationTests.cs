@@ -1,14 +1,22 @@
 ﻿using System.Linq;
 using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Mono.Cecil;
 using NetArchTest.Rules;
 
 namespace TestMe.TestCreation.Tests.Architecture
 {
+
+    
+
+
     [TestClass]
     public class EncapsulationTests
     {
         static readonly Assembly TestCreationAssembly = typeof(TestUtils).Assembly;
+
+
+       
 
 
         [TestMethod]

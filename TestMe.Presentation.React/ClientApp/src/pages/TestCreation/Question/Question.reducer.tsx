@@ -1,6 +1,6 @@
 import { Thunk } from '../../../redux.base';
 import { Action } from 'redux';
-import { QuestionDTO, QuestionsService } from '../../../autoapi/services/QuestionsService';
+import { QuestionsService, QuestionWithAnswersDTO } from '../../../autoapi/services/QuestionsService';
 import { FetchingErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
 import { QuestionUpdated, CloseQuestionEditorWindow, ShowQuestionEditor } from '../QuestionEditor/QuestionEditor.reducer';
 
@@ -9,7 +9,7 @@ export class QuestionState
     isVisible: boolean;
     catalogId?: number;
     questionId?: number;
-    question: QuestionDTO;
+    question: QuestionWithAnswersDTO;
     apiServiceState: ApiServiceState;   
     openedChildWindowCounter: number;
     isDeletePromptVisible: boolean;
@@ -17,7 +17,7 @@ export class QuestionState
     constructor()
     {
         this.isVisible = false;
-        this.question = new QuestionDTO();
+        this.question = new QuestionWithAnswersDTO();
         this.apiServiceState = new ApiServiceState();
         this.openedChildWindowCounter = 0;
         this.isDeletePromptVisible = false;
@@ -95,7 +95,7 @@ export class QuestionFetched
 {
     static Type = 'Question.QuestionFetched';
 
-    constructor(public question: QuestionDTO, public type = QuestionFetched.Type) { }
+    constructor(public question: QuestionWithAnswersDTO, public type = QuestionFetched.Type) { }
 }
 
 export function deleteQuestion(questionId: number): Thunk<void>

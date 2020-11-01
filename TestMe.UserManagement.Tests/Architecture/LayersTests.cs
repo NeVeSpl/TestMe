@@ -14,7 +14,7 @@ namespace TestMe.UserManagement.Tests.Architecture
         {
             var result = Types.InAssembly(UserManagementAssembly)
                               .That()
-                              .ResideInNamespace("TestMe.TestCreation.Domain")
+                              .ResideInNamespace("TestMe.UserManagement.Domain")
                               .ShouldNot()
                               .HaveDependencyOnAny(
                                 "TestMe.UserManagement.Persistence",
@@ -22,8 +22,7 @@ namespace TestMe.UserManagement.Tests.Architecture
                                 "TestMe.UserManagement.Infrastructure",
                                 "TestMe.BuildingBlocks.App",
                                 "TestMe.BuildingBlocks.EventBus",
-                                "TestMe.BuildingBlocks.Persistence",
-                                "TestMe.UserManagement.IntegrationEvents",
+                                "TestMe.BuildingBlocks.Persistence",                               
                                 "Microsoft.EntityFrameworkCore"
                               ) 
                               .GetResult();
@@ -35,7 +34,7 @@ namespace TestMe.UserManagement.Tests.Architecture
         {
             var result = Types.InAssembly(UserManagementAssembly)
                              .That()
-                             .ResideInNamespace("TestMe.TestCreation.Persistence")                             
+                             .ResideInNamespace("TestMe.UserManagement.Persistence")                             
                              .ShouldNot()
                              .HaveDependencyOnAny(
                                 "TestMe.UserManagement.Infrastructure",
@@ -53,11 +52,10 @@ namespace TestMe.UserManagement.Tests.Architecture
         {
             var result = Types.InAssembly(UserManagementAssembly)
                              .That()
-                             .ResideInNamespace("TestMe.TestCreation.App")
+                             .ResideInNamespace("TestMe.UserManagement.App")
                              .ShouldNot()
                              .HaveDependencyOnAny(
-                                "TestMe.UserManagement.Infrastructure",
-                                "TestMe.BuildingBlocks.Domain",                               
+                                "TestMe.UserManagement.Infrastructure",                                                            
                                 "TestMe.BuildingBlocks.Persistence",
                                 "TestMe.BuildingBlocks.EventBus"
                              )

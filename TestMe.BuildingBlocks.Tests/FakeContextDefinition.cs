@@ -30,7 +30,7 @@ namespace TestMe.BuildingBlocks.Tests
             switch (databaseType)
             {
                 case FakeDatabaseType.EFInMemory:
-                    /* There are two ways to create distinct ef in memory databases: by using InMemoryDatabaseRoot or ServiceProvider */
+                    /* There are two ways to create distinct ef in-memory databases: by using InMemoryDatabaseRoot or ServiceProvider */
                     efInMemoryDatabaseRoot ??= new InMemoryDatabaseRoot();
                     builder.UseInMemoryDatabase(databaseName: "DataSource", efInMemoryDatabaseRoot);
                     //efServiceProvider ??= new ServiceCollection()

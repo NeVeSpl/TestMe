@@ -3,9 +3,8 @@ import { RouteComponentProps } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import QuestionsCatalogEditor, { QuestionsCatalogEditorState } from './QuestionsCatalogEditor';
 import { QuestionsCatalogEditor as QuestionsCatalogEditorRedux } from './QuestionsCatalogEditor.redux';
-import { QuestionsService, QuestionDTO, OffsetPagedResults, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
 import { StateStorage } from '../../../utils';
-import { QuestionsCatalogsService, QuestionsCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { ReduxApiFactory } from '../../../autoapi/ReduxApiFactory';
 import { RootState, configureStore } from '../../../redux.base';
 import { Provider } from 'react-redux';
@@ -34,7 +33,7 @@ export const LocalState = () =>
     const catalogServiceResult =
         {
             name : "catalog A"
-        } as QuestionsCatalogDTO;
+        } as CatalogDTO;
 
     const catalogService = new QuestionsCatalogsService();
     catalogService.readQuestionsCatalog = (x) => Promise.resolve(catalogServiceResult);
@@ -58,7 +57,7 @@ export const ReduxState = () =>
     const catalogServiceResult =
         {
             name: "catalog A"
-        } as QuestionsCatalogDTO;
+        } as CatalogDTO;
 
     const catalogService = new QuestionsCatalogsService();
     catalogService.readQuestionsCatalog = (x) => Promise.resolve(catalogServiceResult);

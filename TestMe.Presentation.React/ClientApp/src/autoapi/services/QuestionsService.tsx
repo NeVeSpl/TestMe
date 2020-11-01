@@ -4,18 +4,18 @@
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
 //eslint-disable-next-line 
- import { QuestionHeaderDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO";
+ import { QuestionOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO";
 //eslint-disable-next-line 
- import { QuestionDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionDTO";
+ import { QuestionWithAnswersDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO";
 //eslint-disable-next-line 
- import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.Questions.Output.AnswerDTO";
+ import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
 //eslint-disable-next-line 
  import { CreateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
 //eslint-disable-next-line 
  import { UpdateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
-export * from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO";
-export * from "../dtos/TestMe.TestCreation.App.Questions.Output.QuestionDTO";
-export * from "../dtos/TestMe.TestCreation.App.Questions.Output.AnswerDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
 export * from "../base/index";
@@ -24,25 +24,13 @@ export class QuestionsService extends ApiBaseService
 {
     static Type = "QuestionsService";
 
-    readQuestionHeaders(catalogId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<QuestionHeaderDTO>>
+    readQuestions(catalogId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<QuestionOnListDTO>>
     {
-        return this.MakeRequestWithResult<OffsetPagedResults<QuestionHeaderDTO>>("get", `Questions/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);
+        return this.MakeRequestWithResult<OffsetPagedResults<QuestionOnListDTO>>("get", `Questions?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);
     }
-    readQuestionHeadersAsync(catalogId: number) : Promise<QuestionHeaderDTO[]>
+    readQuestionWithAnswers(questionId: number) : Promise<QuestionWithAnswersDTO>
     {
-        return this.MakeRequestWithResult<QuestionHeaderDTO[]>("get", `Questions/headers/async?catalogId=${catalogId}`, null);
-    }
-    readQuestionHeader(questionId: number) : Promise<QuestionHeaderDTO>
-    {
-        return this.MakeRequestWithResult<QuestionHeaderDTO>("get", `Questions/${questionId}/header`, null);
-    }
-    readQuestionWithAnswers(questionId: number) : Promise<QuestionDTO>
-    {
-        return this.MakeRequestWithResult<QuestionDTO>("get", `Questions/${questionId}`, null);
-    }
-    readQuestionWithAnswersAsync(questionId: number) : Promise<QuestionDTO>
-    {
-        return this.MakeRequestWithResult<QuestionDTO>("get", `Questions/${questionId}/async`, null);
+        return this.MakeRequestWithResult<QuestionWithAnswersDTO>("get", `Questions/${questionId}`, null);
     }
     createQuestionWithAnswers(createQuestion: CreateQuestionDTO) : Promise<number>
     {
@@ -59,25 +47,13 @@ export class QuestionsService extends ApiBaseService
            
 }
 
-export function useAPIReadQuestionHeaders(catalogId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<QuestionHeaderDTO>>
+export function useAPIReadQuestions(catalogId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<QuestionOnListDTO>>
 {
-    return useRequestWithResult<OffsetPagedResults<QuestionHeaderDTO>>("get", `Questions/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null, {} as OffsetPagedResults<QuestionHeaderDTO>,  deps);
+    return useRequestWithResult<OffsetPagedResults<QuestionOnListDTO>>("get", `Questions?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null, {} as OffsetPagedResults<QuestionOnListDTO>,  deps);
 }
-export function useAPIReadQuestionHeadersAsync(catalogId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<QuestionHeaderDTO[]>
+export function useAPIReadQuestionWithAnswers(questionId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<QuestionWithAnswersDTO>
 {
-    return useRequestWithResult<QuestionHeaderDTO[]>("get", `Questions/headers/async?catalogId=${catalogId}`, null, {} as QuestionHeaderDTO[],  deps);
-}
-export function useAPIReadQuestionHeader(questionId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<QuestionHeaderDTO>
-{
-    return useRequestWithResult<QuestionHeaderDTO>("get", `Questions/${questionId}/header`, null, new QuestionHeaderDTO(),  deps);
-}
-export function useAPIReadQuestionWithAnswers(questionId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<QuestionDTO>
-{
-    return useRequestWithResult<QuestionDTO>("get", `Questions/${questionId}`, null, new QuestionDTO(),  deps);
-}
-export function useAPIReadQuestionWithAnswersAsync(questionId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<QuestionDTO>
-{
-    return useRequestWithResult<QuestionDTO>("get", `Questions/${questionId}/async`, null, new QuestionDTO(),  deps);
+    return useRequestWithResult<QuestionWithAnswersDTO>("get", `Questions/${questionId}`, null, new QuestionWithAnswersDTO(),  deps);
 }
 export function useAPICreateQuestionWithAnswers(createQuestion: CreateQuestionDTO, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<number>
 {

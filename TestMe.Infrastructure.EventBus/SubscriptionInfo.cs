@@ -41,7 +41,7 @@ namespace TestMe.Infrastructure.EventBus
                 }
                 else
                 {
-                    await(Task)handler.Invoke(eventHandler, new[] { payload })!;
+                    await (Task)handler.Invoke(eventHandler, new[] { payload })!;
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace TestMe.TestCreation.Tests.Domain
 
        
         [TestMethod]
-        [DataRow(ValidQuestion1Id, 2)]
+        [DataRow(ValidQuestion1Id, ValidQuestionsCatalog2Id)]
         public void MoveQuestionToCatalog_HappyPathIsSuccessful(long questionId, long catalogId)
         {
             const int maxNumberOfQuestionsInCatalog = 3;

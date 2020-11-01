@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TestMe.TestCreation.App.QuestionsCatalogs.Input;
+using TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.CreateCatalog;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input
@@ -10,13 +10,15 @@ namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input
         [StringLength(maximumLength: CatalogConst.NameMaxLength, MinimumLength = CatalogConst.NameMinLength)]
         public string Name { get; set; } = string.Empty;
 
+        public long OwnerId { get; set; }
 
-        public CreateCatalog CreateCommand(long userId)
+
+        public CreateCatalogCommand CreateCommand()
         {
-            return new CreateCatalog()
+            return new CreateCatalogCommand()
             {
                 Name = Name,
-                UserId = userId
+                OwnerId = OwnerId
             };
         }
     }

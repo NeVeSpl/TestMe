@@ -1,5 +1,5 @@
 ﻿import { UserService } from '../../../services';
-import { CatalogHeaderDTO, QuestionsCatalogsService } from '../../../autoapi/services/QuestionsCatalogsService';
+import {  QuestionsCatalogsService, CatalogOnListDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Thunk } from '../../../redux.base';
 import { Action } from 'redux'
 import { FetchingErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
@@ -9,7 +9,7 @@ import { ArrayUtils } from '../../../utils';
 
 export class QuestionsCatalogsState
 {
-    questionsCatalogs: CatalogHeaderDTO[];
+    questionsCatalogs: CatalogOnListDTO[];
     apiServiceState: ApiServiceState;   
     openedChildWindowCounter: number;
 
@@ -72,7 +72,7 @@ export function fetchCatalogs(): Thunk<void>
     return async (dispatch, getState, api) =>
     {
         const service = api.CreateService(QuestionsCatalogsService, dispatch, ReducerId);
-        service.readQuestionsCatalogHeaders(UserService.getUserID(), { limit: 10, offset: 0 })
+        service.readQuestionsCatalogs(UserService.getUserID(), { limit: 10, offset: 0 })
                .then(x => dispatch(new QuestionsCatalogsFetched( x.result)));
     };
 }
@@ -81,5 +81,5 @@ export class QuestionsCatalogsFetched
 {
     static Type = 'QuestionsCatalogs.QuestionsCatalogsFetched';
 
-    constructor(public questionsCatalogs: CatalogHeaderDTO[], public type = QuestionsCatalogsFetched.Type) { }
+    constructor(public questionsCatalogs: CatalogOnListDTO[], public type = QuestionsCatalogsFetched.Type) { }
 }

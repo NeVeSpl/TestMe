@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using TestMe.TestCreation.App.Questions.Input;
+using TestMe.TestCreation.App.RequestHandlers.Questions.CreateQuestion;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.Questions.Input

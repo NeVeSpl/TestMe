@@ -17,7 +17,7 @@ namespace TestMe.UserManagement.Tests
         public void Startup()
         {
             fakeContextDefinition = new FakeContextDefinition<UserManagementDbContext>(GetDatabaseType());
-            using (var context = new UserManagementDbContext(fakeContextDefinition))
+            using (var context = CreateUserManagementDbContext())
             {
                 context.Database.EnsureCreated();
                 TestUtils.Seed(context);

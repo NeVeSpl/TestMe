@@ -57,7 +57,9 @@ namespace TestMe.TestCreation.Domain
 
         public static Owner Create(long ownerId, MembershipLevel membershipLevel)
         {
-            return new Owner() { OwnerId = ownerId, MembershipLevel = membershipLevel };
+            Owner owner = new Owner() { OwnerId = ownerId, MembershipLevel = membershipLevel };
+            owner.AddTestsCatalog("Default");
+            return owner;
         }
 
         public void DeleteQuestionsCatalog(QuestionsCatalog catalog)

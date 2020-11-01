@@ -5,11 +5,13 @@
 export class CreateCatalogDTO 
 { 
     name: string;
+    ownerId: number;
 
     //eslint-disable-next-line
     constructor()
     {  
             
          this.name = "";
+         this.ownerId = 0;
     }
 }

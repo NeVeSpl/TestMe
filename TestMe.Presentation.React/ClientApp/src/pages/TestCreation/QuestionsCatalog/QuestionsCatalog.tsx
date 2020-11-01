@@ -2,7 +2,7 @@
 import { ArrayUtils, StringUtils, StateStorage } from '../../../utils';
 import { BusyIndicator, Window, Prompt, Pagination } from '../../../components';
 import { Question, QuestionsCatalogEditor, QuestionEditor } from '../';
-import { QuestionsService, ApiError, QuestionHeaderDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionsService, ApiError, QuestionOnListDTO } from '../../../autoapi/services/QuestionsService';
 import { QuestionsCatalogsService, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 export interface QuestionsCatalogProps 
@@ -21,7 +21,7 @@ enum ChildWindows { None, QuestionsCatalogEditor, QuestionEditor, Question, Ques
 export class QuestionsCatalogState
 {   
     catalog: CatalogDTO;
-    questions: QuestionHeaderDTO[];
+    questions: QuestionOnListDTO[];
     catalogsApiError: ApiError | undefined;
     questionsApiError: ApiError | undefined;
     catalogsIsBusy: boolean;
@@ -71,15 +71,15 @@ export default class QuestionsCatalog extends React.Component<QuestionsCatalogPr
 
     fetchCatalog(catalogId: number)
     {        
-        this.catalogService.readQuestionsCatalog(catalogId).then(x => this.setState({ catalog: x}));
+        this.catalogService.readQuestionsCatalog(catalogId).then(x => this.setState({ catalog: x, currentPage : 1}));
     }
     fetchQuestions(catalogId: number, page: number)
     {
-        this.questionService.readQuestionHeaders(catalogId, { limit: ItemsPerPage, offset: (page - 1) * ItemsPerPage }).then(x => this.setState({ questions: x.result, canShiftRight: x.isThereMore }));        
+        this.questionService.readQuestions(catalogId, { limit: ItemsPerPage, offset: (page - 1) * ItemsPerPage }).then(x => this.setState({ questions: x.result, canShiftRight: x.isThereMore }));        
     }  
     async fetchQuestion(questionId: number)
     {
-        return await this.questionService.readQuestionHeader(questionId);
+        return await this.questionService.readQuestionWithAnswers(questionId);
     }
 
     setOpenedChildWindow = (event: React.MouseEvent<HTMLElement> | null, childWindow: ChildWindows) =>

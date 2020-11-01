@@ -9,7 +9,8 @@ using TestMe.BuildingBlocks.Tests;
 using TestMe.Presentation.API.Controllers.Questions.Input;
 using TestMe.Presentation.API.Tests.Utils;
 using TestMe.TestCreation;
-using TestMe.TestCreation.App.Questions.Output;
+using TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion;
+using TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions;
 using TestMe.TestCreation.Persistence;
 
 namespace TestMe.Presentation.API.Tests
@@ -33,17 +34,18 @@ namespace TestMe.Presentation.API.Tests
         [DataRow(TestUtils.ValidQuestionsCatalog1Id)]
         [DataRow(TestUtils.ValidQuestionsCatalog2Id)]
         [DataRow(TestUtils.ValidQuestionsCatalog3Id)]
-        public async Task ReadQuestionHeaders_HappyPathIsSuccessful(long catalogId)
+        public async Task QuestionsFromGivenCatalogCanBeRead(long catalogId)
         { 
-            var response = await client.GetAsync($"{EndpointName}/headers?catalogId={catalogId}");
+            var response = await client.GetAsync($"{EndpointName}/?catalogId={catalogId}");
             AssertExt.EnsureSuccessStatusCode(response);
 
-            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionHeaderDTO>>().Value;
+            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionOnListDTO>>().Value;
             var context = factory.GetService<TestCreationDbContext>();
-            var expectedQuestions = context.Questions.Where(x => x.CatalogId == catalogId && x.IsDeleted == false).ToList();
+            var expectedQuestions = context.Questions.Where(x => x.CatalogId == catalogId).ToList();
 
             AssertExt.AreEquivalent(expectedQuestions, actualQuestions.Result);
         }
+
         [TestMethod]
         [DataRow(1, 0)]
         [DataRow(2, 0)]
@@ -54,12 +56,12 @@ namespace TestMe.Presentation.API.Tests
         [DataRow(1, 2)]
         [DataRow(2, 2)]
         [DataRow(3, 2)]
-        public async Task ReadQuestionHeadersWithPagination_HappyPathIsSuccessful(int limit, int offset)
+        public async Task QuestionsCanBeReadWithUsingPagination(int limit, int offset)
         {
-            var response = await client.GetAsync($"{EndpointName}/headers?catalogId={TestUtils.ValidQuestionsCatalog2Id}&limit={limit}&offset={offset}");
+            var response = await client.GetAsync($"{EndpointName}/?catalogId={TestUtils.ValidQuestionsCatalog2Id}&limit={limit}&offset={offset}");
             AssertExt.EnsureSuccessStatusCode(response);
 
-            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionHeaderDTO>>().Value;
+            var actualQuestions = response.GetContent<OffsetPagedResults<QuestionOnListDTO>>().Value;
             var context = factory.GetService<TestCreationDbContext>();
             var expectedQuestions = context.Questions.Where(x => x.CatalogId == TestUtils.ValidQuestionsCatalog2Id && x.IsDeleted == false)
                                                      .Skip(offset)
@@ -67,35 +69,18 @@ namespace TestMe.Presentation.API.Tests
                                                      .ToList();
 
             AssertExt.AreEquivalent(expectedQuestions, actualQuestions.Result);
-        }
+        } 
 
         [TestMethod]
         [DataRow(TestUtils.ValidQuestion1Id)]
         [DataRow(TestUtils.ValidQuestion2Id)]
         [DataRow(TestUtils.ValidQuestion3Id)]
-        public async Task ReadQuestionHeader_HappyPathIsSuccessful(long questionId)
-        {
-            var response = await client.GetAsync($"{EndpointName}/{questionId}/header");
-            AssertExt.EnsureSuccessStatusCode(response);
-
-            var actualQuestion = response.GetContent<QuestionHeaderDTO>().Value;
-            var context = factory.GetService<TestCreationDbContext>();
-            var expectedQuestion = context.Questions.Where(x => x.QuestionId == questionId).First();
-
-            AssertExt.AreEquivalent(expectedQuestion, actualQuestion);
-        }
-
-
-        [TestMethod]
-        [DataRow(TestUtils.ValidQuestion1Id)]
-        [DataRow(TestUtils.ValidQuestion2Id)]
-        [DataRow(TestUtils.ValidQuestion3Id)]
-        public async Task ReadQuestionWithAnswers_HappyPathIsSuccessful(long questionId)
+        public async Task QuestionCanBeRead(long questionId)
         {
             var response = await client.GetAsync($"{EndpointName}/{questionId}/");
             AssertExt.EnsureSuccessStatusCode(response);
 
-            var actualQuestion = response.GetContent<QuestionDTO>().Value;
+            var actualQuestion = response.GetContent<QuestionWithAnswersDTO>().Value;
             var context = factory.GetService<TestCreationDbContext>();
             var expectedQuestion = context.Questions.Include(x => x.Answers).FirstOrDefault(x => x.QuestionId == questionId);
 
@@ -103,7 +88,7 @@ namespace TestMe.Presentation.API.Tests
         }
        
         [TestMethod]
-        public async Task CreateQuestionWithAnswers_HappyPathIsSuccessful()
+        public async Task NewQuestionCanBeCreated()
         {          
             var command = new CreateQuestionDTO()
             {
@@ -125,13 +110,12 @@ namespace TestMe.Presentation.API.Tests
 
             AssertExt.AreEquivalent(command, actualQuestion);
         }
-
        
         [TestMethod]
         [DataRow(TestUtils.ValidQuestion1Id, 1)]
         [DataRow(TestUtils.ValidQuestion2Id, 2)]
         [DataRow(TestUtils.ValidQuestion3Id, 4)]
-        public async Task UpdateQuestionWithAnswers_HappyPathIsSuccessful(long questionId, long answerId)
+        public async Task ExisitngQuestionCanBeUpdated(long questionId, long answerId)
         {
             var command = new UpdateQuestionDTO
             {
@@ -157,7 +141,7 @@ namespace TestMe.Presentation.API.Tests
         [DataRow(TestUtils.ValidQuestion1Id)]
         [DataRow(TestUtils.ValidQuestion2Id)]
         [DataRow(TestUtils.ValidQuestion3Id)]
-        public async Task DeleteQuestionWithAnswers_HappyPathIsSuccessful(long id)
+        public async Task ExistingQuestionCanBeDeleted(long id)
         {
             var response = await client.DeleteAsync($"{EndpointName}/{id}/");
             AssertExt.EnsureSuccessStatusCode(response);
@@ -169,8 +153,7 @@ namespace TestMe.Presentation.API.Tests
         }
 
         [TestMethod]
-        [DataRow("Get", EndpointName + "/headers?catalogId=1")]
-        [DataRow("Get", EndpointName + "/1/header")]
+        [DataRow("Get", EndpointName + "/?catalogId=1")]  
         [DataRow("Get", EndpointName + "/1")]
         [DataRow("Post", EndpointName)]
         [DataRow("Put", EndpointName + "/1")]

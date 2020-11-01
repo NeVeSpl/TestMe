@@ -31,7 +31,7 @@ namespace TestMe.Presentation.API.Tests
         [DataTestMethod]
         [DataRow(ValidUser1Mail, ValidUser1Password, ValidUser1Id, ValidUser1Role)]
         [DataRow(ValidUser2Mail, ValidUser2Password, ValidUser2Id, ValidUser2Role)]
-        public async Task CreateToken_HappyPathIsSuccessful(string userName, string password, long userId, UserRole userRole)
+        public async Task TokenForCorrectCredentialIsCreated(string userName, string password, long userId, UserRole userRole)
         {          
             var payload = new LoginCredentialsDTO()
             { 

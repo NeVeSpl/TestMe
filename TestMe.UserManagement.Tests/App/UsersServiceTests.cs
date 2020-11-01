@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestMe.BuildingBlocks.Domain;
@@ -40,7 +41,7 @@ namespace TestMe.UserManagement.Tests
         }
 
         [TestMethod]
-        public void UserCannotBeCreatedWithEmailAddressThatAlreadyExists()
+        public async Task UserCannotBeCreatedWithEmailAddressThatAlreadyExists()
         {
             var command = new CreateUser()
             {
@@ -49,13 +50,13 @@ namespace TestMe.UserManagement.Tests
                 Name = "yes",
             };            
 
-            Assert.ThrowsException<DomainException>(() => serviceUnderTest.CreateUser(command), DomainExceptions.User_with_given_email_address_already_exists);
+            await Assert.ThrowsExceptionAsync<DomainException>(() => serviceUnderTest.CreateUser(command), DomainExceptions.User_with_given_email_address_already_exists);
         }
 
         [TestMethod]
         [DataRow("a@a")]
         [DataRow("123")]
-        public void UserCannotBeCreatedWithInvalidEmailAddress(string invalidEmail)
+        public async Task UserCannotBeCreatedWithInvalidEmailAddress(string invalidEmail)
         {
             var command = new CreateUser()
             {
@@ -64,12 +65,12 @@ namespace TestMe.UserManagement.Tests
                 Name = "yes",
             };
 
-            Assert.ThrowsException<DomainException>(() => serviceUnderTest.CreateUser(command), DomainExceptions.Email_address_is_invalid);
+            await Assert.ThrowsExceptionAsync<DomainException>(() => serviceUnderTest.CreateUser(command), DomainExceptions.Email_address_is_invalid);
         }
 
         [TestMethod]
         [DataRow("p.s@z.pl")]        
-        public void UserCanBeCreatedWithTrickyValidEmailAddress(string validEmail)
+        public async Task UserCanBeCreatedWithTrickyValidEmailAddress(string validEmail)
         {
             var command = new CreateUser()
             {
@@ -78,7 +79,7 @@ namespace TestMe.UserManagement.Tests
                 Name = "yes",
             };
 
-            long createdUserId = serviceUnderTest.CreateUser(command);
+            long createdUserId = await serviceUnderTest.CreateUser(command);
 
             using (var context = CreateUserManagementDbContext())
             {

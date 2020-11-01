@@ -3,7 +3,7 @@ import { ArrayUtils, StateStorage } from '../../../utils';
 import { BusyIndicator, Window, Pagination } from '../../../components';
 import { QuestionsCatalog, QuestionsCatalogEditor } from '../';
 import { UserService } from '../../../services';
-import { ApiError, QuestionsCatalogsService, CatalogHeaderDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { ApiError, QuestionsCatalogsService, CatalogOnListDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 interface QuestionsCatalogsProps
 {
@@ -13,7 +13,7 @@ interface QuestionsCatalogsProps
 enum ChildWindows { None, QuestionsCatalogEditor, QuestionsCatalog }
 export class QuestionsCatalogsState
 {
-    questionsCatalogs: CatalogHeaderDTO[];
+    questionsCatalogs: CatalogOnListDTO[];
     isBusy: boolean;
     apiError: ApiError | undefined;  
     openedQuestionsCatalogId: number;
@@ -52,11 +52,11 @@ export default class QuestionsCatalogs extends React.Component<QuestionsCatalogs
 
     fetchCatalogs(pageNumber : number)
     {
-        this.service.readQuestionsCatalogHeaders(UserService.getUserID(), { limit: ItemsPerPage, offset: (pageNumber - 1 ) * ItemsPerPage }).then(x => this.setState({ questionsCatalogs: x.result, canShiftRight: x.isThereMore }));
+        this.service.readQuestionsCatalogs(UserService.getUserID(), { limit: ItemsPerPage, offset: (pageNumber - 1 ) * ItemsPerPage }).then(x => this.setState({ questionsCatalogs: x.result, canShiftRight: x.isThereMore }));
     }
     async fetchCatalog(catalogId : number)
     {     
-        return await this.service.readQuestionsCatalogHeader(catalogId);
+        return await this.service.readQuestionsCatalog(catalogId);
     }
     
 

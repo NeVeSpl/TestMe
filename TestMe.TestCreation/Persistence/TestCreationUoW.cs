@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TestMe.TestCreation.Domain;
@@ -32,10 +33,10 @@ namespace TestMe.TestCreation.Persistence
             owners = new Lazy<IOwnerRepository>(() => new OwnerRepository(context));
         }
 
-        public void Save()
+        public Task Save()
         {
             UpdateQuestionWhenAnyAnswerChanged();
-            context.SaveChanges();
+            return context.SaveChangesAsync();
         }
 
         private void UpdateQuestionWhenAnyAnswerChanged()

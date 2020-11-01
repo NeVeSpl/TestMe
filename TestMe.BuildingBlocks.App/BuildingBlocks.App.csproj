@@ -8,4 +8,8 @@
     <WarningsAsErrors>CS8600;CS8602;CS8603;CS8618</WarningsAsErrors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="9.0.0" />
+  </ItemGroup>
+
 </Project>

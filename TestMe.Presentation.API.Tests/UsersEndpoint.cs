@@ -29,7 +29,7 @@ namespace TestMe.Presentation.API.Tests
 
 
         [TestMethod]
-        public async Task CreateUser_HappyPathIsSuccessful()
+        public async Task UserCanBeCreated()
         {
             var payload = new CreateUserDTO()
             {
@@ -56,7 +56,7 @@ namespace TestMe.Presentation.API.Tests
         }
 
         [TestMethod]
-        public async Task ReadUsers_HappyPathIsSuccessful()
+        public async Task UsersCanBeReadByAdmin()
         {
             client = factory.CreateClient(ValidAdminToken);
             var response = await client.GetAsync(EndpointName);
@@ -73,7 +73,7 @@ namespace TestMe.Presentation.API.Tests
         [DataRow(TestUtils.ValidUser1Mail, true)]
         [DataRow(TestUtils.ValidUser2Mail, true)]
         [DataRow("bjorn@ironside.sk", false)]
-        public async Task IsEmailAddressTaken_HappyPathIsSuccessful(string emailAddress, bool expectedIsTaken)
+        public async Task IsEmailAddressTakenReturnsCorrectAnswer(string emailAddress, bool expectedIsTaken)
         {
             var response = await client.GetAsync($"{EndpointName}/EmailAddress/IsTaken?emailAddress={emailAddress}");
             AssertExt.EnsureSuccessStatusCode(response);

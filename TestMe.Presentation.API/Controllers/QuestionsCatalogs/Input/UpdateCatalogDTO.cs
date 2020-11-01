@@ -1,15 +1,21 @@
-﻿using TestMe.TestCreation.App.QuestionsCatalogs.Input;
+﻿using System.ComponentModel.DataAnnotations;
+using TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.UpdateCatalog;
+using TestMe.TestCreation.Domain;
 
 namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input
 {
-    public class UpdateCatalogDTO : CreateCatalogDTO
+    public class UpdateCatalogDTO 
     {
-        public UpdateCatalog CreateCommand(long userId, long catalogId)
+        [Required]
+        [StringLength(maximumLength: CatalogConst.NameMaxLength, MinimumLength = CatalogConst.NameMinLength)]
+        public string Name { get; set; } = string.Empty;
+        
+
+        public UpdateCatalogCommand CreateCommand(long catalogId)
         {
-            return new UpdateCatalog()
+            return new UpdateCatalogCommand()
             {
-                Name = Name,
-                UserId = userId,
+                Name = Name,               
                 CatalogId = catalogId
             };
         }

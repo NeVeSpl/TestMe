@@ -1,6 +1,6 @@
 import { Thunk } from '../../../redux.base';
 import { Action } from 'redux';
-import { QuestionDTO, UpdateQuestionDTO, QuestionsService, AnswerDTO, ConflictError as ConflictApiError } from '../../../autoapi/services/QuestionsService';
+import { QuestionsService, AnswerDTO, ConflictError as ConflictApiError, QuestionWithAnswersDTO, UpdateQuestionDTO } from '../../../autoapi/services/QuestionsService';
 import { MagicDict, MagicFormState, InputHasChanged, magicFormReducer, MagicForm } from '../../../components';
 import { FetchingErrorOccured, FetchingConflictErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
 
@@ -157,7 +157,7 @@ export class QuestionFetched
 {
     static Type = 'QuestionEditor.QuestionFetched';
 
-    constructor(public question: QuestionDTO, public type = QuestionFetched.Type) { }
+    constructor(public question: QuestionWithAnswersDTO, public type = QuestionFetched.Type) { }
 }
 
 export function saveChanges(questionId: number | undefined, data: UpdateQuestionDTO, catalogId: number): Thunk<void>
@@ -169,17 +169,17 @@ export function saveChanges(questionId: number | undefined, data: UpdateQuestion
         const form = getState().questionEditor.form;
         if (isFormValid(form, true))
         {
-            const questionDTO = { ...data, catalogId };
+            const QuestionOnListDTO = { ...data, catalogId };
             if (questionId === undefined)
             {
-                service.createQuestionWithAnswers(questionDTO)
+                service.createQuestionWithAnswers(QuestionOnListDTO)
                        .then(x => service.readQuestionWithAnswers(x)
                        .then(x => dispatch(new QuestionCreated(x))))
                        .then(x => dispatch(new CloseQuestionEditorWindow()));
             }
             else
             {
-                service.updateQuestionWithAnswers(questionId, questionDTO)
+                service.updateQuestionWithAnswers(questionId, QuestionOnListDTO)
                        .then(x => service.readQuestionWithAnswers(questionId)
                        .then(x => dispatch(new QuestionUpdated(x))))
                        .then(x => dispatch(new CloseQuestionEditorWindow()));
@@ -197,13 +197,13 @@ export class QuestionUpdated
 {
     static Type = 'QuestionEditor.QuestionUpdated';
 
-    constructor(public question: QuestionDTO, public type = QuestionUpdated.Type) { }
+    constructor(public question: QuestionWithAnswersDTO, public type = QuestionUpdated.Type) { }
 }
 export class QuestionCreated
 {
     static Type = 'QuestionEditor.QuestionCreated';
 
-    constructor(public question: QuestionDTO, public type = QuestionCreated.Type) { }
+    constructor(public question: QuestionWithAnswersDTO, public type = QuestionCreated.Type) { }
 }
 export class FormValidated
 {

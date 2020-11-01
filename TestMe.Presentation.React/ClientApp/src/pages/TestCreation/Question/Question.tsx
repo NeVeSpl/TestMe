@@ -2,7 +2,7 @@ import * as React from 'react';
 import { BusyIndicator, Window, Prompt } from '../../../components';
 import { QuestionEditor } from '../';
 import style from './Question.module.css';
-import { QuestionDTO, ApiError, QuestionsService } from '../../../autoapi/services/QuestionsService';
+import { ApiError, QuestionsService, QuestionWithAnswersDTO } from '../../../autoapi/services/QuestionsService';
 import { StateStorage } from '../../../utils';
 
 interface QuestionProps 
@@ -21,14 +21,14 @@ enum ChildWindows { None, QuestionDeletePrompt, QuestionEditor }
 
 export class QuestionState
 {
-    question: QuestionDTO;
+    question: QuestionWithAnswersDTO;
     isBusy: boolean;
     apiError: ApiError | undefined;
     openedChildWindow: ChildWindows;
 
     constructor()
     {
-        this.question = new QuestionDTO();
+        this.question = new QuestionWithAnswersDTO();
         this.isBusy = false;
         this.openedChildWindow = ChildWindows.None;
     }

@@ -145,30 +145,7 @@ namespace TestMe.BuildingBlocks.App
         public static Result<T> Conflict<T>(T value)
         {
             return new Result<T>(ResultStatus.Conflict, value);
-        }
-
-        internal static Result Create(ResultStatus status, string error)
-        {
-            switch (status)
-            {
-                case ResultStatus.Ok:
-                    return OkResult;
-                case ResultStatus.Error:
-                    if (String.IsNullOrEmpty(error))
-                    {
-                        return new ErrorResult(ResultStatus.Error, error);
-                    }
-                    return ErrorResult;
-                case ResultStatus.NotFound:
-                    return NotFoundResult;
-                case ResultStatus.Unauthorized:
-                    return UnauthorizedResult;
-                case ResultStatus.Conflict:
-                    return ConflictResult;
-                default:
-                    throw new NotImplementedException();
-            }
-        }
+        }       
     }
 
     internal class ErrorResult : Result

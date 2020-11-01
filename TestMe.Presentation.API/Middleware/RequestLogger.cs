@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace TestMe.Presentation.API.Middleware
 {
     /// <summary>
-    /// It is sample showing how to use custom Middleware rather than something that fulfils a real need in this project.
+    /// Sample showing how to use custom Middleware rather than something that fulfils a real need in this project.
     /// </summary>
     public sealed class RequestLogger
     {

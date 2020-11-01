@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Controllers.Tests.Input;
-using TestMe.TestCreation.App.Tests;
-using TestMe.TestCreation.App.Tests.Input;
-using TestMe.TestCreation.App.Tests.Output;
+using TestMe.TestCreation.App.RequestHandlers.Tests.DeleteTestItem;
+using TestMe.TestCreation.App.RequestHandlers.Tests.DeleteTest;
+using TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems;
+using TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest;
+using TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests;
 
 namespace TestMe.Presentation.API.Controllers.Tests
 {
@@ -15,70 +18,67 @@ namespace TestMe.Presentation.API.Controllers.Tests
     [ApiConventionType(typeof(ApiConventions))]
     public class TestsController : Controller
     {
-        private readonly ITestsService service;
-
-
-        public TestsController(ITestsService service)
+        [HttpGet]
+        public async Task<ActionResult<OffsetPagedResults<TestOnListDTO>>> ReadTests(long ownerId, [FromQuery] OffsetPagination pagination)
         {
-            this.service = service;
+            var result = await Send(new ReadTestsQuery(ownerId, pagination));
+            return ActionResult(result);
         }
 
-
-        [HttpGet("headers")]        
-        public ActionResult<OffsetPagedResults<TestHeaderDTO>> ReadTestHeaders(long catalogId, [FromQuery]OffsetPagination pagination)
+        [HttpGet("{testId}")]
+        public async Task<ActionResult<TestDTO>> ReadTest(long testId)
         {
-            var result = service.ReadTestHeaders(UserId, catalogId, pagination);
+            var result = await Send(new ReadTestQuery(testId));
             return ActionResult(result);
         }
 
-        [HttpGet("{testId}")]       
-        public ActionResult<TestDTO> ReadTestWithQuestionItemsAndQuestionHeaders(long testId)
-        {           
-            var result = service.ReadTestWithQuestionItemsAndQuestionHeaders(UserId, testId);
-            return ActionResult(result);
-        }
-
-        [HttpPost]       
-        public ActionResult<long> CreateTest(CreateTestDTO createTest)
+        [HttpPost]
+        public async Task<ActionResult<long>> CreateTest(CreateTestDTO createTest)
         {
-            var result = service.CreateTest(createTest.CreateCommand(UserId));
+            var result = await Send(createTest.CreateCommand());
             return ActionResult(result);
         }
 
-        [HttpPut("{testId}")]       
-        public ActionResult UpdateTest(long testId, UpdateTestDTO updateTest)
-        {            
-            var result = service.UpdateTest(updateTest.CreateCommand(UserId, testId));
-            return ActionResult(result);
-        }
-
-        [HttpDelete("{testId}")]      
-        public ActionResult DeleteTest(long testId)
+        [HttpPut("{testId}")]
+        public async Task<ActionResult> UpdateTest(long testId, UpdateTestDTO updateTest)
         {
-            var result = service.DeleteTest(new DeleteTest(UserId, testId));
+            var result = await Send(updateTest.CreateCommand(testId));
+            return ActionResult(result);
+        }
+
+        [HttpDelete("{testId}")]
+        public async Task<ActionResult> DeleteTest(long testId)
+        {
+            var result = await Send(new DeleteTestCommand(testId));
             return ActionResult(result);
         }
 
 
+        [HttpGet("{testId}/questions")]
+        public async Task<ActionResult<List<TestItemDTO>>> ReadTestItems(long testId)
+        {
+            var result = await Send(new ReadTestItemsQuery(testId));
+            return ActionResult(result);
+        }
 
         [HttpPost("{testId}/questions")]       
-        public ActionResult<long> CreateQuestionItem(long testId, CreateQuestionItemDTO createQuestionItem)
+        public async Task<ActionResult<long>> CreateTestItem(long testId, CreateTestItemDTO createTestItem)
         {          
-            var result = service.CreateQuestionItem(createQuestionItem.CreateCommand(UserId, testId));
+            var result = await Send(createTestItem.CreateCommand(testId));
             return ActionResult(result);
         }
 
         [HttpPut("{testId}/questions/{questionItemId}")]       
-        public ActionResult UpdateQuestionItem(long testId, long questionItemId, UpdateQuestionItemDTO updateQuestionItem)
+        public async Task<ActionResult> UpdateTestItem(long testId, long questionItemId, UpdateTestItemDTO updateTestItem)
         {          
-            var result = service.UpdateQuestionItem(updateQuestionItem.CreateCommand(UserId, testId, questionItemId));
+            var result = await Send(updateTestItem.CreateCommand(testId, questionItemId));
             return ActionResult(result);
         }
 
         [HttpDelete("{testId}/questions/{questionItemId}")]     
-        public ActionResult DeleteQuestionItem(long testId, long questionItemId)
-        {
-            var result = service.DeleteQuestionItem(new DeleteQuestionItem(UserId, testId, questionItemId));
+        public async Task<ActionResult> DeleteTestItem(long testId, long questionItemId)
+        {            
+            var result = await Send(new DeleteTestItemCommand(testId, questionItemId));
             return ActionResult(result);
         }
     }

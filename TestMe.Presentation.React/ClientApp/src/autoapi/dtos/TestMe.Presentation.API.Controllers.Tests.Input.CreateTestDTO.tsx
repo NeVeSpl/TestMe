@@ -4,14 +4,14 @@
 
 export class CreateTestDTO 
 { 
-    catalogId: number;
     title: string;
+    ownerId: number;
 
     //eslint-disable-next-line
     constructor()
     {  
             
-         this.catalogId = 0;
          this.title = "";
+         this.ownerId = 0;
     }
 }

@@ -61,7 +61,7 @@ namespace TestMe.Presentation.React
                         {
                             if (env.IsDevelopment())
                             {
-                                // In devlopemnt React add-on to browser requires script-src set to unsafe-inline
+                                // In development React add-on to browser requires script-src set to unsafe-inline
                                 //               React-Hot-Loader requires script-src set to unsafe-eval
                                 //               Webpack requires style-src set to unsafe-inline
                                 context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; connect-src localhost:* wss://localhost:* ws://localhost:*; font-src data:; img-src * data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com;  style-src 'self' 'unsafe-inline';");

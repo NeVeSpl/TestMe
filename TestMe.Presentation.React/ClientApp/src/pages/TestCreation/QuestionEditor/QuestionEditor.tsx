@@ -2,7 +2,7 @@
 import { Window, MagicForm, MagicDict, BusyIndicator, MagicTextInput } from '../../../components';
 import { ReactComponent as DeleteIco }  from '../outline-delete_forever-24px.svg';
 import { ObjectUtils, StateStorage } from '../../../utils';
-import { ApiError, UpdateQuestionDTO, QuestionsService, QuestionDTO, AnswerDTO } from '../../../autoapi/services/QuestionsService';
+import { ApiError, UpdateQuestionDTO, QuestionsService, AnswerDTO, QuestionWithAnswersDTO } from '../../../autoapi/services/QuestionsService';
 
 interface QuestionEditorProps
 {
@@ -43,7 +43,7 @@ export default class QuestionEditor extends React.PureComponent<QuestionEditorPr
     readonly service: QuestionsService = this.props.injectedService ?? new QuestionsService(x => this.setState({ apiError: x }), x => this.setState({ isBusy: x }), x => this.handleConcurrencyConflict());
     readonly state = this.storage?.Load() ?? new QuestionEditorState();
     isFormItemTouched: Set<string> = new Set();
-    originalFormData: QuestionDTO | undefined;
+    originalFormData: QuestionWithAnswersDTO | undefined;
     
 
     componentDidMount()

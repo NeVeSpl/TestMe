@@ -1,4 +1,6 @@
-﻿using TestMe.BuildingBlocks.Persistence;
+﻿using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using TestMe.BuildingBlocks.Persistence;
 using TestMe.TestCreation.Domain;
 
 namespace TestMe.TestCreation.Persistence
@@ -8,6 +10,11 @@ namespace TestMe.TestCreation.Persistence
         public OwnerRepository(TestCreationDbContext context) : base(context)
         {
 
+        }
+
+        public Owner GetByIdWithTestsCatalogs(long ownerId)
+        {
+            return context.Owners.Where(x => x.OwnerId == ownerId).Include(x => x.TestsCatalogs).FirstOrDefault();
         }
     }
 }

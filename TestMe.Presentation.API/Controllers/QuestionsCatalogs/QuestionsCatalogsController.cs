@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input;
-using TestMe.TestCreation.App.QuestionsCatalogs;
-using TestMe.TestCreation.App.QuestionsCatalogs.Input;
-using TestMe.TestCreation.App.QuestionsCatalogs.Output;
+using TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.DeleteCatalog;
+using TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog;
+using TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs;
 
 namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs
 {
@@ -14,54 +15,38 @@ namespace TestMe.Presentation.API.Controllers.QuestionsCatalogs
     [ApiConventionType(typeof(ApiConventions))]
     public class QuestionsCatalogsController : Controller
     {
-        private readonly IQuestionsCatalogsService service;
-
-
-        public QuestionsCatalogsController(IQuestionsCatalogsService service)
+        [HttpGet]
+        public async Task<ActionResult<OffsetPagedResults<CatalogOnListDTO>>> ReadQuestionsCatalogs(long ownerId, [FromQuery]OffsetPagination pagination)
         {
-            this.service = service;
-        }
-
-        
-        [HttpGet("headers")]       
-        public ActionResult<OffsetPagedResults<CatalogHeaderDTO>> ReadQuestionsCatalogHeaders(long ownerId, [FromQuery]OffsetPagination pagination)
-        {
-            var result = service.ReadCatalogHeaders(UserId, ownerId, pagination);
+            var result = await Send(new ReadCatalogsQuery(ownerId, pagination));
             return ActionResult(result);
-        }
-
-        [HttpGet("{catalogId}/header")]
-        public ActionResult<CatalogHeaderDTO> ReadQuestionsCatalogHeader(long catalogId)
-        {
-            var result = service.ReadCatalogHeader(UserId, catalogId);
-            return ActionResult(result);
-        }
+        }      
 
         [HttpGet("{catalogId}")] 
-        public ActionResult<QuestionsCatalogDTO> ReadQuestionsCatalog(long catalogId)
+        public async Task<ActionResult<CatalogDTO>> ReadQuestionsCatalog(long catalogId)
         {
-            var result = service.ReadCatalog(UserId, catalogId);
+            var result = await Send(new ReadCatalogQuery(catalogId));
             return ActionResult(result);
         }
 
         [HttpPost]      
-        public ActionResult<long> CreateCatalog(CreateCatalogDTO createCatalog)
+        public async Task<ActionResult<long>> CreateCatalog(CreateCatalogDTO createCatalog)
         {            
-            var result = service.CreateCatalog(createCatalog.CreateCommand(UserId));
+            var result = await Send(createCatalog.CreateCommand());
             return ActionResult(result);
         } 
 
         [HttpPut("{catalogId}")]       
-        public ActionResult UpdateCatalog(long catalogId, UpdateCatalogDTO updateCatalog)
+        public async Task<ActionResult> UpdateCatalog(long catalogId, UpdateCatalogDTO updateCatalog)
         {            
-            var result = service.UpdateCatalog(updateCatalog.CreateCommand(UserId, catalogId));
+            var result = await Send(updateCatalog.CreateCommand(catalogId));
             return ActionResult(result);
         }
         
         [HttpDelete("{catalogId}")]      
-        public ActionResult DeleteCatalog(long catalogId)
-        {
-            var result = service.DeleteCatalog(new DeleteCatalog(UserId, catalogId));
+        public async Task<ActionResult> DeleteCatalog(long catalogId)
+        {         
+            var result = await Send(new DeleteCatalogCommand(catalogId));
             return ActionResult(result);
         }
     }

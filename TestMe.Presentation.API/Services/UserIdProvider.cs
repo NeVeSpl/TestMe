@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using TestMe.TestCreation.App;
+using TestMe.TestCreation.App.Ports;
 
 namespace TestMe.Presentation.API.Services
 {

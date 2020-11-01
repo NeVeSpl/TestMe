@@ -1,8 +1,12 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestMe.BuildingBlocks.App;
 using TestMe.BuildingBlocks.Tests;
-using TestMe.TestCreation.App.Questions;
-using TestMe.TestCreation.App.Questions.Input;
+using TestMe.TestCreation.App.RequestHandlers.Questions.CreateQuestion;
+using TestMe.TestCreation.App.RequestHandlers.Questions.DeleteQuestion;
+using TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion;
+using TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions;
+using TestMe.TestCreation.App.RequestHandlers.Questions.UpdateQuestion;
 using TestMe.TestCreation.Persistence;
 using static TestMe.TestCreation.TestUtils;
 
@@ -12,7 +16,8 @@ namespace TestMe.TestCreation.Tests.App
     public class QuestionsServiceTests : BaseFixture
     {
         private TestCreationDbContext testCreationDbContext;
-        private QuestionsService serviceUnderTest;
+        private ReadOnlyTestCreationDbContext readOnlyTestCreationDbContext;      
+        private TestCreation.Domain.ITestCreationUoW uow;
 
         private protected override FakeDatabaseType GetDatabaseType()
         {
@@ -23,8 +28,9 @@ namespace TestMe.TestCreation.Tests.App
         public void TestInitialize()
         {           
             testCreationDbContext = CreateTestCreationDbContext();
-            var uow = TestUtils.CreateTestCreationUoW(testCreationDbContext);
-            serviceUnderTest = new QuestionsService(new QuestionReader(CreateReadOnlyTestCreationDbContext()), uow);
+            readOnlyTestCreationDbContext = CreateReadOnlyTestCreationDbContext();
+            uow = TestUtils.CreateTestCreationUoW(testCreationDbContext);
+           
         }   
         [TestCleanup]
         public void TestCleanup()
@@ -39,31 +45,30 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestsCatalog1Id, ResultStatus.NotFound)]
         [DataRow(NotExisitngQuestionsCatalogId, ResultStatus.NotFound)]
         [DataRow(OtherOwnerQuestionsCatalogId, ResultStatus.Unauthorized)]
-        public void ReadQuestionHeaders(long catalogId, ResultStatus expectedResult)
+        public async Task ReadQuestionHeaders(long catalogId, ResultStatus expectedResult)
         {
-            var result = serviceUnderTest.ReadQuestionHeaders(OwnerId, catalogId, new OffsetPagination());
+            var handler = new ReadQuestionsHandler(readOnlyTestCreationDbContext);
+            var query = new ReadQuestionsQuery(catalogId, new OffsetPagination())
+            {
+                UserId = OwnerId,
+            };
+            var result = await handler.Handle(query, default);
             Assert.AreEqual(expectedResult, result.Status);
-        }
-
-        [TestMethod]
-        [DataRow(ValidQuestion1Id, ResultStatus.Ok)]
-        [DataRow(NotExisitngQuestionId, ResultStatus.NotFound)]
-        [DataRow(DeletedQuestionId, ResultStatus.NotFound)]
-        [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
-        public void ReadQuestionHeader(long questionId, ResultStatus expectedResult)
-        {
-            var result = serviceUnderTest.ReadQuestionHeader(OwnerId, questionId);
-            Assert.AreEqual(expectedResult, result.Status);
-        }
+        }       
 
         [TestMethod]
         [DataRow(ValidQuestion1Id, ResultStatus.Ok)]       
         [DataRow(NotExisitngQuestionId, ResultStatus.NotFound)]
         [DataRow(DeletedQuestionId, ResultStatus.NotFound)]
         [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
-        public void ReadQuestionWithAnswers(long questionId, ResultStatus expectedResult)
+        public async Task ReadQuestionWithAnswers(long questionId, ResultStatus expectedResult)
         {
-            var result = serviceUnderTest.ReadQuestionWithAnswers(OwnerId, questionId);
+            var handler = new ReadQuestionWithAnswersHandler(readOnlyTestCreationDbContext);
+            var query = new ReadQuestionWithAnswersQuery(questionId)
+            {               
+                UserId = OwnerId,                
+            };
+            var result = await handler.Handle(query, default);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
@@ -73,27 +78,28 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(ValidTestsCatalog1Id, ResultStatus.Error)]
         [DataRow(NotExisitngQuestionsCatalogId, ResultStatus.Error)]
         [DataRow(OtherOwnerQuestionsCatalogId, ResultStatus.Unauthorized)]
-        public void CreateQuestionWithAnswers(long catalogId, ResultStatus expectedResult)
+        public async Task CreateQuestionWithAnswers(long catalogId, ResultStatus expectedResult)
         {
-            var command = new CreateQuestion()
+            var handler = new CreateQuestionWithAnswersHandler(uow);
+            var command = new CreateQuestionWithAnswersCommand()
             {
                 UserId = OwnerId,
                 Content = "Dani Carvajal",
                 CatalogId = catalogId,
             };
-            var result = serviceUnderTest.CreateQuestionWithAnswers(command);
+            var result = await handler.Handle(command, default);
             Assert.AreEqual(expectedResult, result.Status);
         }
-
         
         [TestMethod]
         [DataRow(ValidQuestion1Id, ResultStatus.Ok)]
         [DataRow(DeletedQuestionId, ResultStatus.NotFound)]
         [DataRow(NotExisitngQuestionId, ResultStatus.NotFound)]
         [DataRow(OtherOwnerQuestionId,   ResultStatus.Unauthorized)]     
-        public void UpdateQuestionWithAnswers(long questionId, ResultStatus expectedResult)
+        public async Task UpdateQuestionWithAnswers(long questionId, ResultStatus expectedResult)
         {
-            var command = new UpdateQuestion()
+            var handler = new UpdateQuestionWithAnswersHandler(uow);
+            var command = new UpdateQuestionWithAnswersCommand()
             {
                 UserId = OwnerId,
                 QuestionId = questionId,
@@ -101,14 +107,15 @@ namespace TestMe.TestCreation.Tests.App
                 CatalogId = ValidQuestionsCatalog2Id,
                 ConcurrencyToken = 0,
             };
-            Result result = serviceUnderTest.UpdateQuestionWithAnswers(command);
+            Result result = await handler.Handle(command, default);
             Assert.AreEqual(expectedResult, result.Status);
         }
 
         [TestMethod]      
-        public void UpdateQuestionWithAnswers_GivenWrongConcurrencyToken_ShouldReturnResultConflict()
+        public async Task UpdateQuestionWithAnswers_GivenWrongConcurrencyToken_ShouldReturnResultConflict()
         {
-            var command = new UpdateQuestion()
+            var handler = new UpdateQuestionWithAnswersHandler(uow);
+            var command = new UpdateQuestionWithAnswersCommand()
             {
                 UserId = OwnerId,
                 QuestionId = ValidQuestion1Id,
@@ -116,7 +123,7 @@ namespace TestMe.TestCreation.Tests.App
                 CatalogId = ValidQuestionsCatalog2Id,
                 ConcurrencyToken = 666,
             };
-            Result result = serviceUnderTest.UpdateQuestionWithAnswers(command);
+            Result result = await handler.Handle(command, default);
             Assert.AreEqual(ResultStatus.Conflict, result.Status);
         }
 
@@ -125,14 +132,15 @@ namespace TestMe.TestCreation.Tests.App
         [DataRow(NotExisitngQuestionId, ResultStatus.NotFound)]
         [DataRow(DeletedQuestionId, ResultStatus.NotFound)]
         [DataRow(OtherOwnerQuestionId, ResultStatus.Unauthorized)]
-        public void DeleteQuestionWithAnswers(long questionId, ResultStatus expectedResult)
+        public async Task DeleteQuestionWithAnswers(long questionId, ResultStatus expectedResult)
         {
-            var command = new DeleteQuestion()
+            var handler = new DeleteQuestionWithAnswersHandler(uow);
+            var command = new DeleteQuestionWithAnswersCommand()
             {
                 UserId = OwnerId,
                 QuestionId = questionId,
             };
-            Result result = serviceUnderTest.DeleteQuestionWithAnswers(command);
+            Result result = await handler.Handle(command, default);
             Assert.AreEqual(expectedResult, result.Status);
         }
     }

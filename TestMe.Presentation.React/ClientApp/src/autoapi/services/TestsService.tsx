@@ -4,40 +4,37 @@
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
 //eslint-disable-next-line 
- import { TestHeaderDTO } from "../dtos/TestMe.TestCreation.App.Tests.Output.TestHeaderDTO";
+ import { TestOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO";
 //eslint-disable-next-line 
- import { TestDTO } from "../dtos/TestMe.TestCreation.App.Tests.Output.TestDTO";
-//eslint-disable-next-line 
- import { QuestionItemDTO } from "../dtos/TestMe.TestCreation.App.Tests.Output.QuestionItemDTO";
-//eslint-disable-next-line 
- import { QuestionHeaderDTO } from "../dtos/TestMe.TestCreation.App.Tests.Output.QuestionHeaderDTO";
+ import { TestDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO";
 //eslint-disable-next-line 
  import { CreateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO";
 //eslint-disable-next-line 
  import { UpdateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO";
 //eslint-disable-next-line 
- import { CreateQuestionItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateQuestionItemDTO";
+ import { TestItemDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO";
 //eslint-disable-next-line 
- import { UpdateQuestionItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateQuestionItemDTO";
-export * from "../dtos/TestMe.TestCreation.App.Tests.Output.TestHeaderDTO";
-export * from "../dtos/TestMe.TestCreation.App.Tests.Output.TestDTO";
-export * from "../dtos/TestMe.TestCreation.App.Tests.Output.QuestionItemDTO";
-export * from "../dtos/TestMe.TestCreation.App.Tests.Output.QuestionHeaderDTO";
+ import { CreateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO";
+//eslint-disable-next-line 
+ import { UpdateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO";
-export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateQuestionItemDTO";
-export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateQuestionItemDTO";
+export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO";
+export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO";
+export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO";
 export * from "../base/index";
 
 export class TestsService extends ApiBaseService
 {
     static Type = "TestsService";
 
-    readTestHeaders(catalogId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<TestHeaderDTO>>
+    readTests(ownerId: number, pagination: OffsetPagination) : Promise<OffsetPagedResults<TestOnListDTO>>
     {
-        return this.MakeRequestWithResult<OffsetPagedResults<TestHeaderDTO>>("get", `Tests/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);
+        return this.MakeRequestWithResult<OffsetPagedResults<TestOnListDTO>>("get", `Tests?ownerId=${ownerId}&offset=${pagination.offset}&limit=${pagination.limit}`, null);
     }
-    readTestWithQuestionItemsAndQuestionHeaders(testId: number) : Promise<TestDTO>
+    readTest(testId: number) : Promise<TestDTO>
     {
         return this.MakeRequestWithResult<TestDTO>("get", `Tests/${testId}`, null);
     }
@@ -53,26 +50,30 @@ export class TestsService extends ApiBaseService
     {
         return this.MakeRequest("delete", `Tests/${testId}`, null);
     }
-    createQuestionItem(testId: number, createQuestionItem: CreateQuestionItemDTO) : Promise<number>
+    readTestItems(testId: number) : Promise<TestItemDTO[]>
     {
-        return this.MakeRequestWithResult<number>("post", `Tests/${testId}/questions`, createQuestionItem);
+        return this.MakeRequestWithResult<TestItemDTO[]>("get", `Tests/${testId}/questions`, null);
     }
-    updateQuestionItem(testId: number, questionItemId: number, updateQuestionItem: UpdateQuestionItemDTO) 
+    createTestItem(testId: number, createTestItem: CreateTestItemDTO) : Promise<number>
     {
-        return this.MakeRequest("put", `Tests/${testId}/questions/${questionItemId}`, updateQuestionItem);
+        return this.MakeRequestWithResult<number>("post", `Tests/${testId}/questions`, createTestItem);
     }
-    deleteQuestionItem(testId: number, questionItemId: number) 
+    updateTestItem(testId: number, questionItemId: number, updateTestItem: UpdateTestItemDTO) 
+    {
+        return this.MakeRequest("put", `Tests/${testId}/questions/${questionItemId}`, updateTestItem);
+    }
+    deleteTestItem(testId: number, questionItemId: number) 
     {
         return this.MakeRequest("delete", `Tests/${testId}/questions/${questionItemId}`, null);
     }
            
 }
 
-export function useAPIReadTestHeaders(catalogId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<TestHeaderDTO>>
+export function useAPIReadTests(ownerId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<TestOnListDTO>>
 {
-    return useRequestWithResult<OffsetPagedResults<TestHeaderDTO>>("get", `Tests/headers?catalogId=${catalogId}&offset=${pagination.offset}&limit=${pagination.limit}`, null, {} as OffsetPagedResults<TestHeaderDTO>,  deps);
+    return useRequestWithResult<OffsetPagedResults<TestOnListDTO>>("get", `Tests?ownerId=${ownerId}&offset=${pagination.offset}&limit=${pagination.limit}`, null, {} as OffsetPagedResults<TestOnListDTO>,  deps);
 }
-export function useAPIReadTestWithQuestionItemsAndQuestionHeaders(testId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<TestDTO>
+export function useAPIReadTest(testId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<TestDTO>
 {
     return useRequestWithResult<TestDTO>("get", `Tests/${testId}`, null, new TestDTO(),  deps);
 }
@@ -88,15 +89,19 @@ export function useAPIDeleteTest(testId: number, deps?: ReadonlyArray<unknown>) 
 {
     return useRequest("delete", `Tests/${testId}`, null, deps);
 }
-export function useAPICreateQuestionItem(testId: number, createQuestionItem: CreateQuestionItemDTO, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<number>
+export function useAPIReadTestItems(testId: number, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<TestItemDTO[]>
 {
-    return useRequestWithResult<number>("post", `Tests/${testId}/questions`, createQuestionItem, 0,  deps);
+    return useRequestWithResult<TestItemDTO[]>("get", `Tests/${testId}/questions`, null, {} as TestItemDTO[],  deps);
 }
-export function useAPIUpdateQuestionItem(testId: number, questionItemId: number, updateQuestionItem: UpdateQuestionItemDTO, deps?: ReadonlyArray<unknown>) : IUseRequest
+export function useAPICreateTestItem(testId: number, createTestItem: CreateTestItemDTO, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<number>
 {
-    return useRequest("put", `Tests/${testId}/questions/${questionItemId}`, updateQuestionItem, deps);
+    return useRequestWithResult<number>("post", `Tests/${testId}/questions`, createTestItem, 0,  deps);
 }
-export function useAPIDeleteQuestionItem(testId: number, questionItemId: number, deps?: ReadonlyArray<unknown>) : IUseRequest
+export function useAPIUpdateTestItem(testId: number, questionItemId: number, updateTestItem: UpdateTestItemDTO, deps?: ReadonlyArray<unknown>) : IUseRequest
+{
+    return useRequest("put", `Tests/${testId}/questions/${questionItemId}`, updateTestItem, deps);
+}
+export function useAPIDeleteTestItem(testId: number, questionItemId: number, deps?: ReadonlyArray<unknown>) : IUseRequest
 {
     return useRequest("delete", `Tests/${testId}/questions/${questionItemId}`, null, deps);
 }

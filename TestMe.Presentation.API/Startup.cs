@@ -1,4 +1,5 @@
 ﻿using System;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -6,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
-using Serilog;
 using TestMe.BuildingBlocks.EventBus;
 using TestMe.Infrastructure.EventBus.InMemory;
 using TestMe.Infrastructure.EventBus.RabbitMQ;
@@ -47,6 +47,8 @@ namespace TestMe.Presentation.API
             services.AddUserManagementApplicationServices();
             services.AddUserManagementInfrastructureServices();
 
+            services.AddMediatR(typeof(TestCreation.App.IServiceCollectionExtensionsFromTestCreationApp));
+
             services.Configure<AuthenticationService.Config>(Configuration.GetSection("Jwt"));
             services.AddJWTAuthentication(Configuration, "Jwt"); 
             services.AddControllers();
@@ -76,15 +78,15 @@ namespace TestMe.Presentation.API
         }   
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.SubscribeTestCreationEventHandlers();
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.SubscribeTestCreationEventHandlers();
 
             //app.UseSerilogRequestLogging();
             app.UseRequestLogger();
             app.UseOpenAPI();
 
             if (env.IsDevelopment())
-            {
-                
+            {                
                 //app.UseDeveloperExceptionPage();
                 //app.UseDatabaseErrorPage();
                 app.UseExceptionHandler("/Error");
@@ -117,8 +119,7 @@ namespace TestMe.Presentation.API
         {
             public enum EventBusType { InMemory, RabbitMQ }
 
-            public EventBusType EventBus { get; set; } 
-            
+            public EventBusType EventBus { get; set; }             
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace TestMe.Presentation.API
 {
     /// <summary>
-    /// It invokes controller.Setup(); before action
+    /// It invokes controller.Setup(); before an action
     /// </summary>
     internal sealed class SetupControllerAttribute : ActionFilterAttribute
     {

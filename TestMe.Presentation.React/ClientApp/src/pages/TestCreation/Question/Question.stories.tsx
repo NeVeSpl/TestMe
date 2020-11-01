@@ -3,7 +3,7 @@ import { RouteComponentProps } from 'react-router-dom';
 import { action } from '@storybook/addon-actions';
 import Question, { QuestionState } from './Question';
 import { Question as QuestionRedux } from './Question.redux';
-import { QuestionsService, QuestionDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionsService, QuestionOnListDTO, QuestionWithAnswersDTO } from '../../../autoapi/services/QuestionsService';
 import { StateStorage } from '../../../utils';
 import { ReduxApiFactory } from '../../../autoapi/ReduxApiFactory';
 import { configureStore, RootState } from '../../../redux.base';
@@ -32,7 +32,7 @@ export const mockData = {
 export const LocalState = () => {
 
 
-    const questionDTO =
+    const QuestionOnListDTO =
         {
             content: "How are you today?",
             answers:
@@ -41,11 +41,11 @@ export const LocalState = () => {
                     { content: "Very gooood" },
                     { content: "Just fine", isCorrect : true }
                 ]
-        } as QuestionDTO;
+        } as QuestionWithAnswersDTO;
    
 
     const service = new QuestionsService();
-    service.readQuestionWithAnswers = (x) => Promise.resolve(questionDTO);
+    service.readQuestionWithAnswers = (x) => Promise.resolve(QuestionOnListDTO);
 
     const storage = StateStorage.CreateMock<QuestionState>();
    
@@ -63,7 +63,7 @@ export const LocalState = () => {
 
 export const ReduxState = () =>
 {
-    const questionDTO =
+    const QuestionOnListDTO =
         {
             content: "How are you today?",
             answers:
@@ -72,11 +72,11 @@ export const ReduxState = () =>
                     { content: "Very gooood" },
                     { content: "Just fine", isCorrect: true }
                 ]
-        } as QuestionDTO;
+        } as QuestionWithAnswersDTO;
 
 
     const service = new QuestionsService();
-    service.readQuestionWithAnswers = (x) => Promise.resolve(questionDTO);
+    service.readQuestionWithAnswers = (x) => Promise.resolve(QuestionOnListDTO);
 
     const api = new ReduxApiFactory();
     api.AddMock(QuestionsService.Type, service);

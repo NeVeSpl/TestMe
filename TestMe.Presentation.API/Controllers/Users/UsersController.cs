@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TestMe.BuildingBlocks.App;
@@ -25,9 +26,9 @@ namespace TestMe.Presentation.API.Controllers.Users
 
         [HttpPost]
         [AllowAnonymous]
-        public ActionResult<long> CreateUser(CreateUserDTO createUser)
+        public async Task<ActionResult<long>> CreateUser(CreateUserDTO createUser)
         {
-            var result = service.CreateUser(createUser.CreateCommand());
+            var result = await service.CreateUser(createUser.CreateCommand());
             return Ok(result);
         }
 
@@ -36,16 +37,16 @@ namespace TestMe.Presentation.API.Controllers.Users
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public ActionResult<CursorPagedResults<UserDTO>> ReadUsers([FromQuery]CursorPagination pagination)
+        public async Task<ActionResult<CursorPagedResults<UserDTO>>> ReadUsers([FromQuery]CursorPagination pagination)
         {
-            var result = service.GetUsers(new ReadUsers() { Pagination = pagination });
+            var result = await service.GetUsers(new ReadUsers() { Pagination = pagination });
             return Ok(result);
         }
 
         [HttpGet("EmailAddress/IsTaken")]
-        public ActionResult<bool> IsEmailAddressTaken(string emailAddress)
+        public async Task<ActionResult<bool>> IsEmailAddressTaken(string emailAddress)
         {
-            var result = service.IsEmailAddressTaken(emailAddress);
+            var result = await service.IsEmailAddressTaken(emailAddress);
             return Ok(result);
         }
     }

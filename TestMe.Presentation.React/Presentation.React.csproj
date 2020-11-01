@@ -34,8 +34,8 @@
     <None Update="ClientApp\src\aapi\CreateCatalogDTO.ts">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\CreateCatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\CreateQuestionDTO.ts">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\CreateQuestionOnListDTO.ts">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\CreateQuestionItemDTO.ts">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\CreateQuestionItemDTO.cs</CustomToolNamespace>
@@ -49,11 +49,11 @@
     <None Update="ClientApp\src\aapi\dto\AnswerDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\AnswerDTO.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\src\aapi\dto\CatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\CatalogOnListDTO.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\src\aapi\dto\CatalogDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\CatalogDTO.cs</CustomToolNamespace>
-    </None>
-    <None Update="ClientApp\src\aapi\dto\CatalogHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\CatalogHeaderDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\CreateAnswerDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateAnswerDTO.cs</CustomToolNamespace>
@@ -61,8 +61,8 @@
     <None Update="ClientApp\src\aapi\dto\CreateCatalogDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\CreateCatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\CreateQuestionDTO.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\CreateQuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\CreateQuestionItemDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\CreateQuestionItemDTO.cs</CustomToolNamespace>
@@ -79,17 +79,17 @@
     <None Update="ClientApp\src\aapi\dto\QuestionBaseDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\Base\QuestionBaseDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\QuestionDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\QuestionDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\QuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\QuestionOnListDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\QuestionHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionHeaderDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\QuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\QuestionItemDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionItemDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\QuestionsCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\QuestionsCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\QuestionsCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\QuestionsCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\TestDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\TestDTO.cs</CustomToolNamespace>
@@ -97,8 +97,8 @@
     <None Update="ClientApp\src\aapi\dto\TestHeaderDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\TestHeaderDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\TestsCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\TestsCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\TestsCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\TestsCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\TokenDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tokens\Output\TokenDTO.cs</CustomToolNamespace>
@@ -106,8 +106,8 @@
     <None Update="ClientApp\src\aapi\dto\UpdateAnswerDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\UpdateAnswerDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\dto\UpdateCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\dto\UpdateCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\dto\UpdateQuestionDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\UpdateQuestionDTO.cs</CustomToolNamespace>
@@ -163,8 +163,8 @@
     <None Update="ClientApp\src\aapi\UpdateAnswerDTO.ts">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\UpdateAnswerDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\aapi\UpdateCatalogDTO.ts">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\aapi\UpdateCatalogOnListDTO.ts">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\aapi\UpdateQuestionDTO.ts">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\UpdateQuestionDTO.cs</CustomToolNamespace>
@@ -184,6 +184,9 @@
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionDTO.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateQuestionOnListDTO.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Questions.Input.UpdateAnswerDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\UpdateAnswerDTO.cs</CustomToolNamespace>
     </None>
@@ -196,23 +199,26 @@
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.UpdateCatalogDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.CreateQuestionItemDTO.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\CreateQuestionItemDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.UpdateCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\QuestionsCatalogs\Input\UpdateCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\CreateTestDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.UpdateQuestionItemDTO.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\UpdateQuestionItemDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\CreateTestItemDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\UpdateTestDTO.cs</CustomToolNamespace>
     </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\Input\UpdateTestItemDTO.cs</CustomToolNamespace>
+    </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.TestsCatalogs.Input.CreateCatalogDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\TestsCatalogs\Input\CreateCatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.TestsCatalogs.Input.UpdateCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\TestsCatalogs\Input\UpdateCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.TestsCatalogs.Input.UpdateCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\TestsCatalogs\Input\UpdateCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tokens\Input\LoginCredentialsDTO.cs</CustomToolNamespace>
@@ -223,44 +229,53 @@
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Users.Input.CreateUserDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Users\Input\CreateUserDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Questions.Output.AnswerDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\AnswerDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Questions\ReadQuestion\AnswerDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Questions.Output.QuestionDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\QuestionDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Questions\ReadQuestion\QuestionWithAnswersDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Questions.Output.QuestionHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Questions\Output\QuestionHeaderDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Questions\ReadQuestions\QuestionOnListDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.QuestionsCatalogs.Output.CatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\CatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog.CatalogDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\QuestionsCatalogs\ReadCatalog\CatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.QuestionsCatalogs.Output.CatalogHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\CatalogHeaderDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs.CatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\QuestionsCatalogs\ReadCatalogs\CatalogOnListDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.QuestionsCatalogs.Output.QuestionsCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\QuestionsCatalogs\Output\QuestionsCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.Output.QuestionOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionOnListDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Tests.Output.QuestionHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionHeaderDTO.cs</CustomToolNamespace>
-    </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Tests.Output.QuestionItemDTO.tsx">
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.Output.QuestionItemDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\QuestionItemDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Tests.Output.TestDTO.tsx">
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.Output.ReadTestWithQuestionsDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\ReadTestWithQuestionsDTO.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.Output.TestDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\TestDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.Tests.Output.TestHeaderDTO.tsx">
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.Output.TestHeaderDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\Tests\Output\TestHeaderDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.TestsCatalogs.Output.CatalogDTO.tsx">
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Tests\ReadTest\TestDTO.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Tests\ReadTestItems\TestItemDTO.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\RequestHandlers\Tests\ReadTests\TestOnListDTO.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.TestsCatalogs.Output.CatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\CatalogOnListDTO.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.TestsCatalogs.Output.CatalogDTO.tsx">
       <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\CatalogDTO.cs</CustomToolNamespace>
     </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.TestsCatalogs.Output.CatalogHeaderDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\CatalogHeaderDTO.cs</CustomToolNamespace>
-    </None>
-    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.TestsCatalogs.Output.TestsCatalogDTO.tsx">
-      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\TestsCatalogDTO.cs</CustomToolNamespace>
+    <None Update="ClientApp\src\autoapi\dtos\TestMe.TestCreation.App.RequestHandlers.TestsCatalogs.Output.TestsCatalogOnListDTO.tsx">
+      <CustomToolNamespace>..\TestMe.TestCreation\App\TestsCatalogs\Output\TestsCatalogOnListDTO.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.UserManagement.App.Users.Output.UserCredentialsDTO.tsx">
       <CustomToolNamespace>..\TestMe.UserManagement\App\Users\Output\UserCredentialsDTO.cs</CustomToolNamespace>
@@ -294,9 +309,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.tt</DependentUpon>
-    </None>
-    <None Update="ClientApp\src\autoapi\services\TestsCatalogsService.tsx">
-      <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\TestsCatalogs\TestsCatalogsController.cs</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\services\TestsService.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Tests\TestsController.cs</CustomToolNamespace>

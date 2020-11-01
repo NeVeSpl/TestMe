@@ -1,4 +1,4 @@
-﻿# Sample Modular Monolith application without fluff/hype(*) but with tests
+﻿# Sample Modular Monolith application without fluff and hype but with tests
 
 Yet another sample .net core application. But this one aims to be a little bit different than the rest. Instead of focusing on showing some fancy libraries and patterns on non-realistic simplified examples, this one focus on delivering a fully working application with high quality. 
 
@@ -42,9 +42,9 @@ Yet another sample .net core application. But this one aims to be a little bit d
 
 - top architecture: modular monolith aka vertical slice architecture
 - backend: asp.net core, entity framework core, postgresql
-- tests: mstest v2, sqllite in memory, detroit school of testing 
+- tests: mstest v2, sqllite in-memory, detroit school of testing 
 - frontend: react + typescript
-- communication between modules : RabbitMQ or in memory bus
+- communication between modules : RabbitMQ or in-memory bus
 - enabled non-null reference types 
 - every module in separate transaction scope, eventual consistency between modules
 - mapping between c# dtos is done by [MappingGenerator](https://github.com/cezarypiatek/MappingGenerator)
@@ -57,8 +57,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 
 ## <a name="ADR"></a> 3. Architecture decision record
 
-1) Use async/await or not
-2) Why not to use AutoMapper
+TBD
 
 
 ## <a name="React"></a> 4. Layer : Presentation.React
@@ -75,7 +74,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 ![projects_dependencies](docs/Presentation.React.png)
 
 ## <a name="API"></a> 5. Layer : Presentation.API
-- integration tests for happy paths backed on sqllite in memory with the possibility to switch to postgresql if needed for debuging
+- integration tests for happy paths backed on sqllite in-memory with the possibility to switch to postgresql if needed for debuging
 
 #### Endpoints
 
@@ -85,7 +84,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 | /Questions/               | Endpoint that allows editing  whole Question aggregate (Question + Answer) as a single resource, with optimistic concurrency control |
 | /TestsCatalogs/           |   |
 | /Tests/                   | Endpoint that allows editing only aggregate root from Test aggregate (Test + QuestionItem)  |
-| /Tests/{testId}/questions/|  Endpoint that allows editing  QuestionItem entity from Test aggregate (Test + QuestionItem) as a sub-resource |
+| /Tests/{testId}/questions/| Endpoint that allows editing TestItem entity from Test aggregate (Test + QuestionItem) as a sub-resource |
 | /Tokens/                  |   |
 | /Metrics/lineprotocol/    | A special endpoint available only from localhost that returns following metrics : <br/>- CPU usage,<br/>- RAM usage,<br/>- no. GC collections,<br/>- GC heaps sizes,<br/>- GC pause time,<br/>- GC background time,<br/>- ThreadpoolThreadCount,<br/>- ThreadpoolQueueLength,<br/>- ExceptionCount,<br/>- MonitorLockContentionCount<br/> in a format that can be directly pulled by Telegraf to InfluxDB |
 | /Users/                   |
@@ -131,7 +130,7 @@ pagination                  | cursor based                        | offset based
 
 ## <a name="CommunicationBetweenModules"></a> 7. Communication between modules
 - reliable communication between modules without using a distributed transaction
-- two available implementations, RabbitMQ based for production use and in memory for tests  
+- two available implementations, RabbitMQ based for production use and in-memory for tests  
 
 ![projects_dependencies](docs/CommunicationBetweenModules.png)
 
@@ -150,7 +149,7 @@ pagination                  | cursor based                        | offset based
 
 ## <a name="TestCreation"></a> 9. Module : TestCreation
 - domain model: rich
-- architecture : clean architecture + minimal CQRS
+- architecture : clean architecture + minimal CQRS (with the same data store)
 - data driven unit tests and architectural tests
 - soft delete for all entities
 - optimistic concurrency and conflic resloving for Question aggregate
@@ -191,7 +190,6 @@ not available yet
 - backend : finish /Tests endpoints
 - backend : deal with poisonous integration events (dead letter queue)
 - backend : add batch publishing of events on RabbitMQ
+- backend : improve in-memory bus implementation 
 
----
 
-(*) AutoMapper, Autofac, MediatR, FluentValidation 

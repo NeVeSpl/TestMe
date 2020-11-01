@@ -1,8 +1,8 @@
 ﻿import * as React from 'react';
 import deepFreeze from 'deep-freeze'
 import { questionsCatalogEditorReducer, QuestionsCatalogEditorState, ShowQuestionsCatalogEditor, QuestionsCatalogFetched, CloseQuestionsCatalogEditorWindow, } from './QuestionsCatalogEditor.reducer'
-import { QuestionDTO } from '../../../autoapi/services/QuestionsService';
-import { CreateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+import { QuestionOnListDTO } from '../../../autoapi/services/QuestionsService';
+import { CreateCatalogDTO, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 
 
 

@@ -12,7 +12,7 @@ namespace TestMe.Presentation.API.ControllersSpecial
     public class ErrorController : Controller
     {
         /// <summary>
-        /// A special endpoint that acts as ExceptionHandler for uncatched exceptions
+        /// A special endpoint that acts as ExceptionHandler for uncaught exceptions
         /// </summary>       
         [AllowAnonymous]
         [HttpGet, HttpPost, HttpPut, HttpDelete]
@@ -23,7 +23,9 @@ namespace TestMe.Presentation.API.ControllersSpecial
         public ActionResult<ProblemDetails> HandleError()
         {
             var exceptionHandlerPathFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+#pragma warning disable IDE0059 // Unnecessary assignment of a value
             var path = exceptionHandlerPathFeature?.Path;
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
             var error = exceptionHandlerPathFeature?.Error;
 
             if (error is DbUpdateConcurrencyException)

@@ -8,7 +8,7 @@ namespace TestMe.BuildingBlocks.App.Tests
     public class MergeWithTests
     {
         [TestMethod]
-        public void GivenEmptyTargetList_AllItemsShouldBeAdded()
+        public void AllItemsFromSourceShouldBeAddedIfTargetIsEmpty()
         {
             var target = new List<Item>();
             var source = new List<Item>() { new Item(0, "a"), new Item(0, "b") };
@@ -24,7 +24,7 @@ namespace TestMe.BuildingBlocks.App.Tests
         }
 
         [TestMethod]
-        public void GivenEmptySourceList_AllItemsShouldBeRemovedFromTarget()
+        public void AllItemsShouldBeRemovedFromTargetIfGivenSourceIsEmpty()
         {
             var target = new List<Item>() { new Item(1, "a"), new Item(2, "b") };
             var source = new List<Item>() { };
@@ -38,7 +38,7 @@ namespace TestMe.BuildingBlocks.App.Tests
         }
 
         [TestMethod]
-        public void GivenItemsWithTheSameId_NamesShouldBeUpdated()
+        public void NamesForItemsWithTheSameIdsShouldBeUpdated()
         {
             var target = new List<Item>() { new Item(1, "a"), new Item(2, "b") };
             var source = new List<Item>() { new Item(1, "c"), new Item(2, "d") };

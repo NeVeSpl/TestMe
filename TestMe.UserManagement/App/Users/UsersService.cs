@@ -47,49 +47,49 @@ namespace TestMe.UserManagement.App.Users
             return new AuthenticationResult(false);
         }
 
-        public bool IsEmailAddressTaken(string emailAddress)
+        public async Task<bool> IsEmailAddressTaken(string emailAddress)
         {
-            return context.Users.AsNoTracking().Any(x => x.EmailAddress.Value == emailAddress);
+            return await context.Users.AsNoTracking().AnyAsync(x => x.EmailAddress.Value == emailAddress);
         }
 
-        public long CreateUser(CreateUser createUser)
+        public async Task<long> CreateUser(CreateUser createUser)
         {
-            bool emailIsTaken = context.Users.AsNoTracking().Any(x => x.EmailAddress.Value == createUser.EmailAddress);
+            bool emailIsTaken = await IsEmailAddressTaken(createUser.EmailAddress);
             if (emailIsTaken)
             {
                 throw new DomainException(DomainExceptions.User_with_given_email_address_already_exists);
             }
 
             User? createdUser = null;
-            using (var transaction = context.Database.BeginTransaction())
+            using (var transaction = await context.Database.BeginTransactionAsync())
             {
                 createdUser = new User(EmailAddress.Create(createUser.EmailAddress), Password.Create(createUser.Password));
                 createdUser.Name = createUser.Name;
                 context.Users.Add(createdUser);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
                 context.AddEvent(createdUser.CreateEvent(), correlationIdProvider.TraceId);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
 
-                transaction.Commit();
+                await transaction.CommitAsync();
             }
             return createdUser!.UserId;
         }
 
 
-        public CursorPagedResults<UserDTO> GetUsers(ReadUsers readUsers)
+        public async Task<CursorPagedResults<UserDTO>> GetUsers(ReadUsers readUsers)
         {
             var result = new CursorPagedResults<UserDTO>();
 
             if (readUsers.Pagination.FetchNext > 0)
             {
-                result.Result = context.Users.AsNoTracking().Where(x => x.UserId > readUsers.Pagination.Cursor).Take(readUsers.Pagination.FetchNext).ProjectTo<UserDTO>(mapperConfiguration).ToList();
+                result.Result = await context.Users.AsNoTracking().Where(x => x.UserId > readUsers.Pagination.Cursor).Take(readUsers.Pagination.FetchNext).ProjectTo<UserDTO>(mapperConfiguration).ToListAsync();
                 result.Cursor = readUsers.Pagination.Cursor;
                 result.NextCursor = result.Result.LastOrDefault()?.UserId;
             }
             else
             {
-                var users = context.Users.AsNoTracking().Where(x => x.UserId <= readUsers.Pagination.Cursor).TakeLast(readUsers.Pagination.FetchNext - 1).ProjectTo<UserDTO>(mapperConfiguration).ToList();
+                var users = await context.Users.AsNoTracking().Where(x => x.UserId <= readUsers.Pagination.Cursor).TakeLast(readUsers.Pagination.FetchNext - 1).ProjectTo<UserDTO>(mapperConfiguration).ToListAsync();
                 if (users.Count() != Math.Abs(readUsers.Pagination.FetchNext))
                 {
                     result.Result = users;

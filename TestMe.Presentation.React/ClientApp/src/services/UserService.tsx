@@ -38,7 +38,7 @@ export class UserService
         if (token != null)
         {
             const obj = jwt_decode(token) as any;
-            return obj["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+            return parseInt(obj["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]);
         }
         return -1;
     }

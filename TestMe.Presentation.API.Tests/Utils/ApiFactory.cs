@@ -25,7 +25,7 @@ namespace TestMe.Presentation.API.Tests.Utils
         private IServiceScope serviceScope;
        
 
-        public ApiFactory(FakeDatabaseType databaseType, Action<IServiceCollection> configureServices = null, Action<IServiceScope> onWebHostReady = null, [CallerFilePath]string callerFilePath = "")
+        public ApiFactory(FakeDatabaseType databaseType, Action<IServiceCollection> configureServices = null, Action<IServiceScope> onWebHostReady = null)
         { 
             this.configureServices = configureServices;
             this.onWebHostReady = onWebHostReady;
@@ -51,7 +51,7 @@ namespace TestMe.Presentation.API.Tests.Utils
         public Task DispatchEvents()
         {
             serviceScope ??= Server.Services.CreateScope();
-            PostManService postman = serviceScope.ServiceProvider.GetServices<IHostedService>().OfType<PostManService>().Cast<PostManService>().First();
+            PostManService postman = serviceScope.ServiceProvider.GetServices<IHostedService>().OfType<PostManService>().First();
             return postman.DispatchMessages(default);
         }
 

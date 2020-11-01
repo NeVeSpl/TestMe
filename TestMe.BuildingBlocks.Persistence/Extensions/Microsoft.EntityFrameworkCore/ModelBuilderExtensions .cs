@@ -10,7 +10,7 @@ namespace Microsoft.EntityFrameworkCore
         {
             foreach (IMutableEntityType entity in modelBuilder.Model.GetEntityTypes())
             {               
-                // EF core 3.0 supports only one type of inheritence: table per hierarchy (TPH)
+                // EF core 3.0 supports only one type of inheritance: table per hierarchy (TPH)
                 // thus we set table name only for root entity
                 if (entity.ClrType?.BaseType?.Name == "Object")
                 {

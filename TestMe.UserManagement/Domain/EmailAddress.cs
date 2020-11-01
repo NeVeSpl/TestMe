@@ -22,7 +22,7 @@ namespace TestMe.UserManagement.Domain
 
         public static EmailAddress Create(string emailAddress)
         {
-            if (IsMailValid(emailAddress))
+            if (IsEmailValid(emailAddress))
             {
                 return new EmailAddress(emailAddress);
             }
@@ -30,7 +30,7 @@ namespace TestMe.UserManagement.Domain
         }
 
 
-        private static bool IsMailValid(string emailAddress)
+        private static bool IsEmailValid(string emailAddress)
         {
             return ValidMailPattern.Match(emailAddress).Length > 0;
         }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import deepFreeze from 'deep-freeze'
 import { questionsEditorReducer, QuestionEditorState, QuestionFetched, FormValidated, AddAnswer, DeleteAnswer } from './QuestionEditor.reducer'
-import { QuestionDTO } from '../../../autoapi/services/QuestionsService';
+import { QuestionOnListDTO, QuestionWithAnswersDTO, UpdateQuestionDTO } from '../../../autoapi/services/QuestionsService';
 import { ShowQuestionEditor, CloseQuestionEditorWindow } from '../QuestionEditor/QuestionEditor.reducer';
 
 
@@ -13,8 +13,8 @@ test('action does not mutate state of QuestionsEditor', () =>
     const actions = [
         new ShowQuestionEditor(1, 1),
         new CloseQuestionEditorWindow(),
-        new QuestionFetched(new QuestionDTO()),
-        new FormValidated(new QuestionDTO()),       
+        new QuestionFetched(new QuestionWithAnswersDTO()),
+        new FormValidated(new UpdateQuestionDTO()),       
         new AddAnswer(),
         new DeleteAnswer(1),  
        

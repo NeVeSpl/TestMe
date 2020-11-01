@@ -1,17 +1,20 @@
 ﻿using System;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using TestMe.BuildingBlocks.App;
 using TestMe.Presentation.API.Services;
-using TestMe.TestCreation.App;
+using TestMe.TestCreation.App.RequestEnrichers;
 
 namespace TestMe.Presentation.API
 {
     [ApiController]
     public abstract class Controller : ControllerBase
     {
-        protected long UserId;      
-
+        protected long UserId;    
+       
 
         [NonAction]
         public void Setup()
@@ -20,14 +23,17 @@ namespace TestMe.Presentation.API
         }
 
 
-        private protected TOutput Execute<TInput, TOutput>(Func<TInput, TOutput> commandHandler, TInput command) where TInput : class
+        private protected Task<T> Send<T>(IRequest<T> request)
         {
-            if (@command is ItHasUserId itHasUserId)
-            {
-                itHasUserId.UserId = UserId;
+            if (@request is IHaveUserId iHaveUserId) // if we will have more things to do in pipeline moving to MediatR behaviors
+            {                                        // or decorators would be better solution, but now KISS
+                iHaveUserId.UserId = UserId;
             }
-            return commandHandler(command);
+            var mediatr = HttpContext.RequestServices.GetRequiredService<IMediator>();
+            return mediatr.Send(request);
         }
+      
+       
         protected ActionResult<T> ActionResult<T>(Result<T> result, bool resultOfCreatingResource = false)
         {
             return ActionResultImplementation(result, resultOfCreatingResource);

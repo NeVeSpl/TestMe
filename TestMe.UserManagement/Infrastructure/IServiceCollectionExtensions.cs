@@ -13,7 +13,7 @@ namespace TestMe.UserManagement.Infrastructure
             services.AddTransient<IEventSender, EventSender>();
             /*
              *  AutoMapper is used in this module only to remind how painful is maintaining it over time.
-             *  Do not use AutoMapper in real app, use  cezarypiatek/MappingGenerator instead.
+             *  Do not use AutoMapper in real app, use https://github.com/cezarypiatek/MappingGenerator instead.
              *  AutoMapper is considered harmful.
              *  AutoMapper is anti-pattern.
              *  AutoMapper is the worst thing that you can do to your project.               

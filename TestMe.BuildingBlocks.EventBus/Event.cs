@@ -13,7 +13,7 @@ namespace TestMe.BuildingBlocks.EventBus
         public DateTimeOffset? ReceivedDateTime { get; set; }
 
 
-#pragma warning disable CS8618 // Non-nullable field is uninitialized. Constructor neeed by EF core
+#pragma warning disable CS8618 // Non-nullable field is uninitialized. Constructor needed by EF core
         public Event()
         {
 

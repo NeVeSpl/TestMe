@@ -1,4 +1,4 @@
-﻿import { QuestionsCatalogsService, CreateCatalogDTO, CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
+﻿import { QuestionsCatalogsService, CreateCatalogDTO,  CatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { Thunk } from '../../../redux.base';
 import { Action } from 'redux'
 import { FetchingErrorOccured, FetchingStarted, FetchingEnded, ApiServiceState, apiServiceStateReducer } from '../../../autoapi/ReduxApiFactory';
@@ -70,7 +70,7 @@ export function fetchCatalog(catalogId: number | undefined): Thunk<void>
         if (catalogId !== undefined)
         {
             service.readQuestionsCatalog(catalogId)
-                   .then(x => dispatch(new QuestionsCatalogFetched(x)));
+                .then(x => dispatch(new QuestionsCatalogFetched(x as {} as CreateCatalogDTO)));
         }
     };
 }

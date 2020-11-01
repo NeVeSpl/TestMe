@@ -6,7 +6,7 @@ import { MembershipLevel } from "../enums/TestMe.SharedKernel.Domain.MembershipL
 export class UserDTO 
 { 
     userId: number;
-    name: string;
+    name: string[];
     emailAddress: string;
     role: UserRole;
     membershipLevel: MembershipLevel;
@@ -16,7 +16,7 @@ export class UserDTO
     {  
             
          this.userId = 0;
-         this.name = "";
+         this.name = [];
          this.emailAddress = "";
          this.role = 0;
          this.membershipLevel = 0;

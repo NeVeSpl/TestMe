@@ -8,6 +8,8 @@ namespace TestMe.TestCreation.Domain
     {
         Owner GetById(long ownerId);
 
+        Owner GetByIdWithTestsCatalogs(long ownerId);
+
         public void Add(Owner owner);
     }
 }

@@ -5,6 +5,7 @@ import { Formik, FormikProps } from 'formik';
 import { RootState } from '../../../redux.base';
 import { CreateCatalogDTO } from '../../../autoapi/services/QuestionsCatalogsService';
 import { fetchCatalog, submitCatalog, CloseQuestionsCatalogEditorWindow } from './QuestionsCatalogEditor.reducer';
+import { UserService } from '../../../services';
 
 
 interface QuestionsCatalogEditorProps
@@ -40,7 +41,7 @@ export function QuestionsCatalogEditor(props: QuestionsCatalogEditorProps)
     const dispatch = useDispatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(() => { dispatch(fetchCatalog(state.catalogId)) }, [state.catalogId]);
-    const handleSubmit = (values: CreateCatalogDTO) => { dispatch(submitCatalog(state.catalogId, values)); };
+    const handleSubmit = (values: CreateCatalogDTO) => { values.ownerId = UserService.getUserID(); dispatch(submitCatalog(state.catalogId, values)); };
     const handleCancel = () => { dispatch(new CloseQuestionsCatalogEditorWindow()) };
     const [hasValidationErrors, setValidationErrors] = React.useState(false);
 

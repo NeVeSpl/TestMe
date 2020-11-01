@@ -21,13 +21,13 @@ namespace TestMe.TestCreation.Infrastructure.EventBus
             bool eventAlreadyProcessed = testCreationDbContext.Inbox.Any(x => x.EventId == @event.EventId);
             if (!eventAlreadyProcessed)
             {
-                using (var transaction = testCreationDbContext.Database.BeginTransaction())
+                using (var transaction = await testCreationDbContext.Database.BeginTransactionAsync())
                 {
                     await handleEvent();
                     @event.ReceivedDateTime = DateTimeOffset.UtcNow;
                     testCreationDbContext.Inbox.Add(@event);
-                    testCreationDbContext.SaveChanges();
-                    transaction.Commit();
+                    await testCreationDbContext.SaveChangesAsync();
+                    await transaction.CommitAsync();
                 }
             }
         }

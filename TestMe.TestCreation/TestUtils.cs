@@ -13,17 +13,17 @@ namespace TestMe.TestCreation
         public const long OwnerId = 1;
         public const long OtherOwnerId = 2;
 
-        public const long ValidTestsCatalog1Id = 5;
-        public const long ValidTestsCatalog2Id = 6;
-        public const long ValidQuestionsCatalog1Id = 1;
-        public const long ValidQuestionsCatalog2Id = 2;
-        public const long ValidQuestionsCatalog3Id = 3;
-        public const long DeletedTestsCatalogId = 4;
+        public const long ValidTestsCatalog1Id = 8;
+        public const long ValidTestsCatalog2Id = 9;
+        public const long ValidQuestionsCatalog1Id = 4;
+        public const long ValidQuestionsCatalog2Id = 5;
+        public const long ValidQuestionsCatalog3Id = 6;
+        public const long DeletedTestsCatalogId = 7;
         public const long NotExisitngTestsCatalogId = -1;
-        public const long OtherOwnerTestsCatalogId = 9;
-        public const long DeletedQuestionsCatalogId = 4;
+        public const long OtherOwnerTestsCatalogId = 12;
+        public const long DeletedQuestionsCatalogId = 7;
         public const long NotExisitngQuestionsCatalogId = -1;
-        public const long OtherOwnerQuestionsCatalogId = 8;
+        public const long OtherOwnerQuestionsCatalogId = 11;
 
         public const long ValidQuestion1Id = 1;
         public const long ValidQuestion2Id = 2;
@@ -62,17 +62,24 @@ namespace TestMe.TestCreation
             var addQuestionsCatalogPolicyForOwner2 = AddQuestionsCatalogPolicyFactory.Create(owner2.MembershipLevel);
 
             QuestionsCatalog catalogA = owner1.AddQuestionsCatalog("Owner 1, QuestionsCatalog A", addQuestionsCatalogPolicyForOwner1);
+            context.SaveChanges();
             QuestionsCatalog catalogB = owner1.AddQuestionsCatalog("Owner 1, QuestionsCatalog B", addQuestionsCatalogPolicyForOwner1);
+            context.SaveChanges();
             QuestionsCatalog catalogC = owner1.AddQuestionsCatalog("Owner 1, QuestionsCatalog C", addQuestionsCatalogPolicyForOwner1);
+            context.SaveChanges();
             QuestionsCatalog catalogD = owner1.AddQuestionsCatalog("Owner 1, QuestionsCatalog D, deleted", addQuestionsCatalogPolicyForOwner1);
             catalogD.Delete();
+            context.SaveChanges();
             TestsCatalog catalogE = owner1.AddTestsCatalog("Owner 1, TestsCatalog E");
+            context.SaveChanges();
             TestsCatalog catalogF = owner1.AddTestsCatalog("Owner 1, TestsCatalog F");
+            context.SaveChanges();
             TestsCatalog catalogG = owner1.AddTestsCatalog("Owner 1, TestsCatalog G, deleted");
             catalogG.Delete();
+            context.SaveChanges();
             QuestionsCatalog catalogH = owner2.AddQuestionsCatalog("Owner 2, QuestionsCatalog H", addQuestionsCatalogPolicyForOwner2);
+            context.SaveChanges();
             TestsCatalog catalogI = owner2.AddTestsCatalog("Owner 2, TestsCatalog I");
-
             context.SaveChanges();
 
             var AddQuestionPolicyForOwner1 = AddQuestionPolicyFactory.Create(owner1.MembershipLevel);
@@ -124,20 +131,25 @@ namespace TestMe.TestCreation
             q6.AddAnswer("Q6 A5", false);
             q6.AddAnswer("Q6 A6", true);
             catalogC.AddQuestion(q6, AddQuestionPolicyForOwner1);
+            context.SaveChanges();
+
 
             var q7 = Question.Create("Owner 1, Catalog D deleted, Question 7", owner1.OwnerId);
             q7.AddAnswer("Q7 A1", false);
             q7.AddAnswer("Q7 A2", true);
             catalogD.AddQuestion(q7, AddQuestionPolicyForOwner1);
+            context.SaveChanges();
 
             var q8 = Question.Create("Owner 2, Catalog H, Question 8", owner2.OwnerId);
             q8.AddAnswer("Q8 A1", false);           
             catalogH.AddQuestion(q8, AddQuestionPolicyForOwner1);
+            context.SaveChanges();
 
             context.SaveChanges();
 
             var t1 = Test.Create(owner1.OwnerId, "Owner 1, catalog E, Test 1");
             catalogE.AddTest(t1);
+
 
             t1.AddQuestion(q1);
             t1.AddQuestion(q3);

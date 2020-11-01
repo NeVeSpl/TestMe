@@ -2,7 +2,7 @@ import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import QuestionsCatalogs, { QuestionsCatalogsState } from './QuestionsCatalogs';
 import { QuestionsCatalogs as QuestionsCatalogsRedux } from './QuestionsCatalogs.redux';
-import { QuestionsCatalogsService, CatalogHeaderDTO, OffsetPagedResults } from '../../../autoapi/services/QuestionsCatalogsService';
+import { QuestionsCatalogsService, CatalogOnListDTO, OffsetPagedResults } from '../../../autoapi/services/QuestionsCatalogsService';
 import { StateStorage } from '../../../utils';
 import { Provider } from 'react-redux';
 import { RootState, configureStore } from '../../../redux.base';
@@ -32,11 +32,11 @@ export const LocalState = () =>
                     name: "Catalog beta"
                 } 
             ]
-        } as OffsetPagedResults<CatalogHeaderDTO>;
+        } as OffsetPagedResults<CatalogOnListDTO>;
 
 
     const service = new QuestionsCatalogsService();
-    service.readQuestionsCatalogHeaders = (x, y) => Promise.resolve(result);
+    service.readQuestionsCatalogs = (x, y) => Promise.resolve(result);
     const storage = StateStorage.CreateMock<QuestionsCatalogsState>();
 
     return (
@@ -60,11 +60,11 @@ export const ReduxState = () =>
                         name: "Catalog beta"
                     }
                 ]
-        } as OffsetPagedResults<CatalogHeaderDTO>;
+        } as OffsetPagedResults<CatalogOnListDTO>;
 
 
     const service = new QuestionsCatalogsService();
-    service.readQuestionsCatalogHeaders = (x, y) => Promise.resolve(result);
+    service.readQuestionsCatalogs = (x, y) => Promise.resolve(result);
     const api = new ReduxApiFactory();
     api.AddMock(QuestionsCatalogsService.Type,  service);
     const store = configureStore(StateStorage.CreateMock<RootState>(), api);
