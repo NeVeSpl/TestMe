@@ -16,48 +16,53 @@ namespace TestMe.UserManagement.Tests.Architecture
                               .That()
                               .ResideInNamespace("TestMe.UserManagement.Domain")
                               .ShouldNot()
-                              .HaveDependencyOnAny(
-                                "TestMe.UserManagement.Persistence",
-                                "TestMe.UserManagement.App",
-                                "TestMe.UserManagement.Infrastructure",
-                                "TestMe.BuildingBlocks.App",
-                                "TestMe.BuildingBlocks.EventBus",
-                                "TestMe.BuildingBlocks.Persistence",                               
-                                "Microsoft.EntityFrameworkCore"
+                              .HaveDependenciesOtherThan(
+                                "System",
+                                "TestMe.UserManagement.Domain",
+                                "TestMe.SharedKernel.Domain",
+                                "TestMe.BuildingBlocks.Domain",
+                                "TestMe.UserManagement.IntegrationEvents"
                               ) 
                               .GetResult();
             Assert.IsTrue(result.IsSuccessful, "Domain has lost its independence!");                             
         }
 
         [TestMethod]
-        public void PersistenceDoesNotHaveAnyDependecyOn()
+        public void PersistenceDoesNotHaveDependenciesOtherThan()
         {
             var result = Types.InAssembly(UserManagementAssembly)
                              .That()
                              .ResideInNamespace("TestMe.UserManagement.Persistence")                             
                              .ShouldNot()
-                             .HaveDependencyOnAny(
-                                "TestMe.UserManagement.Infrastructure",
-                                "TestMe.UserManagement.App",
-                                "TestMe.BuildingBlocks.Domain",
-                                "TestMe.BuildingBlocks.App",
-                                "TestMe.UserManagement.IntegrationEvents"                             
+                             .HaveDependenciesOtherThan(
+                                "System",
+                                "TestMe.UserManagement.Persistence",
+                                "TestMe.UserManagement.Domain",
+                                "TestMe.BuildingBlocks.Persistence",
+                                "TestMe.BuildingBlocks.EventBus",
+                                "Microsoft.EntityFrameworkCore",
+                                "Microsoft.Extensions.DependencyInjection"
                              )
                              .GetResult();
             Assert.IsTrue(result.IsSuccessful, "Persistence has lost its independence!");
         }
 
         [TestMethod]
-        public void AppDoesNotHaveAnyDependecyOn()
+        public void AppDoesNotHaveDependenciesOtherThan()
         {
             var result = Types.InAssembly(UserManagementAssembly)
                              .That()
                              .ResideInNamespace("TestMe.UserManagement.App")
                              .ShouldNot()
-                             .HaveDependencyOnAny(
-                                "TestMe.UserManagement.Infrastructure",                                                            
-                                "TestMe.BuildingBlocks.Persistence",
-                                "TestMe.BuildingBlocks.EventBus"
+                             .HaveDependenciesOtherThan(
+                                "System",
+                                "TestMe.UserManagement.App",
+                                "TestMe.UserManagement.Persistence",
+                                "TestMe.UserManagement.Domain",                            
+                                "TestMe.BuildingBlocks.App",
+                                "TestMe.BuildingBlocks.Domain",                                
+                                "Microsoft.EntityFrameworkCore",
+                                "AutoMapper"
                              )
                              .GetResult();
             Assert.IsTrue(result.IsSuccessful, "App has lost its independence!");
