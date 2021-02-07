@@ -2,18 +2,18 @@
 
 
 
-export class QuestionOnListDTO 
-{ 
+export class QuestionOnListDTO
+{
     questionId: number;
     content: string;
     concurrencyToken: number;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.questionId = 0;
-         this.content = "";
-         this.concurrencyToken = 0;
+    {
+    
+        this.questionId = 0;
+        this.content = "";
+        this.concurrencyToken = 0;
     }
 }

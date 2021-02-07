@@ -3,13 +3,13 @@
 import { CreateAnswerDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateAnswerDTO";
 
 export class UpdateAnswerDTO extends CreateAnswerDTO
-{ 
+{
     answerId: number;
 
     //eslint-disable-next-line
     constructor()
-    {  
-         super();   
-         this.answerId = 0;
+    {
+        super();
+        this.answerId = 0;
     }
 }

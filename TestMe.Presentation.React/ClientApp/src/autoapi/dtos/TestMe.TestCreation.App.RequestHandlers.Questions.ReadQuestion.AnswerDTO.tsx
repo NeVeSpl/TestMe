@@ -2,18 +2,18 @@
 
 
 
-export class AnswerDTO 
-{ 
+export class AnswerDTO
+{
     answerId: number;
     content: string;
     isCorrect: boolean;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.answerId = 0;
-         this.content = "";
-         this.isCorrect = false;
+    {
+    
+        this.answerId = 0;
+        this.content = "";
+        this.isCorrect = false;
     }
 }

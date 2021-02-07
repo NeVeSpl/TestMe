@@ -2,14 +2,14 @@
 
 
 
-export class CreateTestItemDTO 
-{ 
+export class CreateTestItemDTO
+{
     questionId: number;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.questionId = 0;
+    {
+    
+        this.questionId = 0;
     }
 }

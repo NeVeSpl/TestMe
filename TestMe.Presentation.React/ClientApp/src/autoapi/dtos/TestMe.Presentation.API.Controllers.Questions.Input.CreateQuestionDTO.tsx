@@ -2,18 +2,18 @@
 
 import { CreateAnswerDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateAnswerDTO";
 
-export class CreateQuestionDTO 
-{ 
+export class CreateQuestionDTO
+{
     content: string;
     answers: CreateAnswerDTO[];
     catalogId: number;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.content = "";
-         this.answers = [];
-         this.catalogId = 0;
+    {
+    
+        this.content = "";
+        this.answers = [];
+        this.catalogId = 0;
     }
 }

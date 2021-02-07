@@ -2,18 +2,18 @@
 
 
 
-export class CreateUserDTO 
-{ 
+export class CreateUserDTO
+{
     name: string;
     emailAddress: string;
     password: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.name = "";
-         this.emailAddress = "";
-         this.password = "";
+    {
+    
+        this.name = "";
+        this.emailAddress = "";
+        this.password = "";
     }
 }

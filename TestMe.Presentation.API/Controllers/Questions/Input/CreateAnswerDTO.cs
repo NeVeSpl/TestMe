@@ -11,8 +11,7 @@ namespace TestMe.Presentation.API.Controllers.Questions.Input
         public string Content { get; set; } = string.Empty;
 
         public bool IsCorrect { get; set; }
-
-
+       
 
         public CreateAnswer CreateAnswer()
         {

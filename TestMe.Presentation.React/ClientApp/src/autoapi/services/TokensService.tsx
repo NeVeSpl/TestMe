@@ -3,10 +3,8 @@
 
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
-//eslint-disable-next-line 
- import { TokenDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
-//eslint-disable-next-line 
- import { LoginCredentialsDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
+import { TokenDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
+import { LoginCredentialsDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO";
 export * from "../base/index";
@@ -23,7 +21,7 @@ export class TokensService extends ApiBaseService
     {
         return this.MakeRequestWithResult<TokenDTO>("post", `Tokens/Async`, loginCredentials);
     }
-           
+    
 }
 
 export function useAPICreateToken(loginCredentials: LoginCredentialsDTO, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<TokenDTO>

@@ -2,16 +2,16 @@
 
 
 
-export class CreateAnswerDTO 
-{ 
+export class CreateAnswerDTO
+{
     content: string;
     isCorrect: boolean;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.content = "";
-         this.isCorrect = false;
+    {
+    
+        this.content = "";
+        this.isCorrect = false;
     }
 }

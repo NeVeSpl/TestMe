@@ -2,14 +2,14 @@
 
 
 
-export class TokenDTO 
-{ 
+export class TokenDTO
+{
     token: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.token = "";
+    {
+    
+        this.token = "";
     }
 }

@@ -2,8 +2,8 @@
 
 import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
 
-export class QuestionWithAnswersDTO 
-{ 
+export class QuestionWithAnswersDTO
+{
     questionId: number;
     content: string;
     answers: AnswerDTO[];
@@ -11,11 +11,11 @@ export class QuestionWithAnswersDTO
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.questionId = 0;
-         this.content = "";
-         this.answers = [];
-         this.concurrencyToken = 0;
+    {
+    
+        this.questionId = 0;
+        this.content = "";
+        this.answers = [];
+        this.concurrencyToken = 0;
     }
 }

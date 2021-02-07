@@ -3,14 +3,10 @@
 
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
-//eslint-disable-next-line 
- import { CatalogOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs.CatalogOnListDTO";
-//eslint-disable-next-line 
- import { CatalogDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog.CatalogDTO";
-//eslint-disable-next-line 
- import { CreateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.CreateCatalogDTO";
-//eslint-disable-next-line 
- import { UpdateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.UpdateCatalogDTO";
+import { CatalogOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs.CatalogOnListDTO";
+import { CatalogDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog.CatalogDTO";
+import { CreateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.CreateCatalogDTO";
+import { UpdateCatalogDTO } from "../dtos/TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.UpdateCatalogDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs.CatalogOnListDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog.CatalogDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.CreateCatalogDTO";
@@ -33,15 +29,15 @@ export class QuestionsCatalogsService extends ApiBaseService
     {
         return this.MakeRequestWithResult<number>("post", `QuestionsCatalogs`, createCatalog);
     }
-    updateCatalog(catalogId: number, updateCatalog: UpdateCatalogDTO) 
+    updateCatalog(catalogId: number, updateCatalog: UpdateCatalogDTO)
     {
         return this.MakeRequest("put", `QuestionsCatalogs/${catalogId}`, updateCatalog);
     }
-    deleteCatalog(catalogId: number) 
+    deleteCatalog(catalogId: number)
     {
         return this.MakeRequest("delete", `QuestionsCatalogs/${catalogId}`, null);
     }
-           
+    
 }
 
 export function useAPIReadQuestionsCatalogs(ownerId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<CatalogOnListDTO>>

@@ -3,8 +3,8 @@
 import { UserRole } from "../enums/TestMe.UserManagement.Domain.UserRole";
 import { MembershipLevel } from "../enums/TestMe.SharedKernel.Domain.MembershipLevel";
 
-export class UserDTO 
-{ 
+export class UserDTO
+{
     userId: number;
     name: string[];
     emailAddress: string;
@@ -13,12 +13,12 @@ export class UserDTO
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.userId = 0;
-         this.name = [];
-         this.emailAddress = "";
-         this.role = 0;
-         this.membershipLevel = 0;
+    {
+    
+        this.userId = 0;
+        this.name = [];
+        this.emailAddress = "";
+        this.role = 0;
+        this.membershipLevel = 0;
     }
 }

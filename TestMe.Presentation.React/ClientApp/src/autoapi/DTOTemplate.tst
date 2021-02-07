@@ -24,6 +24,7 @@ ${
     {
         public string Name { get; set; }
         public string From { get; set; }
+        public bool ToImport { get; set;}
 
         public ImportItem(Type type)
         {
@@ -31,11 +32,13 @@ ${
             if (type.IsEnum)
             {
                 From = $"../enums/{type.Namespace}.{Name}";
+                ToImport = true;
                 return;
             }
             if (Name.EndsWith("DTO"))
             {
                 From = $"../dtos/{type.Namespace}.{Name}";
+                ToImport = true;
                 return;
             }
             From = $"../base/{Name}";
@@ -116,14 +119,14 @@ ${
 }
 $Classes(*DTO)[$GenImport
 
-export class $Name$TypeParameters $BaseClass[extends $Name$TypeArguments]
-{ $Properties[
+export class $Name$TypeParameters$BaseClass[ extends $Name$TypeArguments]
+{$Properties[
     $name: $GenPropertyType;]
 
     //eslint-disable-next-line
     constructor()
-    {  
-         $HasBaseClass[super();]   $Properties[
-         this.$name = $GenPropertyDefault;]
+    {
+    $HasBaseClass[    super();]$Properties[
+        this.$name = $GenPropertyDefault;]
     }
 }]

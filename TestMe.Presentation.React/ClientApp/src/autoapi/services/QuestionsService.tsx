@@ -3,16 +3,11 @@
 
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
-//eslint-disable-next-line 
- import { QuestionOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO";
-//eslint-disable-next-line 
- import { QuestionWithAnswersDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO";
-//eslint-disable-next-line 
- import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
-//eslint-disable-next-line 
- import { CreateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
-//eslint-disable-next-line 
- import { UpdateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
+import { QuestionOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO";
+import { QuestionWithAnswersDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO";
+import { AnswerDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
+import { CreateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO";
+import { UpdateQuestionDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO";
@@ -36,15 +31,15 @@ export class QuestionsService extends ApiBaseService
     {
         return this.MakeRequestWithResult<number>("post", `Questions`, createQuestion);
     }
-    updateQuestionWithAnswers(questionId: number, updateQuestion: UpdateQuestionDTO) 
+    updateQuestionWithAnswers(questionId: number, updateQuestion: UpdateQuestionDTO)
     {
         return this.MakeRequest("put", `Questions/${questionId}`, updateQuestion);
     }
-    deleteQuestionWithAnswers(questionId: number) 
+    deleteQuestionWithAnswers(questionId: number)
     {
         return this.MakeRequest("delete", `Questions/${questionId}`, null);
     }
-           
+    
 }
 
 export function useAPIReadQuestions(catalogId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<QuestionOnListDTO>>

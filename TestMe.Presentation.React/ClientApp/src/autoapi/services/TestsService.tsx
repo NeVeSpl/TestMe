@@ -3,20 +3,13 @@
 
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
-//eslint-disable-next-line 
- import { TestOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO";
-//eslint-disable-next-line 
- import { TestDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO";
-//eslint-disable-next-line 
- import { CreateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO";
-//eslint-disable-next-line 
- import { UpdateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO";
-//eslint-disable-next-line 
- import { TestItemDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO";
-//eslint-disable-next-line 
- import { CreateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO";
-//eslint-disable-next-line 
- import { UpdateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO";
+import { TestOnListDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO";
+import { TestDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO";
+import { CreateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO";
+import { UpdateTestDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO";
+import { TestItemDTO } from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO";
+import { CreateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO";
+import { UpdateTestItemDTO } from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO";
 export * from "../dtos/TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO";
@@ -42,11 +35,11 @@ export class TestsService extends ApiBaseService
     {
         return this.MakeRequestWithResult<number>("post", `Tests`, createTest);
     }
-    updateTest(testId: number, updateTest: UpdateTestDTO) 
+    updateTest(testId: number, updateTest: UpdateTestDTO)
     {
         return this.MakeRequest("put", `Tests/${testId}`, updateTest);
     }
-    deleteTest(testId: number) 
+    deleteTest(testId: number)
     {
         return this.MakeRequest("delete", `Tests/${testId}`, null);
     }
@@ -58,15 +51,15 @@ export class TestsService extends ApiBaseService
     {
         return this.MakeRequestWithResult<number>("post", `Tests/${testId}/questions`, createTestItem);
     }
-    updateTestItem(testId: number, questionItemId: number, updateTestItem: UpdateTestItemDTO) 
+    updateTestItem(testId: number, questionItemId: number, updateTestItem: UpdateTestItemDTO)
     {
         return this.MakeRequest("put", `Tests/${testId}/questions/${questionItemId}`, updateTestItem);
     }
-    deleteTestItem(testId: number, questionItemId: number) 
+    deleteTestItem(testId: number, questionItemId: number)
     {
         return this.MakeRequest("delete", `Tests/${testId}/questions/${questionItemId}`, null);
     }
-           
+    
 }
 
 export function useAPIReadTests(ownerId: number, pagination: OffsetPagination, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<OffsetPagedResults<TestOnListDTO>>

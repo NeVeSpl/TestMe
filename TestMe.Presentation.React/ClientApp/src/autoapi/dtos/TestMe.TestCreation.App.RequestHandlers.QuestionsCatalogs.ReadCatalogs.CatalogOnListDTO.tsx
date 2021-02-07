@@ -2,16 +2,16 @@
 
 
 
-export class CatalogOnListDTO 
-{ 
+export class CatalogOnListDTO
+{
     catalogId: number;
     name: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.catalogId = 0;
-         this.name = "";
+    {
+    
+        this.catalogId = 0;
+        this.name = "";
     }
 }

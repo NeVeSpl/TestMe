@@ -2,14 +2,14 @@
 
 
 
-export class UpdateTestDTO 
-{ 
+export class UpdateTestDTO
+{
     title: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.title = "";
+    {
+    
+        this.title = "";
     }
 }

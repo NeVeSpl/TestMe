@@ -1,0 +1,13 @@
+﻿{{- for enum in data.Enums | Symbols.ThatArePublic
+        capture output
+}}
+export enum {{ enum.Name }} 
+{
+{{- for item in enum.Values }}
+    {{item.Name}} = {{ item.Value}},   
+{{- end }}
+}
+{{-     end
+   Save output ("enums\\" | String.Append enum.FullName | String.Append ".tsx")
+   end 
+}}

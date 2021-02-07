@@ -2,16 +2,16 @@
 
 import { UserRole } from "../enums/TestMe.UserManagement.Domain.UserRole";
 
-export class UserCredentialsDTO 
-{ 
+export class UserCredentialsDTO
+{
     id: number;
     userRole: UserRole;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.id = 0;
-         this.userRole = 0;
+    {
+    
+        this.id = 0;
+        this.userRole = 0;
     }
 }

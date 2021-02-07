@@ -2,16 +2,16 @@
 
 
 
-export class TestOnListDTO 
-{ 
+export class TestOnListDTO
+{
     testId: number;
     title: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.testId = 0;
-         this.title = "";
+    {
+    
+        this.testId = 0;
+        this.title = "";
     }
 }

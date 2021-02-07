@@ -2,16 +2,16 @@
 
 
 
-export class LoginCredentialsDTO 
-{ 
+export class LoginCredentialsDTO
+{
     email: string;
     password: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.email = "";
-         this.password = "";
+    {
+    
+        this.email = "";
+        this.password = "";
     }
 }

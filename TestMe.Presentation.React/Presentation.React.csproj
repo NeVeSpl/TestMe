@@ -15,6 +15,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
+    <PackageReference Include="NTypewriter.CodeModel" Version="0.0.1-alpha" />
+    <PackageReference Include="NTypewriter.CodeModel.Functions" Version="0.0.1-alpha" />
+    <PackageReference Include="NTypewriter.Editor.Config" Version="0.0.1-alpha" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +25,33 @@
     <Content Remove="$(SpaRoot)**" />
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\autoapi2\enums\TestMe.Presentation.API.Startup.StartupConfig.EventBusType" />
+    <None Remove="ClientApp\src\autoapi2\enums\TestMe.Presentation.API.Startup.StartupConfig.EventBusType.tsx" />
+    <None Remove="ClientApp\src\autoapi2\enums\TestMe.SharedKernel.Domain.MembershipLevel" />
+    <None Remove="ClientApp\src\autoapi2\enums\TestMe.UserManagement.Domain.UserRole" />
+    <None Remove="ClientApp\src\autoapi2\NTConfig.cs" />
+    <None Remove="ClientApp\src\autoapi2\services\QuestionsCatalogsController" />
+    <None Remove="ClientApp\src\autoapi2\services\QuestionsCatalogsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\QuestionsController" />
+    <None Remove="ClientApp\src\autoapi2\services\QuestionsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controller.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controllers.Questions.QuestionsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controllers.QuestionsCatalogs.QuestionsCatalogsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controllers.Tests.TestsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controllers.Tokens.TokensController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.Controllers.Users.UsersController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.ControllersSpecial.ErrorController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.ControllersSpecial.LoaderController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestMe.Presentation.API.ControllersSpecial.MetricsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TestsController" />
+    <None Remove="ClientApp\src\autoapi2\services\TestsController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\TokensController" />
+    <None Remove="ClientApp\src\autoapi2\services\TokensController.tsx" />
+    <None Remove="ClientApp\src\autoapi2\services\UsersController" />
+    <None Remove="ClientApp\src\autoapi2\services\UsersController.tsx" />
   </ItemGroup>
 
 
@@ -177,6 +207,105 @@
     </None>
     <None Update="ClientApp\src\aapi\UsersService.ts">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Users\UsersController.cs</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Questions.Input.CreateAnswerDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Questions.Input.CreateQuestionDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Questions.Input.UpdateAnswerDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Questions.Input.UpdateQuestionDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.CreateCatalogDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.QuestionsCatalogs.Input.UpdateCatalogDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tests.Input.CreateTestDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tests.Input.CreateTestItemDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tests.Input.UpdateTestItemDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tokens.Input.LoginCredentialsDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Tokens.Output.TokenDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.Presentation.API.Controllers.Users.Input.CreateUserDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.AnswerDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestion.QuestionWithAnswersDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Questions.ReadQuestions.QuestionOnListDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalog.CatalogDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.QuestionsCatalogs.ReadCatalogs.CatalogOnListDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTest.TestDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTestItems.TestItemDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.TestCreation.App.RequestHandlers.Tests.ReadTests.TestOnListDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.UserManagement.App.Users.Output.UserCredentialsDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\dtos\TestMe.UserManagement.App.Users.Output.UserDTO.tsx">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\DTOTemplate.nt">
+      <CustomToolNamespace>3b287dc5-60f0-4b82-a733-d4b7398ad1cb</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\enums\TestMe.SharedKernel.Domain.MembershipLevel.tsx">
+      <CustomToolNamespace>347a81aa-7e05-48e9-aa95-8cbb9145ff0c</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\enums\TestMe.UserManagement.Domain.UserRole.tsx">
+      <CustomToolNamespace>347a81aa-7e05-48e9-aa95-8cbb9145ff0c</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\EnumTemplate.nt">
+      <CustomToolNamespace>347a81aa-7e05-48e9-aa95-8cbb9145ff0c</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\services\QuestionsCatalogsService.tsx">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\services\QuestionsService.tsx">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\services\TestsService.tsx">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\services\TokensService.tsx">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\services\UsersService.tsx">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
+    </None>
+    <None Update="ClientApp\src\autoapi2\ServiceTemplate.nt">
+      <CustomToolNamespace>bbc15f6f-2f77-429e-b4d6-5977a9742791</CustomToolNamespace>
     </None>
     <None Update="ClientApp\src\autoapi\dtos\TestMe.Presentation.API.Controllers.Questions.Input.CreateAnswerDTO.tsx">
       <CustomToolNamespace>..\TestMe.Presentation.API\Controllers\Questions\Input\CreateAnswerDTO.cs</CustomToolNamespace>

@@ -2,14 +2,14 @@
 
 
 
-export class UpdateCatalogDTO 
-{ 
+export class UpdateCatalogDTO
+{
     name: string;
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.name = "";
+    {
+    
+        this.name = "";
     }
 }

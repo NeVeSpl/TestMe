@@ -20,7 +20,7 @@ namespace TestMe.Presentation.API.Controllers.Questions.Input
         /// </summary>
         public uint? ConcurrencyToken { get; set; }
 
-
+        
 
         public UpdateQuestionWithAnswersCommand CreateCommand(long questionId)
         {

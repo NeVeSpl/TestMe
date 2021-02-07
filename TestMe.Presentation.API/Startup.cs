@@ -117,7 +117,7 @@ namespace TestMe.Presentation.API
 
         private class StartupConfig
         {
-            public enum EventBusType { InMemory, RabbitMQ }
+            internal enum EventBusType { InMemory, RabbitMQ }
 
             public EventBusType EventBus { get; set; }             
         }

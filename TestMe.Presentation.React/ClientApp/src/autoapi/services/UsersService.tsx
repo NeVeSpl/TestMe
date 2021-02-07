@@ -3,10 +3,8 @@
 
 //eslint-disable-next-line
 import { ApiBaseService, IUseRequest, IUseRequestWithResult, useRequest, useRequestWithResult, CursorPagedResults, CursorPagination, OffsetPagedResults, OffsetPagination } from "../base/index";
-//eslint-disable-next-line 
- import { CreateUserDTO } from "../dtos/TestMe.Presentation.API.Controllers.Users.Input.CreateUserDTO";
-//eslint-disable-next-line 
- import { UserDTO } from "../dtos/TestMe.UserManagement.App.Users.Output.UserDTO";
+import { CreateUserDTO } from "../dtos/TestMe.Presentation.API.Controllers.Users.Input.CreateUserDTO";
+import { UserDTO } from "../dtos/TestMe.UserManagement.App.Users.Output.UserDTO";
 export * from "../dtos/TestMe.Presentation.API.Controllers.Users.Input.CreateUserDTO";
 export * from "../dtos/TestMe.UserManagement.App.Users.Output.UserDTO";
 export * from "../base/index";
@@ -27,7 +25,7 @@ export class UsersService extends ApiBaseService
     {
         return this.MakeRequestWithResult<boolean>("get", `Users/EmailAddress/IsTaken?emailAddress=${encodeURIComponent(emailAddress)}`, null);
     }
-           
+    
 }
 
 export function useAPICreateUser(createUser: CreateUserDTO, deps?: ReadonlyArray<unknown>) : IUseRequestWithResult<number>

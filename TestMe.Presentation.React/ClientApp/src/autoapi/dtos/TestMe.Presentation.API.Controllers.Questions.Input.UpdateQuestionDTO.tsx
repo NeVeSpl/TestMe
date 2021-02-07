@@ -2,8 +2,8 @@
 
 import { UpdateAnswerDTO } from "../dtos/TestMe.Presentation.API.Controllers.Questions.Input.UpdateAnswerDTO";
 
-export class UpdateQuestionDTO 
-{ 
+export class UpdateQuestionDTO
+{
     content: string;
     answers: UpdateAnswerDTO[];
     catalogId: number;
@@ -11,11 +11,11 @@ export class UpdateQuestionDTO
 
     //eslint-disable-next-line
     constructor()
-    {  
-            
-         this.content = "";
-         this.answers = [];
-         this.catalogId = 0;
-         this.concurrencyToken = null;
+    {
+    
+        this.content = "";
+        this.answers = [];
+        this.catalogId = 0;
+        this.concurrencyToken = null;
     }
 }

@@ -56,8 +56,8 @@ ${
         }
 
         List<ImportItem> distinct = toImport.Where(x => x.ToImport).GroupBy(x => x.Name).Select(g => g.First()).ToList();     
-        return String.Join("\n", distinct.Select(x => $"//eslint-disable-next-line \n import {{ {x.Name} }} from \"{x.From}\";"))  + "\n" +
-        String.Join("\n", distinct.Select(x => $"export * from \"{x.From}\";"));        
+        return String.Join("\r\n", distinct.Select(x => $"import {{ {x.Name} }} from \"{x.From}\";"))  + "\r\n" +
+        String.Join("\r\n", distinct.Select(x => $"export * from \"{x.From}\";"));        
     }
 
     void TraverseRecursively(List<ImportItem> toImport, Type type)
@@ -141,7 +141,7 @@ ${
         {
            return methodReturn;
         }
-        return $": Promise{methodReturn}";
+        return $" : Promise{methodReturn}";
     }
     bool ParametersFilter(Parameter p)
     {
@@ -170,7 +170,7 @@ ${
         return result;
     }
     string GenFromRoute(Method m)
-    {
+    {    
         string url = UrlExtensions.Url(m);
         string connector = url.Contains("?") ? "&" : "?";
         var builder = new StringBuilder();
@@ -199,11 +199,11 @@ export class $GenServiceName extends ApiBaseService
 {
     static Type = "$GenServiceName";
 
-    $Methods[$name($Parameters($ParametersFilter)[$name: $Type][, ]) $GenPromiseMe
+    $Methods[$name($Parameters($ParametersFilter)[$name: $Type][, ])$GenPromiseMe
     {
         return this.MakeRequest$GenWithResponse$GenMethodReturn("$HttpMethod", `$Url$GenFromRoute`, $GenPayloadParameterName);
     }
-    ]       
+    ]
 }
 
 $Methods[export function useAPI$Name($Parameters($ParametersFilter)[$name: $Type][, ], deps?: ReadonlyArray<unknown>) : IUseRequest$GenWithResponse$GenMethodReturn
