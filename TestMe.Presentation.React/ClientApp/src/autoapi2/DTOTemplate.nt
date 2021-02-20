@@ -5,10 +5,10 @@
 
 {{ Custom.GenImport dto }}
 
-export class {{ dto.Name }} {{- if dto.HasBaseClass}} extends {{dto.BaseClass.Name; end }}
+export class {{ dto.Name }} {{- if dto.HasBaseClass }} extends {{ dto.BaseClass.Name; end }}
 { 
 {{- for prop in dto.Properties }}
-    {{prop.Name | String.ToCamelCase }}: {{ prop.Type | Type.ToTypeScriptType }};   
+    {{ prop.Name | String.ToCamelCase }}: {{ prop.Type | Type.ToTypeScriptType }};   
 {{- end }}
 
     //eslint-disable-next-line
@@ -16,7 +16,7 @@ export class {{ dto.Name }} {{- if dto.HasBaseClass}} extends {{dto.BaseClass.Na
     {
     {{  if dto.HasBaseClass }}    super(); {{-end }}
     {{- for prop in dto.Properties }}
-        this.{{prop.Name | String.ToCamelCase}} = {{ prop.Type | Type.ToTypeScriptDefault }};
+        this.{{ prop.Name | String.ToCamelCase }} = {{ prop.Type | Type.ToTypeScriptDefault }};
     {{- end }}
     }
 }
@@ -24,7 +24,3 @@ export class {{ dto.Name }} {{- if dto.HasBaseClass}} extends {{dto.BaseClass.Na
    Save output ("dtos\\" | String.Append dto.FullName | String.Append ".tsx")
    end 
 }}
-
-
-
-

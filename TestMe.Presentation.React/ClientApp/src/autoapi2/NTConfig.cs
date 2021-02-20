@@ -22,19 +22,19 @@ namespace TestMe.Presentation.React.ClientApp.src.autoapi2
             yield return typeof(NTConfig);
         }
 
-          
+
         public static string GenImport(IClass @class)
-        {           
-            return GenerateList(@class, "import").Trim();
+        {
+            return GenerateListOfDependencies(@class, "import").Trim();
         }
         public static string GenExport(IClass @class)
         {
-            return GenerateList(@class, "export").Trim();
+            return GenerateListOfDependencies(@class, "export").Trim();
         }
-        private static string GenerateList(IClass c, string operation)
+        private static string GenerateListOfDependencies(IClass @class, string operation)
         {
             var builder = new StringBuilder();
-            var types = c.AllReferencedTypes();
+            var types = @class.AllReferencedTypes();
 
             foreach (var type in types)
             {

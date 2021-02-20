@@ -48,7 +48,7 @@ Yet another sample .net core application. But this one aims to be a little bit d
 - enabled non-null reference types 
 - every module in separate transaction scope, eventual consistency between modules
 - mapping between c# dtos is done by [MappingGenerator](https://github.com/cezarypiatek/MappingGenerator)
-- typed api client for api calls is auto-generated with [Typewriter](https://github.com/frhagn/Typewriter)
+- typed api client for api calls is auto-generated with [NTypewriter](https://github.com/NeVeSpl/NTypewriter)
 
 
 ![projects_dependencies](docs/TestMe.Architecture.png)
