@@ -8,6 +8,6 @@ export enum {{ enum.Name }}
 {{- end }}
 }
 {{-     end
-   Save output ("enums\\" | String.Append enum.FullName | String.Append ".tsx")
+   Save output ("enums\\" + enum.FullName + ".tsx")
    end 
 }}

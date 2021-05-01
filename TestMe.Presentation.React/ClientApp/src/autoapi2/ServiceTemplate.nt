@@ -18,14 +18,12 @@ export class {{ serviceName }} extends ApiBaseService
        returnType = method | Action.ReturnType | Type.ToTypeScriptType;
        bodyParameterName = (method | Action.BodyParameter)?.Name ?? "null";
        parameters = method | Action.Parameters | Parameters.ToTypeScript | Array.Join ", ";
-      
-       if returnType != null
-          returnType = "<" | String.Append returnType | String.Append ">";           
-       end
+       url = method | Action.Url;
+       httmMethod = method | Action.HttpMethod;  
 }}
-    {{ method.Name | String.ToCamelCase }}({{ parameters }}){{ if returnType != null }} : Promise{{ returnType }}{{ end }}
+    {{ method.Name | String.ToCamelCase }}({{ parameters }}){{ if returnType != null }} : Promise<{{ returnType }}>{{ end }}
     {
-        return this.MakeRequest{{returnType ? "WithResult" : null}}{{ returnType }}("{{ method | Action.HttpMethod }}", `{{ method | Action.Url }}`, {{ bodyParameterName }});
+        return this.MakeRequest{{returnType ? ("WithResult<" +returnType+ ">") : null}}("{{ httmMethod }}", `{{ url }}`, {{ bodyParameterName }});
     }
 {{- end }}
     
@@ -33,5 +31,5 @@ export class {{ serviceName }} extends ApiBaseService
 
 
 {{      end; 
-   Save output ("services\\" | String.Append controller.BareName | String.Replace "Controller" "Service.tsx" )
+   Save output ("services\\" + controller.BareName | String.Replace "Controller" "Service.tsx" )
    end; }}

@@ -21,6 +21,6 @@ export class {{ dto.Name }} {{- if dto.HasBaseClass }} extends {{ dto.BaseClass.
     }
 }
 {{-     end
-   Save output ("dtos\\" | String.Append dto.FullName | String.Append ".tsx")
+   Save output ("dtos\\" + dto.FullName + ".tsx")
    end 
 }}
