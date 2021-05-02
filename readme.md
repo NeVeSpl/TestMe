@@ -1,4 +1,8 @@
-﻿# Sample Modular Monolith application without fluff and hype but with tests
+> **Right now this repository is lagging behind and does not get deserved love because I have enaged in improving [NetArchTest](https://github.com/BenMorris/NetArchTest) or even rewriting [Typewriter](https://github.com/frhagn/Typewriter)/[NTypewriter](https://github.com/NeVeSpl/NTypewriter) tools that I use here.**
+
+
+
+# Sample Modular Monolith application without fluff and hype but with tests
 
 Yet another sample .net core application. But this one aims to be a little bit different than the rest. Instead of focusing on showing some fancy libraries and patterns on non-realistic simplified examples, this one focus on delivering a fully working application with high quality. 
 
