@@ -15,9 +15,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
-    <PackageReference Include="NTypewriter.CodeModel" Version="0.0.1-alpha" />
-    <PackageReference Include="NTypewriter.CodeModel.Functions" Version="0.0.1-alpha" />
-    <PackageReference Include="NTypewriter.Editor.Config" Version="0.0.1-alpha" />
+    <PackageReference Include="NTypewriter.CodeModel" Version="0.1.0-alpha" />
+    <PackageReference Include="NTypewriter.CodeModel.Functions" Version="0.1.0-alpha" />
+    <PackageReference Include="NTypewriter.Editor.Config" Version="0.1.0-alpha" />
   </ItemGroup>
 
   <ItemGroup>

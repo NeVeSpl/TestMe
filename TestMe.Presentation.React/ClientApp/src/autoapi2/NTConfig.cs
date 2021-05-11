@@ -10,16 +10,22 @@ namespace TestMe.Presentation.React.ClientApp.src.autoapi2
     [NTEditorFile]
     public class NTConfig : EditorConfig
     {
-        public override IEnumerable<string> GetNamespacesToBeSearched()
+        public override IEnumerable<string> NamespacesToBeSearched
         {
-            yield return "TestMe.SharedKernel";
-            yield return "TestMe.TestCreation";
-            yield return "TestMe.UserManagement";
-            yield return "TestMe.Presentation.API";
+            get
+            {
+                yield return "TestMe.SharedKernel";
+                yield return "TestMe.TestCreation";
+                yield return "TestMe.UserManagement";
+                yield return "TestMe.Presentation.API";
+            }
         }
-        public override IEnumerable<Type> GetTypesThatContainCustomFunctions()
+        public override IEnumerable<Type> TypesThatContainCustomFunctions
         {
-            yield return typeof(NTConfig);
+            get
+            {
+                yield return typeof(NTConfig);
+            }
         }
 
 
