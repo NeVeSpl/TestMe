@@ -60,8 +60,10 @@ namespace TestMe.UserManagement.Tests.Architecture
                                 "TestMe.UserManagement.Persistence",
                                 "TestMe.UserManagement.Domain",                            
                                 "TestMe.BuildingBlocks.App",
-                                "TestMe.BuildingBlocks.Domain",                                
-                                "Microsoft.EntityFrameworkCore",
+                                "TestMe.BuildingBlocks.Domain",
+                                "TestMe.SharedKernel.Domain",
+                                "Microsoft.EntityFrameworkCore",                            
+                                "Microsoft.Extensions.DependencyInjection",
                                 "AutoMapper"
                              )
                              .GetResult();
