@@ -21,9 +21,9 @@ export class {{ serviceName }} extends ApiBaseService
        url = method | Action.Url;
        httmMethod = method | Action.HttpMethod;  
 }}
-    {{ method.Name | String.ToCamelCase }}({{ parameters }}){{ if returnType != null }} : Promise<{{ returnType }}>{{ end }}
+    {{ method.Name | String.ToCamelCase }}({{ parameters }}){{ returnType ?! " : Promise<" + returnType + ">"  }}
     {
-        return this.MakeRequest{{returnType ? ("WithResult<" +returnType+ ">") : null}}("{{ httmMethod }}", `{{ url }}`, {{ bodyParameterName }});
+        return this.MakeRequest{{returnType ?! ("WithResult<" + returnType + ">")}}("{{ httmMethod }}", `{{ url }}`, {{ bodyParameterName }});
     }
 {{- end }}
     
