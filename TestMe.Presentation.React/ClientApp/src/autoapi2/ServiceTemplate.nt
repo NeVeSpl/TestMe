@@ -26,7 +26,7 @@ export class {{ serviceName }} extends ApiBaseService
         return this.MakeRequest{{returnType ?! ("WithResult<" + returnType + ">")}}("{{ httmMethod }}", `{{ url }}`, {{ bodyParameterName }});
     }
 {{- end }}
-    
+
 }
 
 

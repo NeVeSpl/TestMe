@@ -7,12 +7,12 @@ namespace TestMe.TestCreation.Tests.Architecture
     [TestClass]
     public class EncapsulationTests
     {
-        static readonly Assembly TestCreationAssembly = typeof(TestUtils).Assembly;
+        static readonly Assembly AssemblyUnderTest = typeof(TestUtils).Assembly;
 
         [TestMethod]
         public void DomainIsNotAccessibleFromOutsideOfModule()
         {
-            var result = Types.InAssembly(TestCreationAssembly)
+            var result = Types.InAssembly(AssemblyUnderTest)
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.Domain")
                               .And()
@@ -26,7 +26,7 @@ namespace TestMe.TestCreation.Tests.Architecture
         [TestMethod]
         public void PersistenceIsNotAccessibleFromOutsideOfModule()
         {
-            var result = Types.InAssembly(TestCreationAssembly)
+            var result = Types.InAssembly(AssemblyUnderTest)
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.Persistence")
                               .And()
@@ -45,7 +45,7 @@ namespace TestMe.TestCreation.Tests.Architecture
         [DataRow("Handler")]
         public void AppServicesAndReadersAndHandlersAreNotAccessibleFromOutsideOfModule(string end)
         {
-            var result = Types.InAssembly(TestCreationAssembly)
+            var result = Types.InAssembly(AssemblyUnderTest)
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.App")
                               .And()
@@ -62,7 +62,7 @@ namespace TestMe.TestCreation.Tests.Architecture
         [TestMethod]
         public void InfrastructureIsNotAccessibleFromOutsideOfModule()
         {
-            var result = Types.InAssembly(TestCreationAssembly)
+            var result = Types.InAssembly(AssemblyUnderTest)
                               .That()
                               .ResideInNamespace("TestMe.TestCreation.Infrastructure")
                               .And()

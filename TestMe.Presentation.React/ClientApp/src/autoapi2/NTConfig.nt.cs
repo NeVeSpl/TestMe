@@ -7,7 +7,7 @@ using NTypewriter.Editor.Config;
 
 namespace TestMe.Presentation.React.ClientApp.src.autoapi2
 {
-    [NTEditorFile]
+    
     public class NTConfig : EditorConfig
     {
         public override IEnumerable<string> NamespacesToBeSearched
@@ -19,14 +19,7 @@ namespace TestMe.Presentation.React.ClientApp.src.autoapi2
                 yield return "TestMe.UserManagement";
                 yield return "TestMe.Presentation.API";
             }
-        }
-        public override IEnumerable<Type> TypesThatContainCustomFunctions
-        {
-            get
-            {
-                yield return typeof(NTConfig);
-            }
-        }
+        }      
 
 
         public static string GenImport(IClass @class)

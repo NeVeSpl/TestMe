@@ -15,9 +15,9 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.9" />
-    <PackageReference Include="NTypewriter.CodeModel" Version="0.1.0-alpha" />
-    <PackageReference Include="NTypewriter.CodeModel.Functions" Version="0.1.0-alpha" />
-    <PackageReference Include="NTypewriter.Editor.Config" Version="0.1.0-alpha" />
+    <PackageReference Include="NTypewriter.CodeModel" Version="0.3.8" />
+    <PackageReference Include="NTypewriter.CodeModel.Functions" Version="0.3.8" />
+    <PackageReference Include="NTypewriter.Editor.Config" Version="0.3.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,7 +32,7 @@
     <None Remove="ClientApp\src\autoapi2\enums\TestMe.Presentation.API.Startup.StartupConfig.EventBusType.tsx" />
     <None Remove="ClientApp\src\autoapi2\enums\TestMe.SharedKernel.Domain.MembershipLevel" />
     <None Remove="ClientApp\src\autoapi2\enums\TestMe.UserManagement.Domain.UserRole" />
-    <None Remove="ClientApp\src\autoapi2\NTConfig.cs" />
+    <None Remove="ClientApp\src\autoapi2\NTConfig.nt.cs" />
     <None Remove="ClientApp\src\autoapi2\services\QuestionsCatalogsController" />
     <None Remove="ClientApp\src\autoapi2\services\QuestionsCatalogsController.tsx" />
     <None Remove="ClientApp\src\autoapi2\services\QuestionsController" />
