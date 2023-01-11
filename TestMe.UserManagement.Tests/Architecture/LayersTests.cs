@@ -16,7 +16,7 @@ namespace TestMe.UserManagement.Tests.Architecture
                               .That()
                               .ResideInNamespace("TestMe.UserManagement.Domain")
                               .ShouldNot()
-                              .HaveDependenciesOtherThan(
+                              .HaveDependencyOtherThan(
                                 "System",
                                 "TestMe.UserManagement.Domain",
                                 "TestMe.SharedKernel.Domain",
@@ -34,7 +34,7 @@ namespace TestMe.UserManagement.Tests.Architecture
                              .That()
                              .ResideInNamespace("TestMe.UserManagement.Persistence")                             
                              .ShouldNot()
-                             .HaveDependenciesOtherThan(
+                             .HaveDependencyOtherThan(
                                 "System",
                                 "TestMe.UserManagement.Persistence",
                                 "TestMe.UserManagement.Domain",
@@ -54,7 +54,7 @@ namespace TestMe.UserManagement.Tests.Architecture
                              .That()
                              .ResideInNamespace("TestMe.UserManagement.App")
                              .ShouldNot()
-                             .HaveDependenciesOtherThan(
+                             .HaveDependencyOtherThan(
                                 "System",
                                 "TestMe.UserManagement.App",
                                 "TestMe.UserManagement.Persistence",
